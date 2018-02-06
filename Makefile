@@ -149,6 +149,10 @@ INCDIR += $(CHIBIOS)/os/license \
           $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
           $(HALINC) $(PLATFORMINC) $(BOARDINC)
 
+PROTOSRC = $(wildcard messages/*.proto)
+CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
+INCDIR += build/
+
 #
 # Project, sources and paths
 ##############################################################################
@@ -215,5 +219,14 @@ ULIBS =
 # End of user defines
 ##############################################################################
 
+
 RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC
 include $(RULESPATH)/rules.mk
+
+protoc:
+	@echo Compiling protocol buffer files
+	@mkdir -p build/messages
+	@protoc \
+		--plugin=protoc-gen-nanopb=lib/nanopb/nanopb/generator/protoc-gen-nanopb \
+		-I lib/nanopb/nanopb/generator/proto \
+		-I messages/ --nanopb_out=build/messages/ $(PROTOSRC)

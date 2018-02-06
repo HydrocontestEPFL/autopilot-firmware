@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "Timestamp.proto";
+
+/* Acceleration data in m/s^2 */
+message Acceleration {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+/* Gyroscope data in rad/s */
+message AngularSpeed {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+/* Magnetometer data in uT */
+message MagneticField {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+
+message IMUReading {
+    Timestamp timestamp = 1;
+    Acceleration acceleration = 2;
+    AngularSpeed angular_speed = 3;
+    MagneticField magnetic_field = 4;
+}
+
