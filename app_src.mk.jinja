@@ -1,6 +1,6 @@
-{% for dir in include_directories %}
+{%- for dir in include_directories -%}
 INCDIR += -I {{ dir }}
-{% endfor %}
+{% endfor -%}
 
 {% for file in target.arm + source -%}
 {% if file.endswith('.c') %}CSRC += {{ file }}
