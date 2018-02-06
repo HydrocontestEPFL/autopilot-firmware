@@ -1,0 +1,9 @@
+dependency-dir: lib
+templates:
+    app_src.mk.jinja: app_src.mk
+
+include_directories:
+    - src/
+
+target.arm:
+  - src/main.c
