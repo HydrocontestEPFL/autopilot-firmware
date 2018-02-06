@@ -1,9 +1,12 @@
 dependency-dir: lib
 templates:
-    app_src.mk.jinja: app_src.mk
+  app_src.mk.jinja: app_src.mk
 
 include_directories:
-    - src/
+  - src/
+
+depends:
+  - lwip
 
 target.arm:
   - src/main.c
