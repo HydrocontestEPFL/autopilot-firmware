@@ -7,6 +7,7 @@ include_directories:
 
 depends:
   - lwip
+  - nanopb
 
 target.arm:
   - src/main.c

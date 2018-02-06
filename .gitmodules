@@ -7,3 +7,6 @@
 [submodule "lib/lwip/lwip"]
 	path = lib/lwip/lwip
 	url = https://git.savannah.nongnu.org/git/lwip.git
+[submodule "lib/nanopb/nanopb"]
+	path = lib/nanopb/nanopb
+	url = https://github.com/nanopb/nanopb
