@@ -1,0 +1,3 @@
+[submodule "lib/ChibiOS"]
+	path = lib/ChibiOS
+	url = https://github.com/cvra/ChibiOS/
