@@ -7,6 +7,11 @@ firmware_build:
     - apt-get update && apt-get install -y python3-pip python-protobuf protobuf-compiler
     - pip3 install PyYAML==3.12 cvra-packager
 
+    # Install nanopb
+    - pushd lib/nanopb/nanopb/generator/proto
+    - make
+    - popd
+
   script:
     - packager
     - make protoc
