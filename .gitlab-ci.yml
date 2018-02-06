@@ -1,0 +1,16 @@
+firmware_build:
+  stage: test
+  image: antoinealb/gcc-arm-embedded
+  before_script:
+    - rm -rf ChibiOS
+    - git submodule update --init --recursive
+    - apt-get update && apt-get install -y python3-pip
+    - pip3 install cvra-packager
+    - pushd src/libuavcan/libuavcan/dsdl_compiler/
+    - python setup.py install
+    - popd
+
+  script:
+    - packager
+    - make dsdlc
+    - make
