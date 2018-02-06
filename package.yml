@@ -12,3 +12,4 @@ depends:
 target.arm:
   - src/main.c
   - src/usbconf.c
+  - src/cmd.c

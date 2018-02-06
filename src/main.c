@@ -1,6 +1,7 @@
 #include <ch.h>
 #include <hal.h>
 #include "usbconf.h"
+#include "cmd.h"
 
 static void usb_start(void)
 {
@@ -17,6 +18,8 @@ static void usb_start(void)
     chThdSleepMilliseconds(1500);
     usbStart(serusbcfg.usbp, &usbcfg);
     usbConnectBus(serusbcfg.usbp);
+
+    shell_start((BaseSequentialStream *)&SDU1);
 }
 
 int main(void)

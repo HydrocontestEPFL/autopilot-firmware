@@ -101,6 +101,7 @@ include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
 include $(CHIBIOS)/os/hal/lib/streams/streams.mk
+include $(CHIBIOS)/os/various/shell/shell.mk
 
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F429xI.ld
@@ -113,8 +114,10 @@ CSRC += $(STARTUPSRC) \
         $(KERNSRC) \
         $(PORTSRC) \
         $(OSALSRC) \
+		$(SHELLSRC) \
         $(HALSRC) \
         $(PLATFORMSRC) \
+		$(CHIBIOS)/os/hal/lib/streams/chprintf.c \
         $(BOARDSRC)
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -146,8 +149,9 @@ ASMSRC +=
 ASMXSRC += $(STARTUPASM) $(PORTASM) $(OSALASM)
 
 INCDIR += $(CHIBIOS)/os/license \
+		  $(CHIBIOS)/os/hal/lib/streams \
           $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
-          $(HALINC) $(PLATFORMINC) $(BOARDINC)
+          $(HALINC) $(PLATFORMINC) $(BOARDINC) $(SHELLINC)
 
 PROTOSRC = $(wildcard messages/*.proto)
 CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
@@ -201,7 +205,11 @@ CPPWARN = -Wall -Wextra -Wundef
 #
 
 # List all user C define here, like -D_DEBUG=1
-UDEFS =
+UDEFS = -DSHELL_MAX_ARGUMENTS=5 \
+	-DSHELL_CMD_TEST_ENABLED=FALSE \
+	-DSHELL_CMD_EXIT_ENABLED=FALSE \
+	-DSHELL_CMD_INFO_ENABLED=FALSE \
+
 
 # Define ASM defines here
 UADEFS =
