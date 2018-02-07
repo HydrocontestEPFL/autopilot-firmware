@@ -1,15 +1,21 @@
 dependency-dir: lib
 templates:
   app_src.mk.jinja: app_src.mk
+  CMakeLists.txt.jinja: CMakeLists.txt
 
 include_directories:
   - src/
+  - build/ # for generated protobuf messages
 
 depends:
   - lwip
   - nanopb
+  - msgbus
 
 target.arm:
   - src/main.c
   - src/usbconf.c
   - src/cmd.c
+
+tests:
+  - tests/msgbus_protobuf.cpp

@@ -155,7 +155,6 @@ INCDIR += $(CHIBIOS)/os/license \
 
 PROTOSRC = $(wildcard messages/*.proto)
 CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
-INCDIR += build/
 
 #
 # Project, sources and paths
