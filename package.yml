@@ -11,11 +11,13 @@ depends:
   - lwip
   - nanopb
   - msgbus
+  - parameter
 
 target.arm:
   - src/main.c
   - src/usbconf.c
   - src/cmd.c
+  - src/parameter_port.c
 
 tests:
   - tests/msgbus_protobuf.cpp

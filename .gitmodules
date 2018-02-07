@@ -13,3 +13,12 @@
 [submodule "lib/msgbus"]
 	path = lib/msgbus
 	url = https://github.com/cvra/msgbus
+[submodule "lib/parameter"]
+	path = lib/parameter
+	url = https://github.com/cvra/parameter
+[submodule "lib/cmp_mem_access"]
+	path = lib/cmp_mem_access
+	url = https://github.com/stapelzeiger/cmp_mem_access
+[submodule "lib/cmp"]
+	path = lib/cmp
+	url = https://github.com/cvra/cmp

@@ -2,6 +2,12 @@
 #include <hal.h>
 #include "usbconf.h"
 #include "cmd.h"
+#include "main.h"
+
+parameter_namespace_t parameter_root;
+messagebus_t bus;
+static MUTEX_DECL(bus_lock);
+static CONDVAR_DECL(bus_condvar);
 
 static void usb_start(void)
 {
@@ -22,10 +28,23 @@ static void usb_start(void)
     shell_start((BaseSequentialStream *)&SDU1);
 }
 
+static void parameter_start(void)
+{
+    parameter_namespace_declare(&parameter_root, NULL, "");
+}
+
+static void messagebus_start(void)
+{
+    messagebus_init(&bus, &bus_lock, &bus_condvar);
+}
+
 int main(void)
 {
     halInit();
     chSysInit();
+
+    parameter_start();
+    messagebus_start();
 
     usb_start();
 
