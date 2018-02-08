@@ -18,7 +18,7 @@ firmware_tests:
   script:
     - packager
     - make protoc
-    - mkdir build && pushd build
+    - mkdir -p build && pushd build
     - cmake ..
     - make check
     - popd
