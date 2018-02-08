@@ -1,6 +1,7 @@
 syntax = "proto2";
 
 import "Timestamp.proto";
+import "nanopb.proto";
 
 /* Acceleration data in m/s^2 */
 message Acceleration {
@@ -25,6 +26,7 @@ message MagneticField {
 
 
 message IMUReading {
+    option (nanopb_msgopt).msgid = 11;
     required Timestamp timestamp = 1;
     required Acceleration acceleration = 2;
     required AngularSpeed angular_speed = 3;
