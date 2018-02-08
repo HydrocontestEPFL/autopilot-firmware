@@ -47,10 +47,13 @@ typedef struct {
 }
 
 /* Wraps the topic information in a header (in protobuf format) to be sent over
- * UDP or logged to disk or whatever. */
-bool messagebus_encode_topic_message(messagebus_topic_t *topic,
-                                     uint8_t *buf, size_t buf_len,
-                                     uint8_t *obj_buf, size_t obj_buf_len);
+ * UDP or logged to disk or whatever.
+ *
+ * @return The message size in bytes
+ */
+size_t messagebus_encode_topic_message(messagebus_topic_t *topic,
+                                       uint8_t *buf, size_t buf_len,
+                                       uint8_t *obj_buf, size_t obj_buf_len);
 
 #ifdef __cplusplus
 }

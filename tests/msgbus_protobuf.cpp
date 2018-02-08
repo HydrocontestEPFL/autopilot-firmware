@@ -106,7 +106,7 @@ TEST(MessagebusProtobufIntegration, EncodeMessageWithHeader)
                                                buffer, sizeof(buffer),
                                                obj_buffer, sizeof(obj_buffer));
 
-    CHECK_TRUE(res);
+    CHECK_EQUAL(27, res);
     pb_istream_t stream;
     size_t offset = 0;
 
@@ -150,7 +150,7 @@ TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageHeader)
                                                buffer, sizeof(buffer),
                                                obj_buffer, sizeof(obj_buffer));
 
-    CHECK_FALSE(res);
+    CHECK_EQUAL(0, res);
 }
 
 TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageBody)
@@ -164,7 +164,7 @@ TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageBody)
                                                buffer, 18,
                                                obj_buffer, sizeof(obj_buffer));
 
-    CHECK_FALSE(res);
+    CHECK_EQUAL(0, res);
 }
 
 TEST(MessagebusProtobufIntegration, NotEnoughRoomForObject)
@@ -178,5 +178,5 @@ TEST(MessagebusProtobufIntegration, NotEnoughRoomForObject)
                                                buffer, sizeof(buffer),
                                                obj_buffer, sizeof(obj_buffer));
 
-    CHECK_FALSE(res);
+    CHECK_EQUAL(0, res);
 }

@@ -3,9 +3,9 @@
 #include "messages/TopicHeader.pb.h"
 #include <pb_encode.h>
 
-bool messagebus_encode_topic_message(messagebus_topic_t *topic,
-                                     uint8_t *buf, size_t buf_len,
-                                     uint8_t *obj_buf, size_t obj_buf_len)
+size_t messagebus_encode_topic_message(messagebus_topic_t *topic,
+                                       uint8_t *buf, size_t buf_len,
+                                       uint8_t *obj_buf, size_t obj_buf_len)
 {
     size_t offset;
     int32_t max_len;
@@ -23,11 +23,12 @@ bool messagebus_encode_topic_message(messagebus_topic_t *topic,
     offset = MessageSize_size;
     max_len = buf_len - 2 * MessageSize_size;
     if (max_len <= 0) {
-        return false;
+        return 0;
     }
+
     stream = pb_ostream_from_buffer(&buf[offset], max_len);
     if(!pb_encode(&stream, TopicHeader_fields, &header)) {
-        return false;
+        return 0;
     }
 
     header_size.bytes = stream.bytes_written;
@@ -37,12 +38,12 @@ bool messagebus_encode_topic_message(messagebus_topic_t *topic,
     stream = pb_ostream_from_buffer(&buf[offset], max_len);
 
     if(!pb_encode(&stream, MessageSize_fields, &header_size)) {
-        return false;
+        return 0;
     }
 
     /* Read topic content */
     if (obj_buf_len < topic->buffer_len) {
-        return false;
+        return 0;
     }
     messagebus_topic_read(topic, obj_buf, topic->buffer_len);
 
@@ -50,22 +51,22 @@ bool messagebus_encode_topic_message(messagebus_topic_t *topic,
     max_len = buf_len - (offset);
 
     if (max_len <= 0) {
-        return false;
+        return 0;
     }
 
     stream = pb_ostream_from_buffer(&buf[offset], max_len);
     if(!pb_encode(&stream, metadata->fields, obj_buf)) {
-        return false;
+        return 0;
     }
 
     msg_size.bytes = stream.bytes_written;
     offset = header_size.bytes + MessageSize_size;
     stream = pb_ostream_from_buffer(&buf[offset], MessageSize_size);
     if(!pb_encode(&stream, MessageSize_fields, &msg_size)) {
-        return false;
+        return 0;
     }
 
-    return true;
+    return msg_size.bytes + header_size.bytes + 2 * MessageSize_size;
 }
 
 
