@@ -3,6 +3,7 @@
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
+#include "udp_topic_broadcaster.h"
 #include <lwip_bindings/lwipthread.h>
 
 
@@ -48,7 +49,7 @@ int main(void)
     parameter_start();
     messagebus_start();
     ip_start();
-
+    udp_topic_broadcast_start();
 
     usb_start();
 

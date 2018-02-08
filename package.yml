@@ -19,6 +19,7 @@ target.arm:
   - src/usbconf.c
   - src/cmd.c
   - src/parameter_port.c
+  - src/udp_topic_broadcaster.c
 
 source:
   - src/msgbus_protobuf.c
