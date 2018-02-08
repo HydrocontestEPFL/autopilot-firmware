@@ -1,3 +1,27 @@
+firmware_tests:
+  # TODO cleanup this
+  variables:
+    CFLAGS: "-std=gnu99"
+  stage: test
+  image: antoinealb/cpputest
+  before_script:
+    - rm -rf ChibiOS
+    - git submodule update --init --recursive
+    - apt-get update && apt-get install -y cmake python3-pip python-protobuf protobuf-compiler
+    - pip3 install PyYAML==3.12 cvra-packager
+
+    # Install nanopb
+    - pushd lib/nanopb/nanopb/generator/proto
+    - make
+    - popd
+
+  script:
+    - packager
+    - mkdir build && pushd build
+    - cmake ..
+    - make check
+    - popd
+
 firmware_build:
   stage: test
   image: antoinealb/gcc-arm-embedded
