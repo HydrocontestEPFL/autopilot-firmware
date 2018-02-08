@@ -19,5 +19,8 @@ target.arm:
   - src/cmd.c
   - src/parameter_port.c
 
+source:
+  - src/msgbus_protobuf.c
+
 tests:
   - tests/msgbus_protobuf.cpp

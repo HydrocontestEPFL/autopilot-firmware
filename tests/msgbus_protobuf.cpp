@@ -14,6 +14,8 @@ typedef int condition_variable_t;
 
 // Message types
 #include "messages/Timestamp.pb.h"
+#include "messages/MessageSize.pb.h"
+#include "messages/TopicHeader.pb.h"
 
 TEST_GROUP(MessagebusProtobufIntegration)
 {
@@ -38,6 +40,7 @@ TEST(MessagebusProtobufIntegration, CanCreateTopic)
 
     POINTERS_EQUAL(&mytopic.metadata, mytopic.topic.metadata);
     POINTERS_EQUAL(Timestamp_fields, mytopic.metadata.fields);
+    CHECK_EQUAL(Timestamp_msgid, mytopic.metadata.msgid);
 }
 
 TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
@@ -54,6 +57,7 @@ TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
 
     // Encode the data using introspection
     uint8_t encoded_buffer[128];
+    memset(encoded_buffer, 0, sizeof(encoded_buffer));
     {
         pb_ostream_t stream = pb_ostream_from_buffer(encoded_buffer,
                                                      sizeof(encoded_buffer));
@@ -88,4 +92,91 @@ TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
 
         CHECK_EQUAL(1000, message.us);
     }
+}
+
+TEST(MessagebusProtobufIntegration, EncodeMessageWithHeader)
+{
+    TOPIC_DECL(mytopic, Timestamp);
+    messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
+
+    uint8_t buffer[128];
+    uint8_t obj_buffer[128];
+
+    auto res = messagebus_encode_topic_message(&mytopic.topic,
+                                               buffer, sizeof(buffer),
+                                               obj_buffer, sizeof(obj_buffer));
+
+    CHECK_TRUE(res);
+    pb_istream_t stream;
+    size_t offset = 0;
+
+    // Check that we first have a size object
+    MessageSize size;
+    stream = pb_istream_from_buffer(&buffer[offset], MessageSize_size);
+    CHECK_TRUE(pb_decode(&stream, MessageSize_fields, &size));
+    CHECK_TRUE(size.bytes > 0);
+
+    offset += MessageSize_size;
+
+    // Check that we then have a header object
+    TopicHeader header;
+    stream = pb_istream_from_buffer(&buffer[offset], size.bytes);
+    CHECK_TRUE(pb_decode(&stream, TopicHeader_fields, &header));
+    offset += size.bytes;
+
+    STRCMP_EQUAL("mytopic", header.name);
+    CHECK_EQUAL(Timestamp_msgid, header.msgid);
+
+    // Now we should again have a size object
+    stream = pb_istream_from_buffer(&buffer[offset], MessageSize_size);
+    CHECK_TRUE(pb_decode(&stream, MessageSize_fields, &size));
+    CHECK_TRUE(size.bytes > 0);
+    offset += MessageSize_size;
+
+    // Finally we should have a timestamp object
+    Timestamp ts;
+    stream = pb_istream_from_buffer(&buffer[offset], size.bytes);
+    CHECK_TRUE(pb_decode(&stream, Timestamp_fields, &ts));
+}
+
+TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageHeader)
+{
+    TOPIC_DECL(mytopic, Timestamp);
+    messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
+
+    uint8_t buffer[1];
+    uint8_t obj_buffer[128];
+    auto res = messagebus_encode_topic_message(&mytopic.topic,
+                                               buffer, sizeof(buffer),
+                                               obj_buffer, sizeof(obj_buffer));
+
+    CHECK_FALSE(res);
+}
+
+TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageBody)
+{
+    TOPIC_DECL(mytopic, Timestamp);
+    messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
+
+    uint8_t buffer[256];
+    uint8_t obj_buffer[128];
+    auto res = messagebus_encode_topic_message(&mytopic.topic,
+                                               buffer, 18,
+                                               obj_buffer, sizeof(obj_buffer));
+
+    CHECK_FALSE(res);
+}
+
+TEST(MessagebusProtobufIntegration, NotEnoughRoomForObject)
+{
+    TOPIC_DECL(mytopic, Timestamp);
+    messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
+
+    uint8_t buffer[256];
+    uint8_t obj_buffer[2];
+    auto res = messagebus_encode_topic_message(&mytopic.topic,
+                                               buffer, sizeof(buffer),
+                                               obj_buffer, sizeof(obj_buffer));
+
+    CHECK_FALSE(res);
 }
