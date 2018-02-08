@@ -25,13 +25,13 @@ typedef struct {
         type value; \
         topic_metadata_t metadata; \
 } name = { \
-        .lock = _MUTEX_DATA(name.lock), \
-        .condvar = _CONDVAR_DATA(name.condvar), \
-        .topic = \
-            _MESSAGEBUS_TOPIC_DATA(name.topic, name.lock, name.condvar, &name.value, sizeof(type), name.metadata), \
-        .metadata = { \
-            .fields = type##_fields, \
-            .msgid = type##_msgid, \
+        _MESSAGEBUS_TOPIC_DATA(name.topic, name.lock, name.condvar, &name.value, sizeof(type), name.metadata), \
+        _MUTEX_DATA(name.lock), \
+        _CONDVAR_DATA(name.condvar), \
+        type##_init_default, \
+        { \
+            type##_fields, \
+            type##_msgid, \
         }, \
 }
 
