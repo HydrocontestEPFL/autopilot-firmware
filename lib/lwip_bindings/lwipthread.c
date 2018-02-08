@@ -232,14 +232,6 @@ void lwip_thread(void *p)
 
     chRegSetThreadName("lwip");
 
-    sys_sem_new(&lwip_init_done, 0);
-
-    /* Initializes the thing.*/
-    tcpip_init(ipinit_done_cb, NULL);
-
-    sys_sem_wait(&lwip_init_done);
-    sys_sem_free(&lwip_init_done);
-
     thisif.hwaddr[0] = LWIP_ETHADDR_0;
     thisif.hwaddr[1] = LWIP_ETHADDR_1;
     thisif.hwaddr[2] = LWIP_ETHADDR_2;
@@ -306,6 +298,14 @@ void lwip_thread(void *p)
 
 void ip_start(void)
 {
+    sys_sem_new(&lwip_init_done, 0);
+
+    /* Initializes the thing.*/
+    tcpip_init(ipinit_done_cb, NULL);
+
+    sys_sem_wait(&lwip_init_done);
+    sys_sem_free(&lwip_init_done);
+
     static THD_WORKING_AREA(wa_lwip_thread, LWIP_THREAD_STACK_SIZE);
     /* Creates the LWIP threads (it changes priority internally).  */
     chThdCreateStatic(wa_lwip_thread,
