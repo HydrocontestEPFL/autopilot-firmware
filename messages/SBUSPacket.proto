@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+
+message SBUSPacket {
+
+    repeated int32 channels = 1 [packed=true, (nanopb).max_count = 16];
+
+    // Channel 17 & 18 are binary channels that can only take values from 0 to 1
+    required bool channel16 = 3;
+    required bool channel17 = 4;
+
+    // Indicates if a frame was lost due to bad reception
+    required bool frame_lost = 5;
+
+    // Indicates if the receiver is in failsafe mode (transmission lost for
+    // more than one second).
+    required bool failsafe = 6;
+}
+

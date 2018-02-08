@@ -23,6 +23,8 @@ target.arm:
 
 source:
   - src/msgbus_protobuf.c
+  - src/sbus.c
 
 tests:
   - tests/msgbus_protobuf.cpp
+  - tests/sbus_parser.cpp
