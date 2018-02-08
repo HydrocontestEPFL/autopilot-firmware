@@ -111,7 +111,7 @@
 extern "C" {
 #endif
 
-void ip_thread_init(void);
+void ip_start(void);
 
 #ifdef __cplusplus
 }

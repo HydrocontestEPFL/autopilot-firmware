@@ -3,6 +3,8 @@
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
+#include <lwip_bindings/lwipthread.h>
+
 
 parameter_namespace_t parameter_root;
 messagebus_t bus;
@@ -45,6 +47,8 @@ int main(void)
 
     parameter_start();
     messagebus_start();
+    ip_start();
+
 
     usb_start();
 

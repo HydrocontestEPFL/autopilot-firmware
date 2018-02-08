@@ -9,6 +9,7 @@ include_directories:
 
 depends:
   - lwip
+  - lwip_bindings
   - nanopb
   - msgbus
   - parameter

@@ -263,9 +263,6 @@ void lwip_thread(void *p)
     chEvtRegisterMask(macGetReceiveEventSource(&ETHD1), &el1, FRAME_RECEIVED_ID);
     chEvtAddEvents(PERIODIC_TIMER_ID | FRAME_RECEIVED_ID);
 
-    /* Goes to the final priority after initialization.*/
-    chThdSetPriority(LWIP_THREAD_PRIORITY);
-
     while (TRUE) {
         eventmask_t mask = chEvtWaitAny(ALL_EVENTS);
         if (mask & PERIODIC_TIMER_ID) {
@@ -307,13 +304,13 @@ void lwip_thread(void *p)
     }
 }
 
-void ip_thread_init(void)
+void ip_start(void)
 {
     static THD_WORKING_AREA(wa_lwip_thread, LWIP_THREAD_STACK_SIZE);
     /* Creates the LWIP threads (it changes priority internally).  */
     chThdCreateStatic(wa_lwip_thread,
                       LWIP_THREAD_STACK_SIZE,
-                      LWIP_THREAD_PRIO,
+                      NORMALPRIO,
                       lwip_thread, NULL);
 }
 

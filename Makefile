@@ -94,7 +94,7 @@ include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.m
 # HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F4xx/platform.mk
-include $(CHIBIOS)/os/hal/boards/ST_STM32F4_DISCOVERY/board.mk
+include $(CHIBIOS)/os/hal/boards/ST_NUCLEO144_F429ZI/board.mk
 include $(CHIBIOS)/os/hal/osal/rt/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
@@ -118,6 +118,8 @@ CSRC += $(STARTUPSRC) \
         $(HALSRC) \
         $(PLATFORMSRC) \
 		$(CHIBIOS)/os/hal/lib/streams/chprintf.c \
+		$(CHIBIOS)/os/various/evtimer.c \
+		$(CHIBIOS)/os/various/syscalls.c \
         $(BOARDSRC)
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -149,6 +151,7 @@ ASMSRC +=
 ASMXSRC += $(STARTUPASM) $(PORTASM) $(OSALASM)
 
 INCDIR += $(CHIBIOS)/os/license \
+		  $(CHIBIOS)/os/various \
 		  $(CHIBIOS)/os/hal/lib/streams \
           $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
           $(HALINC) $(PLATFORMINC) $(BOARDINC) $(SHELLINC)
@@ -243,5 +246,5 @@ protoc:
 .PHONY: ctags
 ctags:
 	@echo "Generating ctags file..."
-	@cat .dep/*.d | grep ":$$" | sed "s/://" | sort | uniq | xargs ctags --file-scope=no --extra=+q $(CSRC) $(CPPSRC)
+	@cat .dep/*.d | grep ":$$" | sed "s/://" | sort | uniq | xargs ctags --file-scope=no --extra=+qf $(CSRC) $(CPPSRC)
 
