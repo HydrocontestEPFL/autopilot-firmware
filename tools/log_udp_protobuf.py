@@ -53,7 +53,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    with socketserver.UDPServer(("localhost", args.port), Handler) as server:
+    with socketserver.UDPServer(("0.0.0.0", args.port), Handler) as server:
         server.serve_forever()
 
 
