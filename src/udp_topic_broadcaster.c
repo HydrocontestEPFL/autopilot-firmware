@@ -34,14 +34,13 @@ static void udp_topic_broadcast_thd(void *p)
         conn = netconn_new(NETCONN_UDP);
 
         if (conn == NULL) {
-            // TODO: Do something useful
             continue;
         }
 
         buf = netbuf_new();
 
         if (buf == NULL) {
-            // TODO: Do something useful
+            netconn_delete(conn);
             continue;
         }
 
