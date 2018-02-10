@@ -73,5 +73,5 @@ void udp_topic_broadcast_start(void)
     static messagebus_new_topic_cb_t cb;
     messagebus_watchgroup_init(&watchgroup, &watchgroup_lock, &watchgroup_condvar);
     messagebus_new_topic_callback_register(&bus, &cb, new_topic_cb, NULL);
-    chThdCreateStatic(wa, sizeof(wa), NORMALPRIO, udp_topic_broadcast_thd, NULL);
+    chThdCreateStatic(wa, sizeof(wa), HIGHPRIO, udp_topic_broadcast_thd, NULL);
 }
