@@ -4,6 +4,18 @@
 #include "msgbus_protobuf.h"
 #include "udp_topic_broadcaster.h"
 
+static messagebus_watchgroup_t watchgroup;
+static MUTEX_DECL(watchgroup_lock);
+static CONDVAR_DECL(watchgroup_condvar);
+
+static void new_topic_cb(messagebus_t *bus, messagebus_topic_t *topic, void *arg)
+{
+    (void) bus;
+    (void) arg;
+    topic_metadata_t *metadata = (topic_metadata_t *)topic->metadata;
+    messagebus_watchgroup_watch(&metadata->udp_watcher, &watchgroup, topic);
+}
+
 static void udp_topic_broadcast_thd(void *p)
 {
     (void) p;
@@ -14,14 +26,11 @@ static void udp_topic_broadcast_thd(void *p)
     uint8_t msg_buf[256];
     size_t encoded_size;
 
-    topic = messagebus_find_topic_blocking(&bus, "time");
-
     while (true) {
         struct netconn *conn;
         struct netbuf *buf;
 
-        // TODO wait for a group instead
-        messagebus_topic_wait(topic, object_buf, sizeof(object_buf));
+        topic = messagebus_watchgroup_wait(&watchgroup);
 
         encoded_size = messagebus_encode_topic_message(topic,
                                                        msg_buf, sizeof(msg_buf),
@@ -61,5 +70,8 @@ static void udp_topic_broadcast_thd(void *p)
 void udp_topic_broadcast_start(void)
 {
     static THD_WORKING_AREA(wa, 2048);
+    static messagebus_new_topic_cb_t cb;
+    messagebus_watchgroup_init(&watchgroup, &watchgroup_lock, &watchgroup_condvar);
+    messagebus_new_topic_callback_register(&bus, &cb, new_topic_cb, NULL);
     chThdCreateStatic(wa, sizeof(wa), NORMALPRIO, udp_topic_broadcast_thd, NULL);
 }

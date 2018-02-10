@@ -16,6 +16,7 @@ extern "C" {
 typedef struct {
     const pb_field_t *fields;
     uint32_t msgid;
+    messagebus_watcher_t udp_watcher;
 } topic_metadata_t;
 
 #define TOPIC_DECL(name, type) struct { \
@@ -32,6 +33,7 @@ typedef struct {
         { \
             type##_fields, \
             type##_msgid, \
+            {0, 0}, \
         }, \
 }
 
