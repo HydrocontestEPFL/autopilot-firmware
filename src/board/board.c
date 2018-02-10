@@ -133,3 +133,19 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp)
 void boardInit(void)
 {
 }
+
+void board_user_led_green_set(bool on)
+{
+    palWritePad(GPIOB, GPIOB_LED1, on);
+}
+
+void board_user_led_blue_set(bool on)
+{
+    palWritePad(GPIOB, GPIOB_LED2, on);
+}
+
+void board_user_led_red_set(bool on)
+{
+    palWritePad(GPIOB, GPIOB_LED3, on);
+}
+

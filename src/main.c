@@ -12,6 +12,8 @@ messagebus_t bus;
 static MUTEX_DECL(bus_lock);
 static CONDVAR_DECL(bus_condvar);
 
+static void blinker_start(void);
+
 static void usb_start(void)
 {
     /* Initializes a serial-over-USB CDC driver.  */
@@ -50,10 +52,27 @@ int main(void)
     messagebus_start();
     ip_start();
     udp_topic_broadcast_start();
-
     usb_start();
+    blinker_start();
 
     while (true) {
         chThdSleepMilliseconds(500);
     }
+}
+
+static void blinker_thread(void *p)
+{
+    (void) p;
+    while (true) {
+        board_user_led_green_set(true);
+        chThdSleepMilliseconds(200);
+        board_user_led_green_set(false);
+        chThdSleepMilliseconds(200);
+    }
+}
+
+static void blinker_start(void)
+{
+    static THD_WORKING_AREA(wa, 256);
+    chThdCreateStatic(wa, sizeof(wa), LOWPRIO, blinker_thread, NULL);
 }

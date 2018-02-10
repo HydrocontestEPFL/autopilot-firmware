@@ -14,11 +14,6 @@
     limitations under the License.
  */
 
-/*
- * This file has been automatically generated using ChibiStudio board
- * generator plugin. Do not edit manually.
- */
-
 #ifndef BOARD_H
 #define BOARD_H
 
@@ -1830,6 +1825,9 @@
 extern "C" {
 #endif
 void boardInit(void);
+void board_user_led_green_set(bool on);
+void board_user_led_blue_set(bool on);
+void board_user_led_red_set(bool on);
 #ifdef __cplusplus
 }
 #endif
