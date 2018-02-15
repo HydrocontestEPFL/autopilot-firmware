@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+
+message RPCRequestHeader {
+    required string name = 1 [(nanopb).max_size=64];
+}
+

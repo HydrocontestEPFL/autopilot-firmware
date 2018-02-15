@@ -26,7 +26,9 @@ target.arm:
 source:
   - src/msgbus_protobuf.c
   - src/sbus.c
+  - src/rpc.c
 
 tests:
   - tests/msgbus_protobuf.cpp
   - tests/sbus_parser.cpp
+  - tests/rpc.cpp
