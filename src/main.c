@@ -5,6 +5,7 @@
 #include "main.h"
 #include "udp_topic_broadcaster.h"
 #include <lwip_bindings/lwipthread.h>
+#include "rpc_server_thread.h"
 
 
 parameter_namespace_t parameter_root;
@@ -52,6 +53,7 @@ int main(void)
     messagebus_start();
     ip_start();
     udp_topic_broadcast_start();
+    rpc_server_start();
     usb_start();
     blinker_start();
 
