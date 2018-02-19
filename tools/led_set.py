@@ -20,22 +20,20 @@ def parse_args():
 
     return parser.parse_args()
 
+def led_set(conn, led, value):
+    header = messages.RPCRequestHeader(name="led_set").SerializeToString()
+    header_size = messages.MessageSize(bytes=len(header)).SerializeToString()
+    led = messages.SetLedRequest.Led.Value(led.upper())
+    msg = messages.SetLedRequest(led=led, status=value).SerializeToString()
+    msg_size = messages.MessageSize(bytes=len(msg)).SerializeToString()
+    conn.send(header_size + header + msg_size + msg)
+
 def main():
     args = parse_args()
 
     conn = socket.create_connection((args.host, args.port))
 
-    header = messages.RPCRequestHeader(name="led_set").SerializeToString()
-    header_size = messages.MessageSize(bytes=len(header)).SerializeToString()
-
-    led = messages.SetLedRequest.Led.Value(args.led.upper())
-    status = (args.status == 'on')
-
-    msg = messages.SetLedRequest(led=led, status=status).SerializeToString()
-
-    msg_size = messages.MessageSize(bytes=len(msg)).SerializeToString()
-
-    conn.send(header_size + header + msg_size + msg)
+    led_set(conn, args.led, args.status == 'on')
 
     print(conn.recv(1024))
 

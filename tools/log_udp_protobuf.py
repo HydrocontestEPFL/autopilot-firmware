@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+Logs traffic coming on protobuf from the various topics.
 """
 
 import sys
