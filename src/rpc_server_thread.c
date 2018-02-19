@@ -39,37 +39,37 @@ static void rpc_server_thread(void *p)
 
         struct netbuf *buf;
 
-        while (!rpc_buffer_is_complete(input_buffer, input_len)) {
-            err = netconn_recv(client_conn, &buf);
-            /* If connection closed early */
-            if (err != ERR_OK) {
-                break;
-            }
+        err = netconn_recv(client_conn, &buf);
 
-            uint16_t len;
-            void *data;
-            do {
-                netbuf_data(buf, &data, &len);
-                memcpy(&input_buffer[input_len], data, len);
-                input_len += len;
-            } while (netbuf_next(buf) >= 0);
-
-            netbuf_delete(buf);
+        /* If connection was closed on client side */
+        if (err != ERR_OK) {
+            netconn_close(client_conn);
+            netconn_delete(client_conn);
         }
 
-        if (!rpc_buffer_is_complete(input_buffer, input_len)) {
-            continue;
+        /* Append the data to the buffer */
+        uint16_t len;
+        void *data;
+        do {
+            netbuf_data(buf, &data, &len);
+            memcpy(&input_buffer[input_len], data, len);
+            input_len += len;
+        } while (netbuf_next(buf) >= 0);
+
+        netbuf_delete(buf);
+
+        /* If the buffer is complete, then runs the command it contains. */
+        if (rpc_buffer_is_complete(input_buffer, input_len)) {
+            output_len = rpc_process(rpc_callbacks, rpc_callbacks_len,
+                                     input_buffer, sizeof(input_buffer),
+                                     output_buffer, sizeof(output_buffer));
+
+            netconn_write(client_conn, output_buffer, output_len, NETCONN_COPY);
+
+            /* Erase buffer */
+            input_len = 0;
         }
 
-        output_len = rpc_process(rpc_callbacks, rpc_callbacks_len,
-                                 input_buffer, sizeof(input_buffer),
-                                 output_buffer, sizeof(output_buffer));
-
-        netconn_write(client_conn, output_buffer, output_len, NETCONN_COPY);
-
-        /* TODO: Accept several requests on the same client_conn. */
-        netconn_close(client_conn);
-        netconn_delete(client_conn);
     }
 }
 
