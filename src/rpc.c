@@ -49,8 +49,7 @@ size_t rpc_process(rpc_callback_t *callbacks,
     /* Looks for the correct callbacks and passes it the message data. */
     for (i = 0; i < callbacks_len; i++) {
         if (!strcmp(callbacks[i].name, header.name)) {
-            callbacks[i].cb(&istream, &ostream);
-
+            callbacks[i].cb(callbacks[i].cb_arg, &istream, &ostream);
         }
     }
 

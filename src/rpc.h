@@ -10,7 +10,8 @@ extern "C" {
 
 typedef struct {
     const char *name;
-    void (*cb)(pb_istream_t *, pb_ostream_t*);
+    void (*cb)(void *, pb_istream_t *, pb_ostream_t*);
+    void *cb_arg;
 } rpc_callback_t;
 
 

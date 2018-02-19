@@ -4,9 +4,10 @@
 #include "rpc_callbacks.h"
 #include "messages/SetLed.pb.h"
 
-static void led_set(pb_istream_t *input, pb_ostream_t *output)
+static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
     (void) output;
+    (void) p;
     SetLedRequest req;
     pb_decode(input, SetLedRequest_fields, &req);
 
@@ -27,7 +28,7 @@ static void led_set(pb_istream_t *input, pb_ostream_t *output)
 
 
 rpc_callback_t rpc_callbacks[] = {
-    {"led_set", led_set},
+    {"led_set", led_set, NULL},
 };
 
 const size_t rpc_callbacks_len = sizeof(rpc_callbacks) / sizeof(rpc_callback_t);

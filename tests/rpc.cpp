@@ -62,30 +62,31 @@ TEST_GROUP(RemoteProcedureCallTestGroup)
     }
 };
 
-static void myrpc(pb_istream_t *input, pb_ostream_t *output)
+static void myrpc(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
     (void) output;
 
     Timestamp ts;
     pb_decode(input, Timestamp_fields, &ts);
-    mock().actualCall("myrpc").withParameter("us", ts.us);
+    mock().actualCall("myrpc").withParameter("us", ts.us).withParameter("p", p);
 }
 
 TEST(RemoteProcedureCallTestGroup, CallsCorrectMethod)
 {
     rpc_callback_t callbacks[] = {
-        {"invalid_method", nullptr},
-        {"myrpc", myrpc},
+        {"invalid_method", nullptr, nullptr},
+        {"myrpc", myrpc, (void *)0x1234},
     };
 
     prepare_buffer("myrpc", 1000);
-    mock().expectOneCall("myrpc").withParameter("us", 1000);
+    mock().expectOneCall("myrpc").withParameter("us", 1000).withPointerParameter("p", (void *)0x1234);
 
     test_rpc_process(callbacks, 2);
 }
 
-static void increment(pb_istream_t *input, pb_ostream_t *output)
+static void increment(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
+    (void) p;
     Timestamp ts;
     pb_decode(input, Timestamp_fields, &ts);
 
@@ -97,7 +98,7 @@ static void increment(pb_istream_t *input, pb_ostream_t *output)
 TEST(RemoteProcedureCallTestGroup, CanParseAnswer)
 {
     rpc_callback_t callbacks[] = {
-        {"increment", increment},
+        {"increment", increment, nullptr},
     };
 
     prepare_buffer("increment", 1000);
@@ -131,7 +132,7 @@ TEST(RemoteProcedureCallTestGroup, CanParseAnswer)
 TEST(RemoteProcedureCallTestGroup, ReturnsWrittenSize)
 {
     rpc_callback_t callbacks[] = {
-        {"increment", increment},
+        {"increment", increment, nullptr},
     };
 
     prepare_buffer("increment", 1000);
@@ -143,7 +144,7 @@ TEST(RemoteProcedureCallTestGroup, ReturnsWrittenSize)
 TEST(RemoteProcedureCallTestGroup, CallbackNotFound)
 {
     rpc_callback_t callbacks[] = {
-        {"increment", increment},
+        {"increment", increment, nullptr},
     };
 
     prepare_buffer("invalid", 1000);
