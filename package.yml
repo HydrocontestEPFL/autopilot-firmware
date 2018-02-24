@@ -29,8 +29,10 @@ source:
   - src/msgbus_protobuf.c
   - src/sbus.c
   - src/rpc.c
+  - src/rpc_parameter_server.c
 
 tests:
   - tests/msgbus_protobuf.cpp
   - tests/sbus_parser.cpp
   - tests/rpc.cpp
+  - tests/rpc_parameter.cpp
