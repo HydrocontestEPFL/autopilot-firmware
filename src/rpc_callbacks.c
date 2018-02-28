@@ -2,6 +2,8 @@
 #include <hal.h>
 
 #include "rpc_callbacks.h"
+#include "main.h"
+#include "rpc_parameter_server.h"
 #include "messages/SetLed.pb.h"
 
 static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
@@ -29,6 +31,8 @@ static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
 
 rpc_callback_t rpc_callbacks[] = {
     {"led_set", led_set, NULL},
+    {"parameter_server_enumerate", parameter_server_enumerate, &parameter_root},
+    {"parameter_server_set", parameter_server_set, &parameter_root},
 };
 
 const size_t rpc_callbacks_len = sizeof(rpc_callbacks) / sizeof(rpc_callback_t);

@@ -65,11 +65,18 @@ int main(void)
 static void blinker_thread(void *p)
 {
     (void) p;
+
+    /* Those parameters are just smoke tests to check that the parameter
+     * subsystem works. */
+    parameter_t freq;
+    parameter_namespace_t led_ns;
+    parameter_namespace_declare(&led_ns, &parameter_root, "led");
+    parameter_scalar_declare_with_default(&freq, &led_ns, "blink_rate", 5);
     while (true) {
         board_user_led_green_set(true);
-        chThdSleepMilliseconds(200);
+        chThdSleepMilliseconds(500 / parameter_scalar_get(&freq));
         board_user_led_green_set(false);
-        chThdSleepMilliseconds(200);
+        chThdSleepMilliseconds(500 / parameter_scalar_get(&freq));
     }
 }
 
