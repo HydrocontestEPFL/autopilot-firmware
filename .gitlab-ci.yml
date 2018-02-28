@@ -41,3 +41,14 @@ firmware_build:
     - packager
     - make protoc
     - make
+
+
+tools-test:
+  stage: test
+  image: ubuntu:xenial
+  before_script:
+    - apt-get update && apt-get install -y python3-pip python3-protobuf protobuf-compiler
+  script:
+    - make protoc
+    - cd tools
+    - python -m unittest discover
