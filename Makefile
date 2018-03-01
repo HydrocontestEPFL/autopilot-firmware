@@ -247,3 +247,11 @@ ctags:
 	@echo "Generating ctags file..."
 	@cat .dep/*.d | grep ":$$" | sed "s/://" | sort | uniq | xargs ctags --file-scope=no --extra=+qf $(CSRC) $(CPPSRC)
 
+.PHONY: mem_info
+mem_info: $(BUILDDIR)/$(PROJECT).elf
+	@arm-none-eabi-nm --size-sort --print-size $(BUILDDIR)/$(PROJECT).elf > $(BUILDDIR)/memory_size.txt
+	@arm-none-eabi-nm --numeric-sort --print-size $(BUILDDIR)/$(PROJECT).elf > $(BUILDDIR)/memory_layout.txt
+	@tools/heap_size.py $(BUILDDIR)/$(PROJECT).elf
+
+all: mem_info
+
