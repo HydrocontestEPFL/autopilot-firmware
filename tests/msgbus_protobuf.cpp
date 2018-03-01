@@ -3,11 +3,13 @@
 #include <pb_encode.h>
 #include <pb_decode.h>
 #include <cstdio>
+#include <array>
+#include <memory>
 
 // Mock types, must be before msgbus_protobuf.h
 typedef int mutex_t;
 typedef int condition_variable_t;
-#define _MUTEX_DATA(name) 0
+#define _MUTEX_DATA(name)   0
 #define _CONDVAR_DATA(name) 0
 
 #include "msgbus_protobuf.h"
@@ -179,4 +181,58 @@ TEST(MessagebusProtobufIntegration, NotEnoughRoomForObject)
                                                obj_buffer, sizeof(obj_buffer));
 
     CHECK_EQUAL(0, res);
+}
+
+TEST_GROUP(MessagebusProtobufMessageInjection)
+{
+    messagebus_t bus;
+    using EncodedMessage = std::array<uint8_t, 128>;
+
+    std::unique_ptr<EncodedMessage> prepare_message(const std::string &name, Timestamp value)
+    {
+        messagebus_t bus;
+        TOPIC_DECL(mytopic, Timestamp);
+        messagebus_advertise_topic(&bus, &mytopic.topic, name.c_str());
+        messagebus_topic_publish(&mytopic.topic, &value, sizeof(Timestamp));
+
+        auto encoded_message = std::make_unique<EncodedMessage>();
+
+        uint8_t obj_buffer[128];
+
+        messagebus_encode_topic_message(&mytopic.topic,
+                                        encoded_message->data(), encoded_message->size(),
+                                        obj_buffer, sizeof(obj_buffer));
+
+        return encoded_message;
+    }
+
+    void setup()
+    {
+        messagebus_init(&bus, nullptr, nullptr);
+    }
+};
+
+TEST(MessagebusProtobufMessageInjection, CanInjectExternalMessageIntoMessageBus)
+{
+    // Create a serialized object message
+    TOPIC_DECL(mytopic, Timestamp);
+    messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
+
+    // Prepare an encoded message and injects it into the bus
+    {
+        Timestamp value;
+        value.us = 100;
+
+        auto msg = prepare_message("mytopic", value);
+
+        messagebus_inject_encoded_message(&bus, msg->data(), msg->size());
+    }
+
+    // Now check that the value was indeed injected into the bus
+    {
+        Timestamp value;
+        auto was_published = messagebus_topic_read(&mytopic.topic, &value, sizeof(value));
+        CHECK_TRUE(was_published);
+        CHECK_EQUAL(100, value.us);
+    }
 }

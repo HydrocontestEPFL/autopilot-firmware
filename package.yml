@@ -21,6 +21,7 @@ target.arm:
   - src/cmd.c
   - src/parameter_port.c
   - src/udp_topic_broadcaster.c
+  - src/udp_topic_injector.c
   - src/rpc_server_thread.c
   - src/rpc_callbacks.c
   - src/board/board.c

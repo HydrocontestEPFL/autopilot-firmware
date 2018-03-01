@@ -57,6 +57,13 @@ size_t messagebus_encode_topic_message(messagebus_topic_t *topic,
                                        uint8_t *buf, size_t buf_len,
                                        uint8_t *obj_buf, size_t obj_buf_len);
 
+/** Takes a topic information with a header and injects it into the
+ * corresponding topic.
+ *
+ * @warning This functions is not thread safe due to the use of a static buffer.
+ */
+void messagebus_inject_encoded_message(messagebus_t *bus, uint8_t *buf, size_t len);
+
 #ifdef __cplusplus
 }
 #endif
