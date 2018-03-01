@@ -48,6 +48,7 @@ tools-test:
   image: ubuntu:xenial
   before_script:
     - apt-get update && apt-get install -y python3-pip python3-protobuf protobuf-compiler
+    - git submodule update --init --recursive
   script:
     - make protoc
     - cd tools
