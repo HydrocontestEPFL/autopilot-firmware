@@ -1,13 +1,3 @@
-variables:
-  CONTAINER_TEST_IMAGE: $CI_PROJECT_ID:$CI_BUILD_REF_NAME_test
-
-docker:
-  stage: build
-  image: docker:latest
-  services:
-    - docker:dind
- - docker build -t $CONTAINER_TEST_IMAGE .
-
 firmware_tests:
   # TODO cleanup this
   variables:
