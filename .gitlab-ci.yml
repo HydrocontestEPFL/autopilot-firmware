@@ -7,7 +7,7 @@ firmware_tests:
   before_script:
     - rm -rf ChibiOS
     - git submodule update --init --recursive
-    - apt-get update && apt-get install -y cmake python3-pip unzip wget
+    - apt-get update && apt-get install -y cmake python3-pip python-protobuf unzip wget
     - pip3 install PyYAML==3.12 cvra-packager
     - pushd /
     - wget https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip
