@@ -27,6 +27,7 @@ target.arm:
   - src/usbconf.c
 
 source:
+  - src/commander.c
   - src/msgbus_protobuf.c
   - src/sbus.c
   - src/telemetry/rpc.c
@@ -37,3 +38,4 @@ tests:
   - tests/sbus_parser.cpp
   - tests/rpc.cpp
   - tests/rpc_parameter.cpp
+  - tests/arming.cpp
