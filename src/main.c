@@ -3,10 +3,10 @@
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
-#include "udp_topic_broadcaster.h"
-#include "udp_topic_injector.h"
+#include "telemetry/udp_topic_broadcaster.h"
+#include "telemetry/udp_topic_injector.h"
 #include <lwip_bindings/lwipthread.h>
-#include "rpc_server_thread.h"
+#include "telemetry/rpc_server_thread.h"
 
 
 parameter_namespace_t parameter_root;
