@@ -88,14 +88,17 @@ void parameter_server_enumerate(void *p,
             for (int i = 0; i < height - 2; i++) {
                 ns = ns->parent;
             }
-            strlcat(reply.parameter.name, "/", sizeof(reply.parameter.name));
-            strlcat(reply.parameter.name, ns->id, sizeof(reply.parameter.name));
+
+            /* TODO: Strcat means possible buffer overflow in case a parameter
+             * name is too long. */
+            strcat(reply.parameter.name, "/");
+            strcat(reply.parameter.name, ns->id);
 
             height --;
         }
 
-        strlcat(reply.parameter.name, "/", sizeof(reply.parameter.name));
-        strlcat(reply.parameter.name, param->id, sizeof(reply.parameter.name));
+        strcat(reply.parameter.name, "/");
+        strcat(reply.parameter.name, param->id);
 
         switch (param->type) {
             case _PARAM_TYPE_SCALAR:
