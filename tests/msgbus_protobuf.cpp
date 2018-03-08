@@ -190,7 +190,9 @@ TEST_GROUP(MessagebusProtobufMessageInjection)
 
     std::unique_ptr<EncodedMessage> prepare_message(const std::string &name, Timestamp value)
     {
+        // Encode the message using a dummy bus
         messagebus_t bus;
+        messagebus_init(&bus, nullptr, nullptr);
         TOPIC_DECL(mytopic, Timestamp);
         messagebus_advertise_topic(&bus, &mytopic.topic, name.c_str());
         messagebus_topic_publish(&mytopic.topic, &value, sizeof(Timestamp));
