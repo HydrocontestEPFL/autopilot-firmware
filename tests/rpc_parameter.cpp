@@ -2,10 +2,10 @@
 #include <CppUTestExt/MockSupport.h>
 #include <cstring>
 
-#include "rpc.h"
+#include "telemetry/rpc.h"
 #include "messages/RPCParameter.pb.h"
 #include <parameter/parameter.h>
-#include "rpc_parameter_server.h"
+#include "telemetry/rpc_parameter_server.h"
 
 TEST_GROUP(RPCParameterEnumerationTestGroup)
 {

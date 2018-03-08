@@ -8,7 +8,7 @@
 #include "messages/RemoteProcedureCall.pb.h"
 #include "messages/MessageSize.pb.h"
 #include "messages/Timestamp.pb.h"
-#include "rpc.h"
+#include "telemetry/rpc.h"
 
 TEST_GROUP(RemoteProcedureCallTestGroup)
 {

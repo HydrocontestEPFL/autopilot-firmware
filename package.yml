@@ -16,21 +16,21 @@ depends:
   - parameter
 
 target.arm:
-  - src/main.c
-  - src/usbconf.c
-  - src/cmd.c
-  - src/parameter_port.c
-  - src/udp_topic_broadcaster.c
-  - src/udp_topic_injector.c
-  - src/rpc_server_thread.c
-  - src/rpc_callbacks.c
   - src/board/board.c
+  - src/cmd.c
+  - src/main.c
+  - src/parameter_port.c
+  - src/telemetry/rpc_callbacks.c
+  - src/telemetry/rpc_server_thread.c
+  - src/telemetry/udp_topic_broadcaster.c
+  - src/telemetry/udp_topic_injector.c
+  - src/usbconf.c
 
 source:
   - src/msgbus_protobuf.c
   - src/sbus.c
-  - src/rpc.c
-  - src/rpc_parameter_server.c
+  - src/telemetry/rpc.c
+  - src/telemetry/rpc_parameter_server.c
 
 tests:
   - tests/msgbus_protobuf.cpp
