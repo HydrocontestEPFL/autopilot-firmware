@@ -8,6 +8,9 @@ import "nanopb.proto";
  */
 message RemoteControlInput {
     required bool arming_request = 1;
-    required float throttle = 2; // Between 0 and 1
+    required float throttle = 2;
+    required float roll = 3;
+    required float z = 4;
+    required float rudder = 5;
 }
 
