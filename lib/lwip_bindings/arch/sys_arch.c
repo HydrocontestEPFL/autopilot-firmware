@@ -50,7 +50,7 @@ void sys_sem_set_invalid(sys_sem_t *sem)
 void sys_sem_free(sys_sem_t *sem)
 {
     /* Semaphores are stack allocated, so no need to do anything to free them. */
-    (void) sem;
+    (void)sem;
 }
 
 err_t sys_mbox_new(sys_mbox_t *mbox, int size)
@@ -130,15 +130,13 @@ void sys_mbox_set_invalid(sys_mbox_t *mbox)
 void sys_mbox_free(sys_mbox_t *mbox)
 {
     /* Stack allocated, nothing special is needed to free it. */
-    (void) mbox;
+    (void)mbox;
 }
 
-sys_thread_t sys_thread_new(const char *name, lwip_thread_fn thread,
-                            void *arg, int stacksize, int prio)
+sys_thread_t sys_thread_new(const char *name, lwip_thread_fn thread, void *arg, int stacksize, int prio)
 {
-    (void) name;
-    sys_thread_t thd = chThdCreateFromHeap(NULL, stacksize, "lwip_spawn", prio,
-                                           (tfunc_t)thread, arg);
+    (void)name;
+    sys_thread_t thd = chThdCreateFromHeap(NULL, stacksize, "lwip_spawn", prio, (tfunc_t)thread, arg);
     return thd;
 }
 
@@ -147,8 +145,4 @@ u32_t sys_now(void)
     return ST2MS(chVTGetSystemTimeX());
 }
 
-
-
-void sys_init(void)
-{
-}
+void sys_init(void) {}

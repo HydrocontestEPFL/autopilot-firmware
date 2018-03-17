@@ -4,9 +4,8 @@
 #include <pb_encode.h>
 #include <pb_decode.h>
 
-size_t messagebus_encode_topic_message(messagebus_topic_t *topic,
-                                       uint8_t *buf, size_t buf_len,
-                                       uint8_t *obj_buf, size_t obj_buf_len)
+size_t messagebus_encode_topic_message(
+    messagebus_topic_t *topic, uint8_t *buf, size_t buf_len, uint8_t *obj_buf, size_t obj_buf_len)
 {
     size_t offset;
     int32_t max_len;
@@ -77,7 +76,7 @@ void messagebus_inject_encoded_message(messagebus_t *bus, uint8_t *buf, size_t l
     messagebus_topic_t *topic;
 
     /* TODO check for out of bounds access */
-    (void) len;
+    (void)len;
 
     /* Get header size */
     istream = pb_istream_from_buffer(buf + offset, MessageSize_size);
@@ -90,7 +89,7 @@ void messagebus_inject_encoded_message(messagebus_t *bus, uint8_t *buf, size_t l
     TopicHeader header;
     offset = MessageSize_size;
     istream = pb_istream_from_buffer(buf + offset, header_size.bytes);
-    if (!pb_decode(&istream,  TopicHeader_fields, &header)) {
+    if (!pb_decode(&istream, TopicHeader_fields, &header)) {
         return;
     }
 

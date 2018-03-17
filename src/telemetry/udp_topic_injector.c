@@ -6,7 +6,7 @@
 
 static void udp_topic_injector_thd(void *p)
 {
-    (void) p;
+    (void)p;
 
     struct netconn *conn;
 

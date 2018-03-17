@@ -7,8 +7,7 @@
 #include <parameter/parameter.h>
 #include "telemetry/rpc_parameter_server.h"
 
-TEST_GROUP(RPCParameterEnumerationTestGroup)
-{
+TEST_GROUP (RPCParameterEnumerationTestGroup) {
     uint8_t msg[128];
     uint8_t reply[128];
 
@@ -45,8 +44,7 @@ TEST_GROUP(RPCParameterEnumerationTestGroup)
     }
 };
 
-TEST(RPCParameterEnumerationTestGroup, CanEnumerateNonNestedThings)
-{
+TEST (RPCParameterEnumerationTestGroup, CanEnumerateNonNestedThings) {
     // Declare a few parametes
     parameter_t foo, bar;
     parameter_scalar_declare_with_default(&foo, &root, "foo", 13);
@@ -62,8 +60,7 @@ TEST(RPCParameterEnumerationTestGroup, CanEnumerateNonNestedThings)
     CHECK_EQUAL(42.0, reply.parameter.value.scalar_value);
 }
 
-TEST(RPCParameterEnumerationTestGroup, EnumerateNameSpace)
-{
+TEST (RPCParameterEnumerationTestGroup, EnumerateNameSpace) {
     parameter_namespace_t sub_ns;
     parameter_namespace_declare(&sub_ns, &root, "sub");
     parameter_t param1, param2;
@@ -80,8 +77,7 @@ TEST(RPCParameterEnumerationTestGroup, EnumerateNameSpace)
     CHECK_EQUAL(Parameter_scalar_value_tag, reply.parameter.which_value);
 }
 
-TEST(RPCParameterEnumerationTestGroup, AskPastTheLastParameter)
-{
+TEST (RPCParameterEnumerationTestGroup, AskPastTheLastParameter) {
     parameter_t param1, param2;
     parameter_scalar_declare(&param1, &root, "p");
     parameter_scalar_declare(&param2, &root, "q");
@@ -93,8 +89,7 @@ TEST(RPCParameterEnumerationTestGroup, AskPastTheLastParameter)
     CHECK_FALSE(reply.has_parameter);
 }
 
-TEST(RPCParameterEnumerationTestGroup, IntegerParameter)
-{
+TEST (RPCParameterEnumerationTestGroup, IntegerParameter) {
     parameter_t param;
     parameter_integer_declare_with_default(&param, &root, "p", 42);
 
@@ -104,19 +99,16 @@ TEST(RPCParameterEnumerationTestGroup, IntegerParameter)
     CHECK_EQUAL(42, reply.parameter.value.int_value);
 }
 
-TEST(RPCParameterEnumerationTestGroup, )
-{
+TEST (RPCParameterEnumerationTestGroup, ) {
     parameter_t param;
     parameter_boolean_declare_with_default(&param, &root, "p", true);
 
     ParameterEnumerationReply reply;
     enumerate_param(0, &reply);
     CHECK_EQUAL(Parameter_bool_value_tag, reply.parameter.which_value);
-
 }
 
-TEST_GROUP(ParameterSetRPCTestGroup)
-{
+TEST_GROUP (ParameterSetRPCTestGroup) {
     parameter_namespace_t ns;
     parameter_t param;
     uint8_t msg[128];
@@ -124,7 +116,6 @@ TEST_GROUP(ParameterSetRPCTestGroup)
 
     pb_ostream_t msg_ostream, reply_ostream;
     pb_istream_t msg_istream, reply_istream;
-
 
     void setup()
     {
@@ -140,8 +131,7 @@ TEST_GROUP(ParameterSetRPCTestGroup)
     }
 };
 
-TEST(ParameterSetRPCTestGroup, SetInteger)
-{
+TEST (ParameterSetRPCTestGroup, SetInteger) {
     parameter_integer_declare_with_default(&param, &ns, "param", 12);
 
     /* Craft the request */
@@ -157,8 +147,7 @@ TEST(ParameterSetRPCTestGroup, SetInteger)
     CHECK_EQUAL(42, parameter_integer_get(&param));
 }
 
-TEST(ParameterSetRPCTestGroup, SetScalar)
-{
+TEST (ParameterSetRPCTestGroup, SetScalar) {
     parameter_scalar_declare_with_default(&param, &ns, "param", 12);
 
     /* Craft the request */
@@ -174,8 +163,7 @@ TEST(ParameterSetRPCTestGroup, SetScalar)
     CHECK_EQUAL(42, parameter_scalar_get(&param));
 }
 
-TEST(ParameterSetRPCTestGroup, SetBoolean)
-{
+TEST (ParameterSetRPCTestGroup, SetBoolean) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request */
@@ -192,8 +180,7 @@ TEST(ParameterSetRPCTestGroup, SetBoolean)
     CHECK_TRUE(parameter_boolean_get(&param));
 }
 
-TEST(ParameterSetRPCTestGroup, NoError)
-{
+TEST (ParameterSetRPCTestGroup, NoError) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request */
@@ -214,8 +201,7 @@ TEST(ParameterSetRPCTestGroup, NoError)
     CHECK_FALSE(reply.has_error);
 }
 
-TEST(ParameterSetRPCTestGroup, UnknownParameter)
-{
+TEST (ParameterSetRPCTestGroup, UnknownParameter) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request for a non existent parameter */
@@ -237,8 +223,7 @@ TEST(ParameterSetRPCTestGroup, UnknownParameter)
     CHECK_EQUAL(ParameterSetReply_Error_NOT_FOUND, reply.error);
 }
 
-TEST(ParameterSetRPCTestGroup, WrongTypeForBoolean)
-{
+TEST (ParameterSetRPCTestGroup, WrongTypeForBoolean) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request for a non existent parameter */
@@ -258,5 +243,4 @@ TEST(ParameterSetRPCTestGroup, WrongTypeForBoolean)
     CHECK_TRUE(status);
     CHECK_TRUE(reply.has_error);
     CHECK_EQUAL(ParameterSetReply_Error_WRONG_TYPE, reply.error);
-
 }

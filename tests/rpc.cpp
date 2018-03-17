@@ -10,8 +10,7 @@
 #include "messages/Timestamp.pb.h"
 #include "telemetry/rpc.h"
 
-TEST_GROUP(RemoteProcedureCallTestGroup)
-{
+TEST_GROUP (RemoteProcedureCallTestGroup) {
     uint8_t input_buffer[128];
     uint8_t output_buffer[128];
 
@@ -54,25 +53,27 @@ TEST_GROUP(RemoteProcedureCallTestGroup)
         pb_encode(&ostream, MessageSize_fields, &msg_size);
     }
 
-    size_t test_rpc_process(rpc_callback_t *callbacks, int callback_len)
+    size_t test_rpc_process(rpc_callback_t * callbacks, int callback_len)
     {
-        return rpc_process(callbacks, callback_len,
-                           input_buffer, sizeof(input_buffer),
-                           output_buffer, sizeof(output_buffer));
+        return rpc_process(callbacks,
+                           callback_len,
+                           input_buffer,
+                           sizeof(input_buffer),
+                           output_buffer,
+                           sizeof(output_buffer));
     }
 };
 
 static void myrpc(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
-    (void) output;
+    (void)output;
 
     Timestamp ts;
     pb_decode(input, Timestamp_fields, &ts);
     mock().actualCall("myrpc").withParameter("us", ts.us).withParameter("p", p);
 }
 
-TEST(RemoteProcedureCallTestGroup, CallsCorrectMethod)
-{
+TEST (RemoteProcedureCallTestGroup, CallsCorrectMethod) {
     rpc_callback_t callbacks[] = {
         {"invalid_method", nullptr, nullptr},
         {"myrpc", myrpc, (void *)0x1234},
@@ -86,7 +87,7 @@ TEST(RemoteProcedureCallTestGroup, CallsCorrectMethod)
 
 static void increment(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
-    (void) p;
+    (void)p;
     Timestamp ts;
     pb_decode(input, Timestamp_fields, &ts);
 
@@ -95,8 +96,7 @@ static void increment(void *p, pb_istream_t *input, pb_ostream_t *output)
     pb_encode(output, Timestamp_fields, &ts);
 }
 
-TEST(RemoteProcedureCallTestGroup, CanParseAnswer)
-{
+TEST (RemoteProcedureCallTestGroup, CanParseAnswer) {
     rpc_callback_t callbacks[] = {
         {"increment", increment, nullptr},
     };
@@ -129,8 +129,7 @@ TEST(RemoteProcedureCallTestGroup, CanParseAnswer)
     CHECK_EQUAL(1001, reply.us);
 }
 
-TEST(RemoteProcedureCallTestGroup, ReturnsWrittenSize)
-{
+TEST (RemoteProcedureCallTestGroup, ReturnsWrittenSize) {
     rpc_callback_t callbacks[] = {
         {"increment", increment, nullptr},
     };
@@ -141,8 +140,7 @@ TEST(RemoteProcedureCallTestGroup, ReturnsWrittenSize)
     CHECK_EQUAL(8, size);
 }
 
-TEST(RemoteProcedureCallTestGroup, CallbackNotFound)
-{
+TEST (RemoteProcedureCallTestGroup, CallbackNotFound) {
     rpc_callback_t callbacks[] = {
         {"increment", increment, nullptr},
     };
@@ -153,26 +151,22 @@ TEST(RemoteProcedureCallTestGroup, CallbackNotFound)
     CHECK_EQUAL(5, size); // means we only have the reply size
 }
 
-TEST(RemoteProcedureCallTestGroup, IncompleteWhenSizeIsNotThere)
-{
+TEST (RemoteProcedureCallTestGroup, IncompleteWhenSizeIsNotThere) {
     prepare_buffer("foo", 0);
     CHECK_FALSE(rpc_buffer_is_complete(input_buffer, 2));
 }
 
-TEST(RemoteProcedureCallTestGroup, IncompleteWhenOnlyMessageSizeAreThere)
-{
+TEST (RemoteProcedureCallTestGroup, IncompleteWhenOnlyMessageSizeAreThere) {
     prepare_buffer("foo", 0);
     CHECK_FALSE(rpc_buffer_is_complete(input_buffer, 10));
 }
 
-TEST(RemoteProcedureCallTestGroup, IncompleteWhenMessageIsPartial)
-{
+TEST (RemoteProcedureCallTestGroup, IncompleteWhenMessageIsPartial) {
     prepare_buffer("foo", 0);
     CHECK_FALSE(rpc_buffer_is_complete(input_buffer, 15));
 }
 
-TEST(RemoteProcedureCallTestGroup, Complete)
-{
+TEST (RemoteProcedureCallTestGroup, Complete) {
     prepare_buffer("foo", 0);
     CHECK_TRUE(rpc_buffer_is_complete(input_buffer, 100));
 }

@@ -8,8 +8,8 @@
 
 static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
-    (void) output;
-    (void) p;
+    (void)output;
+    (void)p;
     SetLedRequest req;
     pb_decode(input, SetLedRequest_fields, &req);
 
@@ -27,7 +27,6 @@ static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
             break;
     }
 }
-
 
 rpc_callback_t rpc_callbacks[] = {
     {"led_set", led_set, NULL},

@@ -10,10 +10,9 @@ extern "C" {
 
 typedef struct {
     const char *name;
-    void (*cb)(void *, pb_istream_t *, pb_ostream_t*);
+    void (*cb)(void *, pb_istream_t *, pb_ostream_t *);
     void *cb_arg;
 } rpc_callback_t;
-
 
 /** Processes the message, calls the correct callback and writes output back.
  *
@@ -31,8 +30,10 @@ typedef struct {
  */
 size_t rpc_process(rpc_callback_t *callbacks,
                    unsigned callbacks_len,
-                   const uint8_t *input_buf, size_t input_len,
-                   uint8_t *output_buf, size_t output_len);
+                   const uint8_t *input_buf,
+                   size_t input_len,
+                   uint8_t *output_buf,
+                   size_t output_len);
 
 /** Returns if the given buffer contains a complete RPC message.
  *

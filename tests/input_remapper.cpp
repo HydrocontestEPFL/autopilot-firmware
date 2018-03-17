@@ -11,9 +11,7 @@
 #define CHANNEL_Z 2
 #define CHANNEL_THROTTLE 3
 
-
-TEST_GROUP(InputMapperTestGroup)
-{
+TEST_GROUP (InputMapperTestGroup) {
     parameter_namespace_t root;
     input_mapper_t mapper;
 
@@ -36,10 +34,11 @@ TEST_GROUP(InputMapperTestGroup)
 
     // Hellper function to check that we can interpolate the given axis
     using TestCase = std::pair<int, float>;
-    void check_interpolation(std::vector<TestCase> cases, int channel_number,
-                                        std::function<float (RemoteControlInput)> getter)
+    void check_interpolation(std::vector<TestCase> cases,
+                             int channel_number,
+                             std::function<float(RemoteControlInput)> getter)
     {
-        for (const auto &p: cases) {
+        for (const auto &p : cases) {
             SBUSPacket input_msg;
             RemoteControlInput output_msg;
             input_msg.channels[channel_number] = p.first;
@@ -50,9 +49,7 @@ TEST_GROUP(InputMapperTestGroup)
     }
 };
 
-
-TEST(InputMapperTestGroup, RegisterParameters)
-{
+TEST (InputMapperTestGroup, RegisterParameters) {
     check_parameter_exists("/throttle/min");
     check_parameter_exists("/throttle/max");
     check_parameter_exists("/roll/min");
@@ -63,51 +60,39 @@ TEST(InputMapperTestGroup, RegisterParameters)
     check_parameter_exists("/rudder/max");
 }
 
-TEST(InputMapperTestGroup, CanMapRollInput)
-{
+TEST (InputMapperTestGroup, CanMapRollInput) {
     parameter_integer_set(&mapper.params.roll.min, 10);
     parameter_integer_set(&mapper.params.roll.max, 20);
 
-    std::vector<TestCase> expectations({
-        {0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}
-    });
+    std::vector<TestCase> expectations({{0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}});
 
     check_interpolation(expectations, CHANNEL_ROLL, [](auto p) { return p.roll; });
 }
 
-TEST(InputMapperTestGroup, CanMapZInput)
-{
+TEST (InputMapperTestGroup, CanMapZInput) {
     parameter_integer_set(&mapper.params.z.min, 10);
     parameter_integer_set(&mapper.params.z.max, 20);
 
-    std::vector<TestCase> expectations({
-        {0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}
-    });
+    std::vector<TestCase> expectations({{0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}});
 
     check_interpolation(expectations, CHANNEL_Z, [](auto p) { return p.z; });
 }
 
-TEST(InputMapperTestGroup, CanMapRudder)
-{
+TEST (InputMapperTestGroup, CanMapRudder) {
     parameter_integer_set(&mapper.params.rudder.min, 10);
     parameter_integer_set(&mapper.params.rudder.max, 20);
 
-    std::vector<TestCase> expectations({
-        {0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}
-    });
+    std::vector<TestCase> expectations({{0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}});
 
     check_interpolation(expectations, CHANNEL_RUDDER, [](auto p) { return p.rudder; });
 }
 
-TEST(InputMapperTestGroup, CanMapThrottle)
-{
+TEST (InputMapperTestGroup, CanMapThrottle) {
     parameter_integer_set(&mapper.params.throttle.min, 10);
     parameter_integer_set(&mapper.params.throttle.max, 20);
 
     // Throttle is only mapped between 0 and 1
-    std::vector<TestCase> expectations({
-        {0, 0.}, {10, 0.}, {15, 0.5}, {20, 1.}, {30, 1.}
-    });
+    std::vector<TestCase> expectations({{0, 0.}, {10, 0.}, {15, 0.5}, {20, 1.}, {30, 1.}});
 
     check_interpolation(expectations, CHANNEL_THROTTLE, [](auto p) { return p.throttle; });
 }

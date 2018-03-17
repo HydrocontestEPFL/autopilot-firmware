@@ -30,15 +30,12 @@ typedef struct {
     } params;
 } input_mapper_t;
 
-
 /** Initializes the given input mapper, declaring its parameters in the given
  * namespace. */
 void input_mapper_init(input_mapper_t *mapper, parameter_namespace_t *ns);
 
 /** Maps raw SBUS data to our representation. */
-void input_mapper_map(input_mapper_t *mapper,
-                      const SBUSPacket *input,
-                      RemoteControlInput *output);
+void input_mapper_map(input_mapper_t *mapper, const SBUSPacket *input, RemoteControlInput *output);
 
 #ifdef __cplusplus
 }

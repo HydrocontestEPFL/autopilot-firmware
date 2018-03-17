@@ -7,7 +7,7 @@
 
 static void rpc_server_thread(void *p)
 {
-    (void) p;
+    (void)p;
     struct netconn *conn, *client_conn;
     err_t err;
 
@@ -25,7 +25,6 @@ static void rpc_server_thread(void *p)
     /* Bind it to port 10000 */
     netconn_bind(conn, IP_ADDR_ANY, 10000);
     netconn_listen(conn);
-
 
     while (true) {
         /* Reset length */
@@ -62,9 +61,12 @@ static void rpc_server_thread(void *p)
 
             /* If the buffer is complete, then runs the command it contains. */
             if (rpc_buffer_is_complete(input_buffer, input_len)) {
-                output_len = rpc_process(rpc_callbacks, rpc_callbacks_len,
-                                         input_buffer, sizeof(input_buffer),
-                                         output_buffer, sizeof(output_buffer));
+                output_len = rpc_process(rpc_callbacks,
+                                         rpc_callbacks_len,
+                                         input_buffer,
+                                         sizeof(input_buffer),
+                                         output_buffer,
+                                         sizeof(output_buffer));
 
                 netconn_write(client_conn, output_buffer, output_len, NETCONN_COPY);
 
@@ -72,7 +74,6 @@ static void rpc_server_thread(void *p)
                 input_len = 0;
             }
         }
-
     }
 }
 

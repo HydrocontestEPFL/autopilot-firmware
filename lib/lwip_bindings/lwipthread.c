@@ -20,8 +20,8 @@
  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
@@ -33,14 +33,14 @@
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGE.
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ * EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This file is part of the lwIP TCP/IP stack.
  *
@@ -77,7 +77,6 @@
 
 static sys_sem_t lwip_init_done;
 
-
 /*
  * Initialization.
  */
@@ -110,7 +109,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
     }
 
 #if ETH_PAD_SIZE
-    pbuf_header(p, -ETH_PAD_SIZE);        /* drop the padding word */
+    pbuf_header(p, -ETH_PAD_SIZE); /* drop the padding word */
 #endif
 
     /* Iterates through the pbuf chain. */
@@ -120,7 +119,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
     macReleaseTransmitDescriptor(&td);
 
 #if ETH_PAD_SIZE
-    pbuf_header(p, ETH_PAD_SIZE);         /* reclaim the padding word */
+    pbuf_header(p, ETH_PAD_SIZE); /* reclaim the padding word */
 #endif
 
     LINK_STATS_INC(link.xmit);
@@ -142,7 +141,7 @@ static struct pbuf *low_level_input(struct netif *netif)
         len = (u16_t)rd.size;
 
 #if ETH_PAD_SIZE
-        len += ETH_PAD_SIZE;        /* allow room for Ethernet padding */
+        len += ETH_PAD_SIZE; /* allow room for Ethernet padding */
 #endif
 
         /* We allocate a pbuf chain of pbufs from the pool. */
@@ -210,7 +209,7 @@ static err_t ethernetif_init(struct netif *netif)
 
 void ipinit_done_cb(void *a)
 {
-    (void) a;
+    (void)a;
     sys_sem_signal(&lwip_init_done);
 }
 
@@ -228,7 +227,7 @@ void lwip_thread(void *p)
     static struct netif thisif;
     static const MACConfig mac_config = {thisif.hwaddr};
 
-    (void) p;
+    (void)p;
 
     chRegSetThreadName("lwip");
 
@@ -261,11 +260,9 @@ void lwip_thread(void *p)
             bool current_link_status = macPollLinkStatus(&ETHD1);
             if (current_link_status != netif_is_link_up(&thisif)) {
                 if (current_link_status) {
-                    tcpip_callback_with_block((tcpip_callback_fn) netif_set_link_up,
-                                              &thisif, 0);
+                    tcpip_callback_with_block((tcpip_callback_fn)netif_set_link_up, &thisif, 0);
                 } else {
-                    tcpip_callback_with_block((tcpip_callback_fn) netif_set_link_down,
-                                              &thisif, 0);
+                    tcpip_callback_with_block((tcpip_callback_fn)netif_set_link_down, &thisif, 0);
                 }
             }
         }
@@ -308,10 +305,7 @@ void ip_start(void)
 
     static THD_WORKING_AREA(wa_lwip_thread, LWIP_THREAD_STACK_SIZE);
     /* Creates the LWIP threads (it changes priority internally).  */
-    chThdCreateStatic(wa_lwip_thread,
-                      LWIP_THREAD_STACK_SIZE,
-                      NORMALPRIO,
-                      lwip_thread, NULL);
+    chThdCreateStatic(wa_lwip_thread, LWIP_THREAD_STACK_SIZE, NORMALPRIO, lwip_thread, NULL);
 }
 
 /** @} */

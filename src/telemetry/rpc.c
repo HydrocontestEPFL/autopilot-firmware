@@ -5,8 +5,10 @@
 
 size_t rpc_process(rpc_callback_t *callbacks,
                    unsigned callbacks_len,
-                   const uint8_t *input_buf, size_t input_len,
-                   uint8_t *output_buf, size_t output_len)
+                   const uint8_t *input_buf,
+                   size_t input_len,
+                   uint8_t *output_buf,
+                   size_t output_len)
 {
     pb_istream_t istream;
     pb_ostream_t ostream;
@@ -15,7 +17,7 @@ size_t rpc_process(rpc_callback_t *callbacks,
     unsigned i;
 
     // Unused for now
-    (void) input_len;
+    (void)input_len;
 
     MessageSize header_size, msg_size;
     RPCRequestHeader header;

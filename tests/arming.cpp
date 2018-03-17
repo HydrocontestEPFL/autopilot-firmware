@@ -3,9 +3,7 @@
 
 #include "../src/commander.h"
 
-
-TEST_GROUP(ArmingTestGroup)
-{
+TEST_GROUP (ArmingTestGroup) {
     commander_t commander;
     RemoteControlInput input;
 
@@ -16,13 +14,11 @@ TEST_GROUP(ArmingTestGroup)
     }
 };
 
-TEST(ArmingTestGroup, DisarmedByDefault)
-{
+TEST (ArmingTestGroup, DisarmedByDefault) {
     CHECK_FALSE(commander_is_armed(&commander));
 }
 
-TEST(ArmingTestGroup, CanArmCommanderOnRisingEdge)
-{
+TEST (ArmingTestGroup, CanArmCommanderOnRisingEdge) {
     commander_update(&commander, input);
     input.arming_request = true;
     commander_update(&commander, input);
@@ -30,15 +26,13 @@ TEST(ArmingTestGroup, CanArmCommanderOnRisingEdge)
     CHECK_TRUE(commander_is_armed(&commander));
 }
 
-TEST(ArmingTestGroup, ResettingWithArmingSwitchOnDoesNotArmTheSystem)
-{
+TEST (ArmingTestGroup, ResettingWithArmingSwitchOnDoesNotArmTheSystem) {
     input.arming_request = true;
     commander_update(&commander, input);
     CHECK_FALSE(commander_is_armed(&commander));
 }
 
-TEST(ArmingTestGroup, CanDisarm)
-{
+TEST (ArmingTestGroup, CanDisarm) {
     commander_update(&commander, input);
     input.arming_request = true;
     commander_update(&commander, input);
@@ -47,8 +41,7 @@ TEST(ArmingTestGroup, CanDisarm)
     CHECK_FALSE(commander_is_armed(&commander));
 }
 
-TEST(ArmingTestGroup, RefuseArmingIfThrottleIsHigh)
-{
+TEST (ArmingTestGroup, RefuseArmingIfThrottleIsHigh) {
     commander_update(&commander, input);
     input.throttle = 0.5;
     input.arming_request = true;

@@ -8,7 +8,6 @@
 #include <lwip_bindings/lwipthread.h>
 #include "telemetry/rpc_server_thread.h"
 
-
 parameter_namespace_t parameter_root;
 messagebus_t bus;
 static MUTEX_DECL(bus_lock);
@@ -66,7 +65,7 @@ int main(void)
 
 static void blinker_thread(void *p)
 {
-    (void) p;
+    (void)p;
 
     /* Those parameters are just smoke tests to check that the parameter
      * subsystem works. */

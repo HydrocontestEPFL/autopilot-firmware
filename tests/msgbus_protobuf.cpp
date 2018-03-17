@@ -9,7 +9,7 @@
 // Mock types, must be before msgbus_protobuf.h
 typedef int mutex_t;
 typedef int condition_variable_t;
-#define _MUTEX_DATA(name)   0
+#define _MUTEX_DATA(name) 0
 #define _CONDVAR_DATA(name) 0
 
 #include "msgbus_protobuf.h"
@@ -19,8 +19,7 @@ typedef int condition_variable_t;
 #include "messages/MessageSize.pb.h"
 #include "messages/TopicHeader.pb.h"
 
-TEST_GROUP(MessagebusProtobufIntegration)
-{
+TEST_GROUP (MessagebusProtobufIntegration) {
     messagebus_t bus;
     int bus_lock;
     int bus_condvar;
@@ -31,8 +30,7 @@ TEST_GROUP(MessagebusProtobufIntegration)
     }
 };
 
-TEST(MessagebusProtobufIntegration, CanCreateTopic)
-{
+TEST (MessagebusProtobufIntegration, CanCreateTopic) {
     TOPIC_DECL(mytopic, Timestamp);
 
     POINTERS_EQUAL(&mytopic.lock, mytopic.topic.lock);
@@ -45,8 +43,7 @@ TEST(MessagebusProtobufIntegration, CanCreateTopic)
     CHECK_EQUAL(Timestamp_msgid, mytopic.metadata.msgid);
 }
 
-TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
-{
+TEST (MessagebusProtobufIntegration, CanPublishThenEncodeData) {
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
 
@@ -61,8 +58,7 @@ TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
     uint8_t encoded_buffer[128];
     memset(encoded_buffer, 0, sizeof(encoded_buffer));
     {
-        pb_ostream_t stream = pb_ostream_from_buffer(encoded_buffer,
-                                                     sizeof(encoded_buffer));
+        pb_ostream_t stream = pb_ostream_from_buffer(encoded_buffer, sizeof(encoded_buffer));
 
         uint8_t msg_buffer[128];
         CHECK_TRUE(sizeof(msg_buffer) >= topic->buffer_len); // assert
@@ -84,8 +80,7 @@ TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
     // band
     {
         Timestamp message;
-        pb_istream_t stream = pb_istream_from_buffer(encoded_buffer,
-                                                     Timestamp_size);
+        pb_istream_t stream = pb_istream_from_buffer(encoded_buffer, Timestamp_size);
         auto status = pb_decode(&stream, Timestamp_fields, &message);
 
         if (!status) {
@@ -96,8 +91,7 @@ TEST(MessagebusProtobufIntegration, CanPublishThenEncodeData)
     }
 }
 
-TEST(MessagebusProtobufIntegration, EncodeMessageWithHeader)
-{
+TEST (MessagebusProtobufIntegration, EncodeMessageWithHeader) {
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
 
@@ -105,8 +99,10 @@ TEST(MessagebusProtobufIntegration, EncodeMessageWithHeader)
     uint8_t obj_buffer[128];
 
     auto res = messagebus_encode_topic_message(&mytopic.topic,
-                                               buffer, sizeof(buffer),
-                                               obj_buffer, sizeof(obj_buffer));
+                                               buffer,
+                                               sizeof(buffer),
+                                               obj_buffer,
+                                               sizeof(obj_buffer));
 
     CHECK_TRUE(res > 0)
     pb_istream_t stream;
@@ -141,50 +137,52 @@ TEST(MessagebusProtobufIntegration, EncodeMessageWithHeader)
     CHECK_TRUE(pb_decode(&stream, Timestamp_fields, &ts));
 }
 
-TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageHeader)
-{
+TEST (MessagebusProtobufIntegration, NotEnoughRoomForMessageHeader) {
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
 
     uint8_t buffer[1];
     uint8_t obj_buffer[128];
     auto res = messagebus_encode_topic_message(&mytopic.topic,
-                                               buffer, sizeof(buffer),
-                                               obj_buffer, sizeof(obj_buffer));
+                                               buffer,
+                                               sizeof(buffer),
+                                               obj_buffer,
+                                               sizeof(obj_buffer));
 
     CHECK_EQUAL(0, res);
 }
 
-TEST(MessagebusProtobufIntegration, NotEnoughRoomForMessageBody)
-{
+TEST (MessagebusProtobufIntegration, NotEnoughRoomForMessageBody) {
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
 
     uint8_t buffer[256];
     uint8_t obj_buffer[128];
     auto res = messagebus_encode_topic_message(&mytopic.topic,
-                                               buffer, 18,
-                                               obj_buffer, sizeof(obj_buffer));
+                                               buffer,
+                                               18,
+                                               obj_buffer,
+                                               sizeof(obj_buffer));
 
     CHECK_EQUAL(0, res);
 }
 
-TEST(MessagebusProtobufIntegration, NotEnoughRoomForObject)
-{
+TEST (MessagebusProtobufIntegration, NotEnoughRoomForObject) {
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");
 
     uint8_t buffer[256];
     uint8_t obj_buffer[2];
     auto res = messagebus_encode_topic_message(&mytopic.topic,
-                                               buffer, sizeof(buffer),
-                                               obj_buffer, sizeof(obj_buffer));
+                                               buffer,
+                                               sizeof(buffer),
+                                               obj_buffer,
+                                               sizeof(obj_buffer));
 
     CHECK_EQUAL(0, res);
 }
 
-TEST_GROUP(MessagebusProtobufMessageInjection)
-{
+TEST_GROUP (MessagebusProtobufMessageInjection) {
     messagebus_t bus;
     using EncodedMessage = std::array<uint8_t, 128>;
 
@@ -202,8 +200,10 @@ TEST_GROUP(MessagebusProtobufMessageInjection)
         uint8_t obj_buffer[128];
 
         messagebus_encode_topic_message(&mytopic.topic,
-                                        encoded_message->data(), encoded_message->size(),
-                                        obj_buffer, sizeof(obj_buffer));
+                                        encoded_message->data(),
+                                        encoded_message->size(),
+                                        obj_buffer,
+                                        sizeof(obj_buffer));
 
         return encoded_message;
     }
@@ -214,8 +214,7 @@ TEST_GROUP(MessagebusProtobufMessageInjection)
     }
 };
 
-TEST(MessagebusProtobufMessageInjection, CanInjectExternalMessageIntoMessageBus)
-{
+TEST (MessagebusProtobufMessageInjection, CanInjectExternalMessageIntoMessageBus) {
     // Create a serialized object message
     TOPIC_DECL(mytopic, Timestamp);
     messagebus_advertise_topic(&bus, &mytopic.topic, "mytopic");

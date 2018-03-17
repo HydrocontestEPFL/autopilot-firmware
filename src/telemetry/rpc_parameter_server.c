@@ -5,14 +5,11 @@
 
 static bool parameter_type_match(uint8_t parameter_type, uint8_t request_type)
 {
-    if (parameter_type == _PARAM_TYPE_BOOLEAN &&
-        request_type == Parameter_bool_value_tag) {
+    if (parameter_type == _PARAM_TYPE_BOOLEAN && request_type == Parameter_bool_value_tag) {
         return true;
-    } else if (parameter_type == _PARAM_TYPE_INTEGER
-            && request_type == Parameter_int_value_tag) {
+    } else if (parameter_type == _PARAM_TYPE_INTEGER && request_type == Parameter_int_value_tag) {
         return true;
-    } else if (parameter_type == _PARAM_TYPE_SCALAR
-            && request_type == Parameter_scalar_value_tag) {
+    } else if (parameter_type == _PARAM_TYPE_SCALAR && request_type == Parameter_scalar_value_tag) {
         return true;
     }
 
@@ -27,7 +24,7 @@ static parameter_t *_parameter_find_by_index(parameter_namespace_t *root, int wa
         if ((*current) == wanted) {
             return p;
         }
-        (*current) ++;
+        (*current)++;
         p = p->next;
     }
 
@@ -59,9 +56,7 @@ static int parameter_tree_height(parameter_t *leaf)
     return i;
 }
 
-void parameter_server_enumerate(void *p,
-                                pb_istream_t *input,
-                                pb_ostream_t *output)
+void parameter_server_enumerate(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
     ParameterEnumerationRequest request;
     ParameterEnumerationReply reply = ParameterEnumerationReply_init_default;
@@ -94,7 +89,7 @@ void parameter_server_enumerate(void *p,
             strcat(reply.parameter.name, "/");
             strcat(reply.parameter.name, ns->id);
 
-            height --;
+            height--;
         }
 
         strcat(reply.parameter.name, "/");
@@ -123,9 +118,7 @@ void parameter_server_enumerate(void *p,
     }
 }
 
-void parameter_server_set(void *p,
-                          pb_istream_t *input,
-                          pb_ostream_t *output)
+void parameter_server_set(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
     parameter_namespace_t *ns = (parameter_namespace_t *)p;
     ParameterSetRequest request;

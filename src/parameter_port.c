@@ -29,5 +29,5 @@ void *parameter_port_buffer_alloc(size_t size)
 
 void parameter_port_buffer_free(void *buffer)
 {
-    (void) buffer;
+    (void)buffer;
 }

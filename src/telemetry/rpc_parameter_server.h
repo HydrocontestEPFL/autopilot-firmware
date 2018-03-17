@@ -22,9 +22,7 @@ extern "C" {
  * @param [in] p User parameter of the RPC. Should point to the root namespace
  * of the parameter tree.
  */
-void parameter_server_enumerate(void *p,
-                                pb_istream_t *input,
-                                pb_ostream_t *output);
+void parameter_server_enumerate(void *p, pb_istream_t *input, pb_ostream_t *output);
 
 /** RPC used to set a parameter from a client.
  *
@@ -33,9 +31,7 @@ void parameter_server_enumerate(void *p,
  * @param [in] p User parameter of the RPC. Should point to the root namespace
  * of the parameter tree.
  */
-void parameter_server_set(void *p,
-                          pb_istream_t *input,
-                          pb_ostream_t *output);
+void parameter_server_set(void *p, pb_istream_t *input, pb_ostream_t *output);
 
 #ifdef __cplusplus
 }

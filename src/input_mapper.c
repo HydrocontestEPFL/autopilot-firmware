@@ -5,24 +5,37 @@ void input_mapper_init(input_mapper_t *mapper, parameter_namespace_t *ns)
     const int default_max = 1000;
     parameter_namespace_declare(&mapper->params.throttle.ns, ns, "throttle");
     parameter_integer_declare_with_default(&mapper->params.throttle.min,
-                                           &mapper->params.throttle.ns, "min", 0);
+                                           &mapper->params.throttle.ns,
+                                           "min",
+                                           0);
     parameter_integer_declare_with_default(&mapper->params.throttle.max,
-                                           &mapper->params.throttle.ns, "max", default_max);
+                                           &mapper->params.throttle.ns,
+                                           "max",
+                                           default_max);
     parameter_namespace_declare(&mapper->params.roll.ns, ns, "roll");
     parameter_integer_declare_with_default(&mapper->params.roll.min,
-                                           &mapper->params.roll.ns, "min", default_max);
+                                           &mapper->params.roll.ns,
+                                           "min",
+                                           default_max);
     parameter_integer_declare_with_default(&mapper->params.roll.max,
-                                           &mapper->params.roll.ns, "max", default_max);
+                                           &mapper->params.roll.ns,
+                                           "max",
+                                           default_max);
     parameter_namespace_declare(&mapper->params.rudder.ns, ns, "rudder");
     parameter_integer_declare_with_default(&mapper->params.rudder.min,
-                                           &mapper->params.rudder.ns, "min", 0);
+                                           &mapper->params.rudder.ns,
+                                           "min",
+                                           0);
     parameter_integer_declare_with_default(&mapper->params.rudder.max,
-                                           &mapper->params.rudder.ns, "max", default_max);
+                                           &mapper->params.rudder.ns,
+                                           "max",
+                                           default_max);
     parameter_namespace_declare(&mapper->params.z.ns, ns, "z");
-    parameter_integer_declare_with_default(&mapper->params.z.min,
-                                           &mapper->params.z.ns, "min", 0);
+    parameter_integer_declare_with_default(&mapper->params.z.min, &mapper->params.z.ns, "min", 0);
     parameter_integer_declare_with_default(&mapper->params.z.max,
-                                           &mapper->params.z.ns, "max", default_max);
+                                           &mapper->params.z.ns,
+                                           "max",
+                                           default_max);
 }
 
 static float interpolate(int value, parameter_t *min_p, parameter_t *max_p)
@@ -41,16 +54,10 @@ static float interpolate(int value, parameter_t *min_p, parameter_t *max_p)
     return ret;
 }
 
-void input_mapper_map(input_mapper_t *mapper,
-                      const SBUSPacket *input,
-                      RemoteControlInput *output)
+void input_mapper_map(input_mapper_t *mapper, const SBUSPacket *input, RemoteControlInput *output)
 {
-    output->roll = interpolate(input->channels[0],
-                               &mapper->params.roll.min,
-                               &mapper->params.roll.max);
-    output->z = interpolate(input->channels[2],
-                            &mapper->params.z.min,
-                            &mapper->params.z.max);
+    output->roll = interpolate(input->channels[0], &mapper->params.roll.min, &mapper->params.roll.max);
+    output->z = interpolate(input->channels[2], &mapper->params.z.min, &mapper->params.z.max);
     output->rudder = interpolate(input->channels[1],
                                  &mapper->params.rudder.min,
                                  &mapper->params.rudder.max);

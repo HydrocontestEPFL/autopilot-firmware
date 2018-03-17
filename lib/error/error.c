@@ -19,7 +19,6 @@
  *
  */
 
-
 #include <string.h>
 #include <stdint.h>
 
@@ -33,9 +32,7 @@ void error_init(void)
     memset(&g_error_fct, 0, sizeof(g_error_fct));
 }
 
-
-struct error error_generate(uint8_t severity, const char * t,
-                            const char * f, uint16_t l)
+struct error error_generate(uint8_t severity, const char *t, const char *f, uint16_t l)
 {
     struct error e;
 

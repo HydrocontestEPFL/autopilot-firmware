@@ -10,15 +10,15 @@ static CONDVAR_DECL(watchgroup_condvar);
 
 static void new_topic_cb(messagebus_t *bus, messagebus_topic_t *topic, void *arg)
 {
-    (void) bus;
-    (void) arg;
+    (void)bus;
+    (void)arg;
     topic_metadata_t *metadata = (topic_metadata_t *)topic->metadata;
     messagebus_watchgroup_watch(&metadata->udp_watcher, &watchgroup, topic);
 }
 
 static void udp_topic_broadcast_thd(void *p)
 {
-    (void) p;
+    (void)p;
 
     messagebus_topic_t *topic;
 
@@ -33,8 +33,10 @@ static void udp_topic_broadcast_thd(void *p)
         topic = messagebus_watchgroup_wait(&watchgroup);
 
         encoded_size = messagebus_encode_topic_message(topic,
-                                                       msg_buf, sizeof(msg_buf),
-                                                       object_buf, sizeof(object_buf));
+                                                       msg_buf,
+                                                       sizeof(msg_buf),
+                                                       object_buf,
+                                                       sizeof(object_buf));
 
         if (encoded_size == 0) {
             continue;

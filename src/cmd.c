@@ -7,17 +7,14 @@
 
 static void cmd_reboot(BaseSequentialStream *chp, int argc, char **argv)
 {
-    (void) chp;
-    (void) argc;
-    (void) argv;
+    (void)chp;
+    (void)argc;
+    (void)argv;
     NVIC_SystemReset();
 }
 
 static ShellConfig shell_cfg;
-const ShellCommand shell_commands[] = {
-    {"reboot", cmd_reboot},
-    {NULL, NULL}
-};
+const ShellCommand shell_commands[] = {{"reboot", cmd_reboot}, {NULL, NULL}};
 
 #define SHELL_WA_SIZE 2048
 
@@ -30,16 +27,15 @@ static THD_FUNCTION(shell_spawn_thd, p)
     shell_cfg.sc_channel = io;
     shell_cfg.sc_commands = shell_commands;
 
-
     shellInit();
 
     while (TRUE) {
         if (!shelltp) {
             shelltp = chThdCreateStatic(&shell_wa,
-                                  sizeof(shell_wa),
-                                  NORMALPRIO,
-                                  shellThread,
-                                  (void *)&shell_cfg);
+                                        sizeof(shell_wa),
+                                        NORMALPRIO,
+                                        shellThread,
+                                        (void *)&shell_cfg);
             chRegSetThreadNameX(shelltp, "shell");
         } else {
             if (chThdTerminatedX(shelltp)) {
