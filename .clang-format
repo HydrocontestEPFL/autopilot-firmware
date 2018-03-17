@@ -15,9 +15,14 @@ AlwaysBreakBeforeMultilineStrings: 'true'
 AlwaysBreakTemplateDeclarations: 'true'
 BinPackArguments: 'false'
 BinPackParameters: 'false'
+ExperimentalAutoDetectBinPacking: 'false'
+PenaltyBreakBeforeFirstCallParameter: 10000
+PenaltyBreakAssignment: 10000
+PenaltyExcessCharacter: 10
 BreakBeforeBraces: Linux
 BreakStringLiterals: 'true'
 Cpp11BracedListStyle: 'true'
+ColumnLimit: 100
 DerivePointerAlignment: 'false'
 IndentCaseLabels: 'true'
 NamespaceIndentation: None
