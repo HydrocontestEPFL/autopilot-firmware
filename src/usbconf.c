@@ -1,3 +1,4 @@
+// clang-format off
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
@@ -194,6 +195,7 @@ static const USBDescriptor vcom_strings[] = {
     {sizeof vcom_string3, vcom_string3}
 };
 
+// clang-format on
 /*
  * Handles the GET_DESCRIPTOR callback. All required descriptors must be
  * handled here.
