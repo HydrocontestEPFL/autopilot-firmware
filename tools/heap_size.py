@@ -19,4 +19,6 @@ heap_end = [s for s in result if "__heap_end__" in s][-1]
 heap_base = int(heap_base.split()[0], 16)
 heap_end = int(heap_end.split()[0], 16)
 
-print("Heap space left: {} bytes".format(heap_end - heap_base))
+heap_size_kb = (heap_end - heap_base) // 1024
+
+print("Heap space left: {} kiB".format(heap_size_kb))
