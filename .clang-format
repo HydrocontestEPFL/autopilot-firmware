@@ -17,7 +17,6 @@ BinPackArguments: 'false'
 BinPackParameters: 'false'
 BreakBeforeBraces: Linux
 BreakStringLiterals: 'true'
-ColumnLimit: 80
 DerivePointerAlignment: 'false'
 IndentCaseLabels: 'true'
 NamespaceIndentation: None
