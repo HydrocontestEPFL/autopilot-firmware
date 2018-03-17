@@ -1,3 +1,4 @@
+// clang-format off
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
@@ -521,3 +522,4 @@
 #endif  /* CHCONF_H */
 
 /** @} */
+// clang-format on

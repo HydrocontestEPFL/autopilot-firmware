@@ -1,3 +1,4 @@
+// clang-format off
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
@@ -359,3 +360,4 @@
 #define STM32_WDG_USE_IWDG               FALSE
 
 #endif /* MCUCONF_H */
+// clang-format on
