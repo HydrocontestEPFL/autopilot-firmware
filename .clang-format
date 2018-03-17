@@ -17,6 +17,7 @@ BinPackArguments: 'false'
 BinPackParameters: 'false'
 BreakBeforeBraces: Linux
 BreakStringLiterals: 'true'
+Cpp11BracedListStyle: 'true'
 DerivePointerAlignment: 'false'
 IndentCaseLabels: 'true'
 NamespaceIndentation: None
