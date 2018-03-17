@@ -29,6 +29,7 @@ target.arm:
 source:
   - src/commander.c
   - src/input_mapper.c
+  - src/mpu9250.c
   - src/msgbus_protobuf.c
   - src/sbus.c
   - src/telemetry/rpc.c
@@ -36,7 +37,9 @@ source:
 
 tests:
   - tests/arming.cpp
+  - tests/hal_mocks.cpp
   - tests/input_remapper.cpp
+  - tests/mpu9250.cpp
   - tests/msgbus_protobuf.cpp
   - tests/rpc.cpp
   - tests/rpc_parameter.cpp
