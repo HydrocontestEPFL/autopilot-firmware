@@ -1,3 +1,4 @@
+// clang-format off
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
@@ -67,6 +68,8 @@ const PALConfig pal_default_config = {
 };
 #endif
 
+// clang-format on
+
 /**
  * @brief   Early initialization code.
  * @details This initialization must be performed just after stack setup
@@ -130,9 +133,7 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp)
  * @brief   Board-specific initialization code.
  * @todo    Add your board-specific code, if any.
  */
-void boardInit(void)
-{
-}
+void boardInit(void) {}
 
 void board_user_led_green_set(bool on)
 {
@@ -148,4 +149,3 @@ void board_user_led_red_set(bool on)
 {
     palWritePad(GPIOB, GPIOB_LED3, on);
 }
-

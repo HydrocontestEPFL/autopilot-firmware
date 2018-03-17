@@ -1,3 +1,4 @@
+// clang-format off
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
@@ -1834,3 +1835,5 @@ void board_user_led_red_set(bool on);
 #endif /* _FROM_ASM_ */
 
 #endif /* BOARD_H */
+
+// clang-format on
