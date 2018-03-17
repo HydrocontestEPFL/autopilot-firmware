@@ -2,34 +2,39 @@ syntax = "proto2";
 
 import "nanopb.proto";
 
-message Parameter {
-    required string name = 1 [(nanopb).max_size=128];
-    oneof value {
+message Parameter
+{
+    required string name = 1 [ (nanopb).max_size = 128 ];
+    oneof value
+    {
         int32 int_value = 2;
         float scalar_value = 3;
         bool bool_value = 4;
     }
 }
 
-message ParameterEnumerationRequest {
+message ParameterEnumerationRequest
+{
     required uint32 index = 1;
 }
 
-message ParameterEnumerationReply {
+message ParameterEnumerationReply
+{
     // This parameter will be present only if the corresponding requested
     // parameter was there.
     optional Parameter parameter = 1;
 }
 
-message ParameterSetRequest {
+message ParameterSetRequest
+{
     required Parameter parameter = 1;
 }
 
-message ParameterSetReply {
+message ParameterSetReply
+{
     enum Error {
         WRONG_TYPE = 1;
         NOT_FOUND = 2;
     }
     optional Error error = 1;
-
 }

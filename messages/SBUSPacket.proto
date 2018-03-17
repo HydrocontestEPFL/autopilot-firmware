@@ -2,9 +2,10 @@ syntax = "proto2";
 
 import "nanopb.proto";
 
-message SBUSPacket {
+message SBUSPacket
+{
 
-    repeated int32 channels = 1 [packed=true, (nanopb).max_count = 16];
+    repeated int32 channels = 1 [ packed = true, (nanopb).max_count = 16 ];
 
     // Channel 17 & 18 are binary channels that can only take values from 0 to 1
     required bool channel16 = 3;
@@ -17,4 +18,3 @@ message SBUSPacket {
     // more than one second).
     required bool failsafe = 6;
 }
-

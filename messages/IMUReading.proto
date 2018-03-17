@@ -4,32 +4,34 @@ import "Timestamp.proto";
 import "nanopb.proto";
 
 /* Acceleration data in m/s^2 */
-message Acceleration {
+message Acceleration
+{
     required float x = 1;
     required float y = 2;
     required float z = 3;
 }
 
 /* Gyroscope data in rad/s */
-message AngularSpeed {
+message AngularSpeed
+{
     required float x = 1;
     required float y = 2;
     required float z = 3;
 }
 
 /* Magnetometer data in uT */
-message MagneticField {
+message MagneticField
+{
     required float x = 1;
     required float y = 2;
     required float z = 3;
 }
 
-
-message IMUReading {
+message IMUReading
+{
     option (nanopb_msgopt).msgid = 11;
     required Timestamp timestamp = 1;
     required Acceleration acceleration = 2;
     required AngularSpeed angular_speed = 3;
     required MagneticField magnetic_field = 4;
 }
-

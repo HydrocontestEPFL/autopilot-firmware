@@ -1,6 +1,7 @@
 syntax = "proto2";
 
-message SetLedRequest {
+message SetLedRequest
+{
     enum Led {
         RED = 1;
         GREEN = 2;
@@ -9,4 +10,3 @@ message SetLedRequest {
     required Led led = 1;
     required bool status = 2;
 }
-

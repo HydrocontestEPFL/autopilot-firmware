@@ -6,11 +6,11 @@ import "nanopb.proto";
  * already mapped to a normalized, centered range: [-1; 1] for joysticks,
  * [0; 1] for throttle and relevant states for switches.
  */
-message RemoteControlInput {
+message RemoteControlInput
+{
     required bool arming_request = 1;
     required float throttle = 2;
     required float roll = 3;
     required float z = 4;
     required float rudder = 5;
 }
-
