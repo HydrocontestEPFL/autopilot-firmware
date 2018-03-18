@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, QThread, QTimer, Qt
 from functools import partial
 
+TOPIC_NAME = "sbus"
 CHANNELS = [("Throttle", 1), ("Roll", 2), ("Lift", 3), ("Rudder", 4),
             ("Arming", 5)]
 
@@ -74,7 +75,7 @@ def udp_sender(target):
         for i, value in values.items():
             msg.channels[i] = value
 
-        packet = rpc.generate_topic_injection_packet("rc_input", msg)
+        packet = rpc.generate_topic_injection_packet(TOPIC_NAME, msg)
         sock.sendto(packet, target)
 
     return udp_send

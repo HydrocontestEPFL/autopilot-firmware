@@ -8,6 +8,7 @@ import "nanopb.proto";
  */
 message RemoteControlInput
 {
+    option (nanopb_msgopt).msgid = 13;
     required bool arming_request = 1;
     required float throttle = 2;
     required float roll = 3;

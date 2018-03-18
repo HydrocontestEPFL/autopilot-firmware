@@ -9,7 +9,7 @@ static void sbus_thread(void *p)
     BaseSequentialStream *stream = (BaseSequentialStream *)p;
 
     static TOPIC_DECL(rcinput, SBUSPacket);
-    messagebus_advertise_topic(&bus, &rcinput.topic, "rc_input");
+    messagebus_advertise_topic(&bus, &rcinput.topic, "sbus");
 
     while (true) {
         /* TODO: Actually parse the topic */
@@ -21,6 +21,6 @@ static void sbus_thread(void *p)
 
 void sbus_start(BaseSequentialStream *stream)
 {
-    static THD_WORKING_AREA(wa, 256);
+    static THD_WORKING_AREA(wa, 1024);
     chThdCreateStatic(wa, sizeof(wa), NORMALPRIO, sbus_thread, stream);
 }

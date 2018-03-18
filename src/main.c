@@ -4,6 +4,7 @@
 #include "cmd.h"
 #include "main.h"
 #include "sbus_thread.h"
+#include "input_mapper_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
 #include <lwip_bindings/lwipthread.h>
@@ -58,6 +59,7 @@ int main(void)
     rpc_server_start();
     usb_start();
     blinker_start();
+    input_mapper_start();
     sbus_start(NULL); /* TODO: Use real stream */
 
     while (true) {

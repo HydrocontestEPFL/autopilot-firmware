@@ -18,6 +18,7 @@ depends:
 target.arm:
   - src/board/board.c
   - src/cmd.c
+  - src/input_mapper_thread.c
   - src/main.c
   - src/parameter_port.c
   - src/sbus_thread.c
