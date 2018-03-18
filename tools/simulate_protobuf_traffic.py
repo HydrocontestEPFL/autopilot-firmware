@@ -7,6 +7,7 @@ import argparse
 import messages
 import socket
 import datetime
+import rpc
 
 HOST, PORT = "localhost", 10000
 
@@ -14,20 +15,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
 
     return parser.parse_args()
-
-def generate_packet(msg, topic_name):
-    header = messages.TopicHeader()
-    header.msgid = messages.msgid(msg)
-    header.name = topic_name
-
-    header = header.SerializeToString()
-    msg = msg.SerializeToString()
-
-    header_size = messages.MessageSize(bytes=len(header)).SerializeToString()
-    msg_size = messages.MessageSize(bytes=len(msg)).SerializeToString()
-
-    return header_size + header + msg_size + msg
-
 
 def main():
     args = parse_args()
@@ -45,7 +32,9 @@ def main():
     m.magnetic_field.y = 22
     m.magnetic_field.z = 23
 
-    sock.sendto(generate_packet(m, "time"), (HOST, PORT))
+    packet = rpc.generate_topic_injection_packet("time", m)
+
+    sock.sendto(packet, (HOST, PORT))
 
 if __name__ == '__main__':
     main()

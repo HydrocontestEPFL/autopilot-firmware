@@ -1,4 +1,4 @@
-from messages import MessageSize, RPCRequestHeader
+from messages import MessageSize, RPCRequestHeader, TopicHeader, msgid
 MESSAGESIZE_SIZE = len(MessageSize(bytes=0).SerializeToString())
 
 def encode_request(method_name, data):
@@ -30,3 +30,14 @@ def read_reply(socket, reply_type):
     reply.ParseFromString(data)
 
     return reply
+
+def generate_topic_injection_packet(topic, data):
+    """
+    Creates a data message than can be injected on the internal msgbus through
+    UDP.
+    """
+    header = TopicHeader(name=topic, msgid=msgid(data)).SerializeToString()
+    data = data.SerializeToString()
+    header_size = MessageSize(bytes=len(header)).SerializeToString()
+    data_size = MessageSize(bytes=len(data)).SerializeToString()
+    return header_size + header + data_size + data
