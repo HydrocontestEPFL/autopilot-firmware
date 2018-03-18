@@ -13,9 +13,9 @@
 * Save parameter tree to flash memory
 * HTTP server to retrieve logs from SD card without having to open the boat
     That one is especially important if we go with Yaffs2, as we will not have a working Yaffs driver in most PCs.
+* SBUS Input thread (can be simulated over USB)
 
 ### Does depend on hw
-* SBUS Input thread
 * Output module (generates servo PWM)
 * Drivers for IMUs, GPS, and altitude sensor
 * Filesystem on SD card (FatFS for first iteration, YafFS2 might be more resilient)
