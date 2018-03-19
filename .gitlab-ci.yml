@@ -24,5 +24,6 @@ tools_tests:
   stage: test
   script:
     - pip3 install protobuf~=3.5.1
+    - make protoc
     - cd tools
     - python3 -m unittest discover
