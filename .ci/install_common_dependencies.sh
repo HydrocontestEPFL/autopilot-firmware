@@ -20,6 +20,9 @@ unzip protoc*.zip
 popd
 pip install --upgrade protobuf
 
+echo "Fetching submodules"
+git submodule update --init --recursive
+
 echo "Installing nanopb extensions"
 pushd lib/nanopb/nanopb/generator/proto
 make

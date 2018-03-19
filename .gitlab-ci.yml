@@ -1,5 +1,3 @@
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
 image: ubuntu:xenial
 before_script:
   - .ci/install_common_dependencies.sh
