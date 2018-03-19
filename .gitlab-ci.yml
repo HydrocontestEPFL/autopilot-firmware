@@ -1,7 +1,7 @@
 image: ubuntu:xenial
 before_script:
-  - git submodule update --init --recursive
   - .ci/install_common_dependencies.sh
+  - git submodule update --init --recursive
 
 firmware_tests:
   stage: test
