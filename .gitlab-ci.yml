@@ -21,3 +21,10 @@ firmware_build:
     - packager
     - make protoc
     - make
+
+tools_tests:
+  stage: test
+  script:
+    - pip3 install protobuf~=3.5.1
+    - cd tools
+    - python3 -m unittest discover
