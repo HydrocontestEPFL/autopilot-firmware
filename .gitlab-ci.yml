@@ -1,8 +1,7 @@
 image: ubuntu:xenial
 before_script:
-  - .ci/install_common_dependencies.sh
-  - rm -rf ChibiOS
   - git submodule update --init --recursive
+  - .ci/install_common_dependencies.sh
 
 firmware_tests:
   stage: test
