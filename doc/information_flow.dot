@@ -1,0 +1,28 @@
+digraph Flow {
+    rankdir = LR;
+    node [shape="box"];
+    mpu9250_driver [style=filled, color="orange", label="IMU driver\n(MPU9250)"]
+    icm20689_driver [label="IMU driver\n(ICM20689)"]
+    gps_driver [label="GPS driver"]
+    parameter [label="Parameter storage", style=filled, color="green"];
+    data_logging [label="Data logging\n(SD card)"];
+    rc_input [label="Remote control input\n(SBUS)", style="filled", color="orange"];
+    ethernet [label="ODroid link\n(Ethernet)", style="filled", color="green"];
+    input_mapping [label="Input mixing", style="filled", color="green"];
+    state_estimation [label="State estimation\n(Michael Spieler)"];
+    controller [label="Control loops"];
+    mixer [label="Output mixing"];
+    safety [label="Arming & safety", style="filled", color="orange"];
+    output_pwm [label="Servo PWM"];
+
+    rc_input -> input_mapping;
+    gps_driver -> state_estimation;
+    mpu9250_driver -> state_estimation;
+    icm20689_driver -> state_estimation;
+    state_estimation -> controller;
+    input_mapping -> controller;
+    input_mapping -> safety;
+    safety -> output_pwm;
+    controller -> mixer;
+    mixer -> output_pwm;
+}
