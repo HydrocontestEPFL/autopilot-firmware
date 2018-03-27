@@ -260,3 +260,8 @@ format:
 	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.c$$" | cut -f 2`
 	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.cpp$$" | cut -f 2`
 	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.proto$$" | cut -f 2`
+
+flash: $(BUILDDIR)/$(PROJECT).elf
+	openocd -f "interface/stlink-v2-1.cfg" \
+			-f "target/stm32f4x.cfg" \
+			-c "program $(BUILDDIR)/$(PROJECT).elf verify reset exit"
