@@ -1,9 +1,28 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ch.h>
 #include <hal.h>
 #include <chprintf.h>
 #include <shell.h>
+#include "mpu9250.h"
+
+static void cmd_mpu9250_test(BaseSequentialStream *chp, int argc, char **argv)
+{
+    static SPIConfig spi_cfg = {.end_cb = NULL,
+                                .ssport = GPIOB,
+                                .sspad = GPIOB_MPU_CSN,
+                                .cr1 = SPI_CR1_BR_2 | SPI_CR1_BR_1 | SPI_CR1_CPOL | SPI_CR1_CPHA};
+    spiStart(&SPID3, &spi_cfg);
+    mpu9250_t mpu;
+    mpu9250_init(&mpu, &SPID3);
+
+    if (mpu9250_ping(&mpu)) {
+        chprintf(chp, "OK\r\n");
+    } else {
+        chprintf(chp, "Did not answer\r\n");
+    }
+}
 
 static void cmd_reboot(BaseSequentialStream *chp, int argc, char **argv)
 {
@@ -14,7 +33,9 @@ static void cmd_reboot(BaseSequentialStream *chp, int argc, char **argv)
 }
 
 static ShellConfig shell_cfg;
-const ShellCommand shell_commands[] = {{"reboot", cmd_reboot}, {NULL, NULL}};
+const ShellCommand shell_commands[] = {{"reboot", cmd_reboot},
+                                       {"mpu", cmd_mpu9250_test},
+                                       {NULL, NULL}};
 
 #define SHELL_WA_SIZE 2048
 
