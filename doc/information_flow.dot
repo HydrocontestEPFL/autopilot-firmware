@@ -1,7 +1,7 @@
 digraph Flow {
     rankdir = LR;
     node [shape="box"];
-    mpu9250_driver [style=filled, color="orange", label="IMU driver\n(MPU9250)"]
+    mpu9250_driver [style=filled, color="green", label="IMU driver\n(MPU9250)"]
     icm20689_driver [label="IMU driver\n(ICM20689)"]
     gps_driver [label="GPS driver"]
     parameter [label="Parameter storage", style=filled, color="green"];
