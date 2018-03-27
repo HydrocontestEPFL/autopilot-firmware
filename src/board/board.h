@@ -94,13 +94,10 @@
 #define GPIOB_ZIO_A6       1U
 #define GPIOB_ADC12_IN9    1U
 #define GPIOB_ZIO_D27      2U
-#define GPIOB_ZIO_D23      3U
-#define GPIOB_I2S3_CK      3U
-#define GPIOB_ZIO_D25      4U
-#define GPIOB_SPI3_MISO    4U
-#define GPIOB_ZIO_D22      5U
-#define GPIOB_I2S3_SD      5U
-#define GPIOB_ZIO_D26      6U
+#define GPIOB_MPU_SCK      3U
+#define GPIOB_MPU_MISO     4U
+#define GPIOB_MPU_MOSI     5U
+#define GPIOB_MPU_CSN      6U
 #define GPIOB_LED2         7U
 #define GPIOB_ARD_D15      8U
 #define GPIOB_I2C1_SCL     8U
@@ -656,10 +653,10 @@
  * PB0  - ZIO_D33 TIM3_CH3 LED1     (output pushpull maximum).
  * PB1  - ZIO_A6 ADC12_IN9          (input pullup).
  * PB2  - ZIO_D27                   (input pullup).
- * PB3  - ZIO_D23 I2S3_CK           (input pullup).
- * PB4  - ZIO_D25 SPI3_MISO         (input pullup).
- * PB5  - ZIO_D22 I2S3_SD           (input pullup).
- * PB6  - ZIO_D26                   (input pullup).
+ * PB3  - MPU9250 SCK               (alternate 6).
+ * PB4  - MPU0250 MISO              (alternate 6).
+ * PB5  - MPU9250 MOSI              (alternate 6).
+ * PB6  - MPU9250 CSn               (output pushpull).
  * PB7  - LED2                      (output pushpull maximum).
  * PB8  - ARD_D15 I2C1_SCL          (input pullup).
  * PB9  - ARD_D14 I2C1_SDA          (input pullup).
@@ -673,10 +670,10 @@
 #define VAL_GPIOB_MODER   (PIN_MODE_OUTPUT(GPIOB_ZIO_D33) |       \
                            PIN_MODE_INPUT(GPIOB_ZIO_A6) |         \
                            PIN_MODE_INPUT(GPIOB_ZIO_D27) |        \
-                           PIN_MODE_INPUT(GPIOB_ZIO_D23) |        \
-                           PIN_MODE_INPUT(GPIOB_ZIO_D25) |        \
-                           PIN_MODE_INPUT(GPIOB_ZIO_D22) |        \
-                           PIN_MODE_INPUT(GPIOB_ZIO_D26) |        \
+                           PIN_MODE_ALTERNATE(GPIOB_MPU_SCK) |    \
+                           PIN_MODE_ALTERNATE(GPIOB_MPU_MISO) |   \
+                           PIN_MODE_ALTERNATE(GPIOB_MPU_MOSI) |   \
+                           PIN_MODE_OUTPUT(GPIOB_MPU_CSN) |       \
                            PIN_MODE_OUTPUT(GPIOB_LED2) |          \
                            PIN_MODE_INPUT(GPIOB_ARD_D15) |        \
                            PIN_MODE_INPUT(GPIOB_ARD_D14) |        \
@@ -689,10 +686,10 @@
 #define VAL_GPIOB_OTYPER  (PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D33) |    \
                            PIN_OTYPE_PUSHPULL(GPIOB_ZIO_A6) |     \
                            PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D27) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D23) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D25) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D22) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOB_ZIO_D26) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOB_MPU_SCK) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOB_MPU_MISO) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOB_MPU_MOSI) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOB_MPU_CSN) |    \
                            PIN_OTYPE_PUSHPULL(GPIOB_LED2) |       \
                            PIN_OTYPE_PUSHPULL(GPIOB_ARD_D15) |    \
                            PIN_OTYPE_PUSHPULL(GPIOB_ARD_D14) |    \
@@ -705,10 +702,10 @@
 #define VAL_GPIOB_OSPEEDR (PIN_OSPEED_HIGH(GPIOB_ZIO_D33) |       \
                            PIN_OSPEED_HIGH(GPIOB_ZIO_A6) |        \
                            PIN_OSPEED_VERYLOW(GPIOB_ZIO_D27) |    \
-                           PIN_OSPEED_HIGH(GPIOB_ZIO_D23) |       \
-                           PIN_OSPEED_HIGH(GPIOB_ZIO_D25) |       \
-                           PIN_OSPEED_HIGH(GPIOB_ZIO_D22) |       \
-                           PIN_OSPEED_VERYLOW(GPIOB_ZIO_D26) |    \
+                           PIN_OSPEED_HIGH(GPIOB_MPU_SCK) |       \
+                           PIN_OSPEED_HIGH(GPIOB_MPU_MISO) |      \
+                           PIN_OSPEED_HIGH(GPIOB_MPU_MOSI) |      \
+                           PIN_OSPEED_HIGH(GPIOB_MPU_CSN) |       \
                            PIN_OSPEED_HIGH(GPIOB_LED2) |          \
                            PIN_OSPEED_HIGH(GPIOB_ARD_D15) |       \
                            PIN_OSPEED_HIGH(GPIOB_ARD_D14) |       \
@@ -721,10 +718,10 @@
 #define VAL_GPIOB_PUPDR   (PIN_PUPDR_FLOATING(GPIOB_ZIO_D33) |    \
                            PIN_PUPDR_PULLUP(GPIOB_ZIO_A6) |       \
                            PIN_PUPDR_PULLUP(GPIOB_ZIO_D27) |      \
-                           PIN_PUPDR_PULLUP(GPIOB_ZIO_D23) |      \
-                           PIN_PUPDR_PULLUP(GPIOB_ZIO_D25) |      \
-                           PIN_PUPDR_PULLUP(GPIOB_ZIO_D22) |      \
-                           PIN_PUPDR_PULLUP(GPIOB_ZIO_D26) |      \
+                           PIN_PUPDR_PULLUP(GPIOB_MPU_SCK) |      \
+                           PIN_PUPDR_PULLUP(GPIOB_MPU_MISO) |     \
+                           PIN_PUPDR_PULLUP(GPIOB_MPU_MOSI) |     \
+                           PIN_PUPDR_PULLUP(GPIOB_MPU_CSN) |      \
                            PIN_PUPDR_FLOATING(GPIOB_LED2) |       \
                            PIN_PUPDR_PULLUP(GPIOB_ARD_D15) |      \
                            PIN_PUPDR_PULLUP(GPIOB_ARD_D14) |      \
@@ -737,10 +734,10 @@
 #define VAL_GPIOB_ODR     (PIN_ODR_LOW(GPIOB_ZIO_D33) |           \
                            PIN_ODR_HIGH(GPIOB_ZIO_A6) |           \
                            PIN_ODR_HIGH(GPIOB_ZIO_D27) |          \
-                           PIN_ODR_HIGH(GPIOB_ZIO_D23) |          \
-                           PIN_ODR_HIGH(GPIOB_ZIO_D25) |          \
-                           PIN_ODR_HIGH(GPIOB_ZIO_D22) |          \
-                           PIN_ODR_HIGH(GPIOB_ZIO_D26) |          \
+                           PIN_ODR_HIGH(GPIOB_MPU_SCK) |          \
+                           PIN_ODR_HIGH(GPIOB_MPU_MISO) |         \
+                           PIN_ODR_HIGH(GPIOB_MPU_MOSI) |         \
+                           PIN_ODR_HIGH(GPIOB_MPU_CSN) |          \
                            PIN_ODR_LOW(GPIOB_LED2) |              \
                            PIN_ODR_HIGH(GPIOB_ARD_D15) |          \
                            PIN_ODR_HIGH(GPIOB_ARD_D14) |          \
@@ -753,10 +750,10 @@
 #define VAL_GPIOB_AFRL    (PIN_AFIO_AF(GPIOB_ZIO_D33, 0U) |       \
                            PIN_AFIO_AF(GPIOB_ZIO_A6, 0U) |        \
                            PIN_AFIO_AF(GPIOB_ZIO_D27, 0U) |       \
-                           PIN_AFIO_AF(GPIOB_ZIO_D23, 0U) |       \
-                           PIN_AFIO_AF(GPIOB_ZIO_D25, 0U) |       \
-                           PIN_AFIO_AF(GPIOB_ZIO_D22, 0U) |       \
-                           PIN_AFIO_AF(GPIOB_ZIO_D26, 0U) |       \
+                           PIN_AFIO_AF(GPIOB_MPU_SCK, 6U) |       \
+                           PIN_AFIO_AF(GPIOB_MPU_MISO, 6U) |      \
+                           PIN_AFIO_AF(GPIOB_MPU_MOSI, 6U) |      \
+                           PIN_AFIO_AF(GPIOB_MPU_CSN, 0U) |       \
                            PIN_AFIO_AF(GPIOB_LED2, 0U))
 #define VAL_GPIOB_AFRH    (PIN_AFIO_AF(GPIOB_ARD_D15, 0U) |       \
                            PIN_AFIO_AF(GPIOB_ARD_D14, 0U) |       \
