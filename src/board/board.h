@@ -212,8 +212,7 @@
 #define GPIOF_I2C2_SMBA    2U
 #define GPIOF_ARD_A3       3U
 #define GPIOF_ADC3_IN9     3U
-#define GPIOF_ZIO_A8       4U
-#define GPIOF_ADC3_IN14    4U
+#define GPIOF_MPU_INT      4U
 #define GPIOF_ARD_A4       5U
 #define GPIOF_ADC3_IN15    5U
 #define GPIOF_PIN6         6U
@@ -1122,7 +1121,7 @@
  * PF1  - ZIO_D69 I2C2_SCL          (input pullup).
  * PF2  - ZIO_D70 I2C2_SMBA         (input pullup).
  * PF3  - ARD_A3 ADC3_IN9           (input pullup).
- * PF4  - ZIO_A8 ADC3_IN14          (input pullup).
+ * PF4  - MPU9250 INT               (input pullup).
  * PF5  - ARD_A4 ADC3_IN15          (input pullup).
  * PF6  - PIN6                      (input pullup).
  * PF7  - ZIO_D62 SAI1_MCLK_B       (input pullup).
@@ -1139,7 +1138,7 @@
                            PIN_MODE_INPUT(GPIOF_ZIO_D69) |        \
                            PIN_MODE_INPUT(GPIOF_ZIO_D70) |        \
                            PIN_MODE_INPUT(GPIOF_ARD_A3) |         \
-                           PIN_MODE_INPUT(GPIOF_ZIO_A8) |         \
+                           PIN_MODE_INPUT(GPIOF_MPU_INT) |         \
                            PIN_MODE_INPUT(GPIOF_ARD_A4) |         \
                            PIN_MODE_INPUT(GPIOF_PIN6) |           \
                            PIN_MODE_INPUT(GPIOF_ZIO_D62) |        \
@@ -1155,7 +1154,7 @@
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D69) |    \
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D70) |    \
                            PIN_OTYPE_PUSHPULL(GPIOF_ARD_A3) |     \
-                           PIN_OTYPE_PUSHPULL(GPIOF_ZIO_A8) |     \
+                           PIN_OTYPE_PUSHPULL(GPIOF_MPU_INT) |     \
                            PIN_OTYPE_PUSHPULL(GPIOF_ARD_A4) |     \
                            PIN_OTYPE_PUSHPULL(GPIOF_PIN6) |       \
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D62) |    \
@@ -1171,7 +1170,7 @@
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D69) |       \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D70) |       \
                            PIN_OSPEED_HIGH(GPIOF_ARD_A3) |        \
-                           PIN_OSPEED_HIGH(GPIOF_ZIO_A8) |        \
+                           PIN_OSPEED_HIGH(GPIOF_MPU_INT) |        \
                            PIN_OSPEED_HIGH(GPIOF_ARD_A4) |        \
                            PIN_OSPEED_VERYLOW(GPIOF_PIN6) |       \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D62) |       \
@@ -1187,7 +1186,7 @@
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D69) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D70) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ARD_A3) |       \
-                           PIN_PUPDR_PULLUP(GPIOF_ZIO_A8) |       \
+                           PIN_PUPDR_PULLUP(GPIOF_MPU_INT) |       \
                            PIN_PUPDR_PULLUP(GPIOF_ARD_A4) |       \
                            PIN_PUPDR_PULLUP(GPIOF_PIN6) |         \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D62) |      \
@@ -1203,7 +1202,7 @@
                            PIN_ODR_HIGH(GPIOF_ZIO_D69) |          \
                            PIN_ODR_HIGH(GPIOF_ZIO_D70) |          \
                            PIN_ODR_HIGH(GPIOF_ARD_A3) |           \
-                           PIN_ODR_HIGH(GPIOF_ZIO_A8) |           \
+                           PIN_ODR_HIGH(GPIOF_MPU_INT) |           \
                            PIN_ODR_HIGH(GPIOF_ARD_A4) |           \
                            PIN_ODR_HIGH(GPIOF_PIN6) |             \
                            PIN_ODR_HIGH(GPIOF_ZIO_D62) |          \
@@ -1219,7 +1218,7 @@
                            PIN_AFIO_AF(GPIOF_ZIO_D69, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ZIO_D70, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ARD_A3, 0U) |        \
-                           PIN_AFIO_AF(GPIOF_ZIO_A8, 0U) |        \
+                           PIN_AFIO_AF(GPIOF_MPU_INT, 0U) |        \
                            PIN_AFIO_AF(GPIOF_ARD_A4, 0U) |        \
                            PIN_AFIO_AF(GPIOF_PIN6, 0U) |          \
                            PIN_AFIO_AF(GPIOF_ZIO_D62, 0U))

@@ -7,7 +7,10 @@
 #include "mpu9250.h"
 #include "main.h"
 #include "msgbus_protobuf.h"
+#include "exti.h"
 #include "messages/IMUReading.pb.h"
+
+#define MPU_INTERRUPT_EVENT 0x01
 
 static void mpu9250_init_hardware(mpu9250_t *mpu)
 {
@@ -39,6 +42,9 @@ static void mpu9250_reader_thd(void *p)
     (void)p;
     mpu9250_t mpu;
 
+    event_listener_t imu_int;
+    chEvtRegisterMask(&exti_mpu9250_event, &imu_int, MPU_INTERRUPT_EVENT);
+
     mpu9250_init_hardware(&mpu);
 
     /* Creates the mpu9250 topic */
@@ -49,22 +55,21 @@ static void mpu9250_reader_thd(void *p)
     while (1) {
         IMUReading msg;
 
-        /* TODO: Read from interrupt */
-        chThdSleepMilliseconds(10);
-        /* TODO: Read temperature */
+        /* Wait for an interrupt from the MPU */
+        chEvtWaitAny(MPU_INTERRUPT_EVENT);
 
         /* Read data from the IMU. */
 #if 0
         /* TODO: For some reason the macro ST2US creates an overflow. */
-        uint32_t ts = ST2US(chVTGetSystemTime());
+        msg.timestamp.us = ST2US(chVTGetSystemTime());
 #else
-        uint32_t ts = chVTGetSystemTime() * (1000000 / CH_CFG_ST_FREQUENCY);
+        msg.timestamp.us = chVTGetSystemTime() * (1000000 / CH_CFG_ST_FREQUENCY);
 #endif
         mpu9250_gyro_read(&mpu, &msg.angular_speed.x, &msg.angular_speed.y, &msg.angular_speed.z);
         mpu9250_acc_read(&mpu, &msg.acceleration.x, &msg.acceleration.y, &msg.acceleration.z);
         mpu9250_mag_read(&mpu, &msg.magnetic_field.x, &msg.magnetic_field.y, &msg.magnetic_field.z);
 
-        msg.timestamp.us = ts;
+        /* TODO: Read temperature */
 
         /* Publish the data. */
         messagebus_topic_publish(&mpu9250_topic.topic, &msg, sizeof(msg));

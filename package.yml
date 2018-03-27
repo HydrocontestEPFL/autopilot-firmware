@@ -18,6 +18,7 @@ depends:
 target.arm:
   - src/board/board.c
   - src/cmd.c
+  - src/exti.c
   - src/input_mapper_thread.c
   - src/main.c
   - src/mpu9250_thread.c
