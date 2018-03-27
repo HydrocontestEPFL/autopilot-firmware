@@ -6,21 +6,64 @@
 #include <chprintf.h>
 #include <shell.h>
 #include "mpu9250.h"
+#include "main.h"
 
-static void cmd_mpu9250_test(BaseSequentialStream *chp, int argc, char **argv)
+static void cmd_topics(BaseSequentialStream *chp, int argc, char *argv[])
 {
-    static SPIConfig spi_cfg = {.end_cb = NULL,
-                                .ssport = GPIOB,
-                                .sspad = GPIOB_MPU_CSN,
-                                .cr1 = SPI_CR1_BR_2 | SPI_CR1_BR_1 | SPI_CR1_CPOL | SPI_CR1_CPHA};
-    spiStart(&SPID3, &spi_cfg);
-    mpu9250_t mpu;
-    mpu9250_init(&mpu, &SPID3);
+    (void)argc;
+    (void)argv;
 
-    if (mpu9250_ping(&mpu)) {
-        chprintf(chp, "OK\r\n");
+    const char *usage
+        = "usage:\r\n"
+          "topics list -- Lists all available topics.\r\n"
+          "topics hz topic_name -- Displays the rate of the"
+          "topic over a 5 second window.";
+
+    if (argc < 1) {
+        chprintf(chp, "%s\r\n", usage);
+        return;
+    }
+
+    if (!strcmp(argv[0], "list")) {
+        chprintf(chp, "available topics:\r\n");
+
+        MESSAGEBUS_TOPIC_FOREACH(&bus, topic)
+        {
+            chprintf(chp, "%s\r\n", topic->name);
+        }
+    } else if (!strcmp(argv[0], "hz")) {
+        if (argc != 2) {
+            chprintf(chp, "%s\r\n", usage);
+            return;
+        }
+
+        messagebus_topic_t *topic = messagebus_find_topic(&bus, argv[1]);
+        if (topic == NULL) {
+            chprintf(chp, "Cannot find topic \"%s\".\r\n", argv[1]);
+            return;
+        }
+
+        chprintf(chp, "Waiting for publish for 5 seconds...\r\n");
+
+        systime_t start = chVTGetSystemTime();
+        unsigned int message_counter = 0;
+
+        while (chVTGetSystemTime() < start + MS2ST(5000)) {
+            chMtxLock(topic->lock);
+            if (chCondWaitTimeout(topic->condvar, MS2ST(10)) != MSG_TIMEOUT) {
+                message_counter++;
+                chMtxUnlock(topic->lock);
+            }
+        }
+
+        if (message_counter == 0) {
+            chprintf(chp, "No messages.\r\n");
+        } else {
+            chprintf(chp, "Average rate: %.2f Hz\r\n", message_counter / 5.);
+        }
     } else {
-        chprintf(chp, "Did not answer\r\n");
+        chprintf(chp, "%s\r\n", usage);
+        return;
     }
 }
 
@@ -33,9 +76,7 @@ static void cmd_reboot(BaseSequentialStream *chp, int argc, char **argv)
 }
 
 static ShellConfig shell_cfg;
-const ShellCommand shell_commands[] = {{"reboot", cmd_reboot},
-                                       {"mpu", cmd_mpu9250_test},
-                                       {NULL, NULL}};
+const ShellCommand shell_commands[] = {{"reboot", cmd_reboot}, {"topics", cmd_topics}, {NULL, NULL}};
 
 #define SHELL_WA_SIZE 2048
 
