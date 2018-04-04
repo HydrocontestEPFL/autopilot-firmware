@@ -45,6 +45,7 @@ tests:
   - tests/input_remapper.cpp
   - tests/mpu9250.cpp
   - tests/msgbus_protobuf.cpp
+  - tests/output_mixer.cpp
   - tests/rpc.cpp
   - tests/rpc_parameter.cpp
   - tests/sbus_parser.cpp
