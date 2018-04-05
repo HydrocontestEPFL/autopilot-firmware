@@ -20,6 +20,7 @@ target.arm:
   - src/cmd.c
   - src/exti.c
   - src/input_mapper_thread.c
+  - src/log.c
   - src/main.c
   - src/mpu9250_thread.c
   - src/output_pwm_thread.c

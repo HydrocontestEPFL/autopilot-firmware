@@ -1,5 +1,7 @@
 #include <ch.h>
 #include <hal.h>
+#include <error/error.h>
+#include <lwip_bindings/lwipthread.h>
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
@@ -9,8 +11,8 @@
 #include "output_pwm_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
-#include <lwip_bindings/lwipthread.h>
 #include "telemetry/rpc_server_thread.h"
+#include "log.h"
 
 parameter_namespace_t parameter_root;
 messagebus_t bus;
@@ -60,12 +62,14 @@ int main(void)
     udp_topic_injector_start();
     rpc_server_start();
     usb_start();
+    log_start();
     blinker_start();
     mpu9250_start();
     output_pwm_start();
     input_mapper_start();
     sbus_start(NULL); /* TODO: Use real stream */
 
+    NOTICE("Boot complete");
     while (true) {
         chThdSleepMilliseconds(500);
     }
