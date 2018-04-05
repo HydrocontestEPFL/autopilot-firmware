@@ -10,6 +10,8 @@ import rpc
 from collections import defaultdict
 from functools import reduce
 import json
+import yaml
+from yaml.representer import Representer
 
 
 def parse_args():
@@ -21,6 +23,8 @@ def parse_args():
         type=int,
         default=10000,
         help="Port to connect to (default 10000)")
+    parser.add_argument(
+        "--json", help="Dump as JSON (default: YAML)", action="store_true")
 
     return parser.parse_args()
 
@@ -67,7 +71,12 @@ def main():
         index += 1
 
     # Finally shows the values to the user
-    print(json.dumps(parameters, indent=2, sort_keys=True))
+    if args.json:
+        print(json.dumps(parameters, indent=2, sort_keys=True))
+    else:
+        # Needed so that default dict appears as dict and not !!defaultdict
+        yaml.add_representer(defaultdict, Representer.represent_dict)
+        print(yaml.dump(parameters, default_flow_style=False))
 
 
 if __name__ == '__main__':
