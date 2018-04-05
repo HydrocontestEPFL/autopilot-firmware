@@ -22,6 +22,7 @@ target.arm:
   - src/input_mapper_thread.c
   - src/main.c
   - src/mpu9250_thread.c
+  - src/output_pwm_thread.c
   - src/parameter_port.c
   - src/sbus_thread.c
   - src/telemetry/rpc_callbacks.c

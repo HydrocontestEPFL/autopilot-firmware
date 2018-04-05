@@ -6,6 +6,7 @@
 #include "sbus_thread.h"
 #include "mpu9250_thread.h"
 #include "input_mapper_thread.h"
+#include "output_pwm_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
 #include <lwip_bindings/lwipthread.h>
@@ -61,6 +62,7 @@ int main(void)
     usb_start();
     blinker_start();
     mpu9250_start();
+    output_pwm_start();
     input_mapper_start();
     sbus_start(NULL); /* TODO: Use real stream */
 
