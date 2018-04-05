@@ -36,15 +36,11 @@ typedef struct {
     float rudder;
 } InputMessage;
 
-typedef struct {
-    float channel[OUTPUTS_CHANNELS];
-} OutputMessage;
-
 /** Initializes an output mixer and declares its parameters in the given namespace. */
 void output_mixer_init(output_mixer_t *mixer, parameter_namespace_t *ns);
 
 /** Mixes the inputs and puts them in the output. */
-void output_mixer_mix(output_mixer_t *mixer, const InputMessage *in, OutputMessage *out);
+void output_mixer_mix(output_mixer_t *mixer, const InputMessage *in, float output[OUTPUTS_CHANNELS]);
 
 #ifdef __cplusplus
 }

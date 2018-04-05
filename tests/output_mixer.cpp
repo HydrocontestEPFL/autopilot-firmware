@@ -9,9 +9,15 @@
 TEST_GROUP (OutputMixing) {
     output_mixer_t mixer;
     parameter_namespace_t ns;
+    InputMessage msg;
+    float out[4];
 
     void setup()
     {
+        msg = {};
+        for (auto i = 0; i < OUTPUTS_CHANNELS; i++) {
+            out[i] = 0.;
+        }
         parameter_namespace_declare(&ns, nullptr, "");
         output_mixer_init(&mixer, &ns);
     }
@@ -49,9 +55,6 @@ TEST (OutputMixing, CreateParameters) {
 }
 
 TEST (OutputMixing, ThrottleMixing) {
-    InputMessage msg = {};
-    OutputMessage out;
-
     std::vector<std::pair<float, float>> test_cases{{1.1, 10},
                                                     {0.5, 7.5},
                                                     {0., 5},
@@ -66,16 +69,13 @@ TEST (OutputMixing, ThrottleMixing) {
 
         for (const auto &c : test_cases) {
             msg.throttle = c.first;
-            output_mixer_mix(&mixer, &msg, &out);
-            DOUBLES_EQUAL(c.second, out.channel[i], 0.01);
+            output_mixer_mix(&mixer, &msg, out);
+            DOUBLES_EQUAL(c.second, out[i], 0.01);
         }
     }
 }
 
 TEST (OutputMixing, RollMixing) {
-    InputMessage msg = {};
-    OutputMessage out;
-
     std::vector<std::pair<float, float>> test_cases{{1.1, 10},
                                                     {0.5, 7.5},
                                                     {0., 5},
@@ -90,16 +90,13 @@ TEST (OutputMixing, RollMixing) {
 
         for (const auto &c : test_cases) {
             msg.roll = c.first;
-            output_mixer_mix(&mixer, &msg, &out);
-            DOUBLES_EQUAL(c.second, out.channel[i], 0.01);
+            output_mixer_mix(&mixer, &msg, out);
+            DOUBLES_EQUAL(c.second, out[i], 0.01);
         }
     }
 }
 
 TEST (OutputMixing, Lift) {
-    InputMessage msg = {};
-    OutputMessage out;
-
     std::vector<std::pair<float, float>> test_cases{{1.1, 10},
                                                     {0.5, 7.5},
                                                     {0., 5},
@@ -114,16 +111,13 @@ TEST (OutputMixing, Lift) {
 
         for (const auto &c : test_cases) {
             msg.lift = c.first;
-            output_mixer_mix(&mixer, &msg, &out);
-            DOUBLES_EQUAL(c.second, out.channel[i], 0.01);
+            output_mixer_mix(&mixer, &msg, out);
+            DOUBLES_EQUAL(c.second, out[i], 0.01);
         }
     }
 }
 
 TEST (OutputMixing, Rudder) {
-    InputMessage msg = {};
-    OutputMessage out;
-
     std::vector<std::pair<float, float>> test_cases{{1.1, 10},
                                                     {0.5, 7.5},
                                                     {0., 5},
@@ -138,8 +132,8 @@ TEST (OutputMixing, Rudder) {
 
         for (const auto &c : test_cases) {
             msg.rudder = c.first;
-            output_mixer_mix(&mixer, &msg, &out);
-            DOUBLES_EQUAL(c.second, out.channel[i], 0.01);
+            output_mixer_mix(&mixer, &msg, out);
+            DOUBLES_EQUAL(c.second, out[i], 0.01);
         }
     }
 }
@@ -148,15 +142,12 @@ TEST (OutputMixing, RespectsWeight) {
     parameter_scalar_set(&mixer.params.outputs[0].max_ms, 10.);
     parameter_scalar_set(&mixer.params.outputs[0].center_ms, 5.);
 
-    InputMessage msg = {};
-    OutputMessage out;
-
     parameter_scalar_set(&mixer.params.outputs[0].gains.rudder, 1.);
     parameter_scalar_set(&mixer.params.outputs[0].gains.roll, 4.);
     msg.rudder = 0.1;
     msg.roll = 0.1;
 
-    output_mixer_mix(&mixer, &msg, &out);
+    output_mixer_mix(&mixer, &msg, out);
 
-    DOUBLES_EQUAL(7.5, out.channel[0], 0.01);
+    DOUBLES_EQUAL(7.5, out[0], 0.01);
 }
