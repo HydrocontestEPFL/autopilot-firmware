@@ -9,13 +9,15 @@ digraph Flow {
     rc_input [label="Remote control input\n(SBUS)", style="filled", color="orange"];
     ethernet [label="ODroid link\n(Ethernet)", style="filled", color="green"];
     input_mapping [label="Input mixing", style="filled", color="green"];
-    state_estimation [label="State estimation\n(Michael Spieler)"];
+    state_estimation [label="State estimation\n(EKF)"];
     controller [label="Control loops"];
-    mixer [label="Output mixing"];
+    mixer [label="Output mixing", style="filled", color="orange"];
+    height_sensor [label="Height sensor"];
     safety [label="Arming & safety", style="filled", color="orange"];
     output_pwm [label="Servo PWM"];
 
     rc_input -> input_mapping;
+    height_sensor -> state_estimation;
     gps_driver -> state_estimation;
     mpu9250_driver -> state_estimation;
     icm20689_driver -> state_estimation;
