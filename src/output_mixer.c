@@ -44,7 +44,9 @@ void output_mixer_init(output_mixer_t *mixer, parameter_namespace_t *ns)
     }
 }
 
-void output_mixer_mix(output_mixer_t *mixer, const InputMessage *in, float output[OUTPUTS_CHANNELS])
+void output_mixer_mix(output_mixer_t *mixer,
+                      const FlightControlInput *in,
+                      float output[OUTPUTS_CHANNELS])
 {
     for (int i = 0; i < OUTPUTS_CHANNELS; i++) {
         float cmax = parameter_scalar_get(&mixer->params.outputs[i].max_ms);

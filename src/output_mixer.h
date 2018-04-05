@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <parameter/parameter.h>
+#include "messages/FlightControlInput.pb.h"
 
 #define OUTPUTS_CHANNELS 4
 
@@ -25,22 +26,17 @@ typedef struct {
                 parameter_t lift;
                 parameter_t rudder;
             } gains;
-        } outputs[4];
+        } outputs[OUTPUTS_CHANNELS];
     } params;
 } output_mixer_t;
-
-typedef struct {
-    float throttle;
-    float roll;
-    float lift;
-    float rudder;
-} InputMessage;
 
 /** Initializes an output mixer and declares its parameters in the given namespace. */
 void output_mixer_init(output_mixer_t *mixer, parameter_namespace_t *ns);
 
 /** Mixes the inputs and puts them in the output. */
-void output_mixer_mix(output_mixer_t *mixer, const InputMessage *in, float output[OUTPUTS_CHANNELS]);
+void output_mixer_mix(output_mixer_t *mixer,
+                      const FlightControlInput *in,
+                      float output[OUTPUTS_CHANNELS]);
 
 #ifdef __cplusplus
 }

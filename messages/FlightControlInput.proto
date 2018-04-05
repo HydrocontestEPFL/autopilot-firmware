@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+message FlightControlInput
+{
+    required float throttle = 1;
+    required float roll = 2;
+    required float lift = 3;
+    required float rudder = 4;
+}

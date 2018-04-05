@@ -9,7 +9,7 @@
 TEST_GROUP (OutputMixing) {
     output_mixer_t mixer;
     parameter_namespace_t ns;
-    InputMessage msg;
+    FlightControlInput msg;
     float out[4];
 
     void setup()
