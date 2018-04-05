@@ -35,6 +35,7 @@ source:
   - src/input_mapper.c
   - src/mpu9250.c
   - src/msgbus_protobuf.c
+  - src/output_mixer.c
   - src/sbus.c
   - src/telemetry/rpc.c
   - src/telemetry/rpc_parameter_server.c
