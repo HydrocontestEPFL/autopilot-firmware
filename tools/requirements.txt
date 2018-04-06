@@ -1,2 +1,6 @@
 protobuf==3.5.1
 PyQt5==5.10.1
+jupyter==1.0.0
+sympy==1.1.1
+matplotlib==2.2.2
+numpy==1.14.2
