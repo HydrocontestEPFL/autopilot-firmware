@@ -20,6 +20,14 @@ firmware_build:
     - make protoc
     - make
 
+bazel_build:
+  stage: test
+  script:
+    - .ci/install_bazel.sh
+    - bazel build //...
+    - bazel test //... --test_output=all
+    - bazel test @ch_cvra_parameter://all
+
 tools_tests:
   stage: test
   script:

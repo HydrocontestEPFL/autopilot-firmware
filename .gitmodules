@@ -18,7 +18,7 @@
 	url = https://github.com/cvra/parameter
 [submodule "lib/cmp_mem_access"]
 	path = lib/cmp_mem_access
-	url = https://github.com/stapelzeiger/cmp_mem_access
+	url = https://github.com/cvra/cmp_mem_access
 [submodule "lib/cmp"]
 	path = lib/cmp
 	url = https://github.com/cvra/cmp
