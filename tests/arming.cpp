@@ -1,7 +1,7 @@
 #include <CppUTest/TestHarness.h>
 #include <CppUTestExt/MockSupport.h>
 
-#include "../src/commander.h"
+#include "commander.h"
 
 TEST_GROUP (ArmingTestGroup) {
     commander_t commander;
