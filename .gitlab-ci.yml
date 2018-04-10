@@ -24,6 +24,7 @@ bazel_build:
   stage: test
   script:
     - .ci/install_bazel.sh
+    - packager
     - make protoc # still needed unfortunately
     - bazel build //...
     - bazel test @ch_cvra_parameter//:all
