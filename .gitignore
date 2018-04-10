@@ -40,3 +40,6 @@ version.c
 *.swp
 
 CMakeLists.txt
+
+# Bazel stuff
+bazel-*
