@@ -1,3 +1,6 @@
 build --cxxopt="-std=c++14"
 test --cxxopt="-std=c++14"
 
+build:stm32 --crosstool_top=//toolchain:stm32
+build:stm32 --cpu=armv7m
+build:stm32 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain

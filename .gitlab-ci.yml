@@ -25,7 +25,7 @@ bazel_build:
   script:
     - .ci/install_bazel.sh
     - bazel build //...
-    - bazel test @ch_cvra_parameter://all
+    - bazel test @ch_cvra_parameter//:all
 
 tools_tests:
   stage: test
