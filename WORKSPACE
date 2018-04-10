@@ -30,3 +30,8 @@ local_repository(
     name = "ch_cvra_msgbus",
     path = "lib/msgbus",
 )
+
+local_repository(
+    name = "com_github_nanopb_nanopb",
+    path = "lib/nanopb/nanopb",
+)

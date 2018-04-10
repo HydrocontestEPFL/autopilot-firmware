@@ -239,7 +239,7 @@ protoc:
 		--plugin=protoc-gen-nanopb=lib/nanopb/nanopb/generator/protoc-gen-nanopb \
 		--python_out=build/messages \
 		-I lib/nanopb/nanopb/generator/proto \
-		-I messages/ --nanopb_out=build/messages/ $(PROTOSRC)
+		-I messages/ --nanopb_out=--library-include-format='#include\ \"%s\"':build/messages/ $(PROTOSRC)
 
 # Generates a ctags file containing the correct definition for the build
 .PHONY: ctags
