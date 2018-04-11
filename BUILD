@@ -19,4 +19,15 @@ cc_library(
     deps = [
         ":messages",
     ],
+    strip_include_prefix = "src",
+)
+
+cc_test(
+    name = "sbus-test",
+    srcs = ["tests/sbus_parser.cpp"],
+    deps = [
+        ":sbus",
+        "@ch_cvra_test_runner//:main",
+    ],
+    size = "small",
 )
