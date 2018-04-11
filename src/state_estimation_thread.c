@@ -14,24 +14,33 @@
 void state_estimation_thd(void *p)
 {
     (void)p;
+
+    static TOPIC_DECL(state, BoatState);
+
+    static struct {
+        parameter_namespace_t ns;
+        parameter_t beta;
+    } params;
+
     chRegSetThreadName(__FUNCTION__);
     madgwick_filter_t filter;
     madgwick_filter_init(&filter);
+
+    parameter_namespace_declare(&params.ns, &parameter_root, "ahrs");
+    parameter_scalar_declare_with_default(&params.beta, &params.ns, "beta", 0.5);
 
     messagebus_topic_t *imu_topic;
 
     imu_topic = messagebus_find_topic_blocking(&bus, "imu0");
 
-    static TOPIC_DECL(state, BoatState);
     messagebus_advertise_topic(&bus, &state.topic, "state");
 
     madgwick_filter_set_sample_frequency(&filter, FREQUENCY);
-    // TODO: Take those from parameter tree
-    madgwick_filter_set_gain(&filter, 0.5);
 
     while (1) {
         IMUReading msg;
         messagebus_topic_wait(imu_topic, &msg, sizeof(msg));
+        madgwick_filter_set_gain(&filter, parameter_scalar_get(&params.beta));
 
         DEBUG("Updating madgwick filter...");
         madgwick_filter_updateIMU(&filter,
