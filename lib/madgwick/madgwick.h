@@ -1,5 +1,5 @@
 // =====================================================================================================
-// MadgwickAHRS.h
+// madgwick.h
 // =====================================================================================================
 //
 // Implementation of Madgwick's IMU and AHRS algorithms.
@@ -10,8 +10,8 @@
 // 02/10/2011	SOH Madgwick	Optimised for reduced CPU load
 //
 // =====================================================================================================
-#ifndef MadgwickAHRS_h
-#define MadgwickAHRS_h
+#ifndef madgwick_h
+#define madgwick_h
 
 #ifdef __cplusplus
 extern "C" {

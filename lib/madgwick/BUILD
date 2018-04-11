@@ -1,7 +1,7 @@
 cc_library(
     name = "madgwick",
-    srcs = ["MadgwickAHRS.c"],
-    hdrs = ["MadgwickAHRS.h"],
+    srcs = ["madgwick.c"],
+    hdrs = ["madgwick.h"],
 )
 
 cc_test(

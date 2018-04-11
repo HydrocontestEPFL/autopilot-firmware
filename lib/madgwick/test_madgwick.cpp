@@ -1,6 +1,6 @@
 #include <CppUTest/TestHarness.h>
 #include <CppUTestExt/MockSupport.h>
-#include "MadgwickAHRS.h"
+#include "madgwick.h"
 
 TEST_GROUP (MadgwickTestGroup) {
     madgwick_filter_t f;

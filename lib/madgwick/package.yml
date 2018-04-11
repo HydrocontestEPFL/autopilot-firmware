@@ -1,5 +1,5 @@
 source:
-  - MadgwickAHRS.c
+  - madgwick.c
 
 tests:
   - test_madgwick.cpp
