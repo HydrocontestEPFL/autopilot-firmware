@@ -1,0 +1,5 @@
+source:
+  - MadgwickAHRS.c
+
+tests:
+  - test_madgwick.cpp
