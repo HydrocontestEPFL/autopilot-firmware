@@ -26,6 +26,7 @@ target.arm:
   - src/output_pwm_thread.c
   - src/parameter_port.c
   - src/sbus_thread.c
+  - src/state_estimation_thread.c
   - src/telemetry/rpc_callbacks.c
   - src/telemetry/rpc_server_thread.c
   - src/telemetry/udp_topic_broadcaster.c
