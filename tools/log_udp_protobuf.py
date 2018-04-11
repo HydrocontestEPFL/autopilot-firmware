@@ -7,10 +7,12 @@ import sys
 import os.path
 import argparse
 import socketserver
+import re
 
 from google.protobuf import text_format
 
 import messages
+
 
 def parse_packet(data):
     messagesize_size = len(messages.MessageSize(bytes=0).SerializeToString())
@@ -35,28 +37,40 @@ def parse_packet(data):
     return header, msg
 
 
-class Handler(socketserver.BaseRequestHandler):
-    def handle(self):
-        data = self.request[0]
-        header, msg = parse_packet(data)
-        print("="*5)
-        print("topic: '{}'".format(header.name))
-        print("type: {}".format(msg.DESCRIPTOR.name))
-        print("data:")
-        print(text_format.MessageToString(msg, indent=2))
-
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--port", "-p", default=10000, help="Port to listen on (10000)")
+    parser.add_argument(
+        "--port", "-p", default=10000, help="Port to listen on (10000)")
+    parser.add_argument(
+        "--filter", "-f", help="Filter regexp to apply on the topic name")
 
     return parser.parse_args()
+
 
 def main():
     args = parse_args()
 
+    if args.filter:
+        topic_filter = re.compile(args.filter, flags=re.IGNORECASE)
+    else:
+        topic_filter = re.compile(".*")
+
+    class Handler(socketserver.BaseRequestHandler):
+        def handle(self):
+            data = self.request[0]
+            header, msg = parse_packet(data)
+
+            if not topic_filter.search(header.name):
+                return
+
+            print("=" * 5)
+            print("topic: '{}'".format(header.name))
+            print("type: {}".format(msg.DESCRIPTOR.name))
+            print("data:")
+            print(text_format.MessageToString(msg, indent=2))
+
     with socketserver.UDPServer(("0.0.0.0", args.port), Handler) as server:
         server.serve_forever()
-
 
 
 if __name__ == '__main__':
