@@ -23,8 +23,15 @@ def parse_args():
         "name",
         help="Name of the parameter with full path, e.g. /led/blink_rate")
 
-    # TODO: Handle other parameter types
-    parser.add_argument("val", type=float)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--integer", "-i", type=int, help="Integer value")
+    group.add_argument(
+        "--scalar", "-s", type=float, help="Floating point value")
+    group.add_argument(
+        "--boolean",
+        "-b",
+        type=lambda s: bool(int(s)),
+        help="Boolean value (as 0 or 1)")
 
     return parser.parse_args()
 
@@ -33,7 +40,15 @@ def main():
     args = parse_args()
     conn = socket.create_connection((args.host, args.port))
 
-    param = messages.Parameter(name=args.name, scalar_value=args.val)
+    param = messages.Parameter(name=args.name)
+
+    if args.integer is not None:
+        param.int_value = args.integer
+    elif args.scalar is not None:
+        param.scalar_value = args.scalar
+    else:
+        param.bool_value = args.boolean
+
     req = messages.ParameterSetRequest(parameter=param)
     conn.send(rpc.encode_request("parameter_server_set", req))
     reply = rpc.read_reply(conn, messages.ParameterSetReply)
