@@ -27,7 +27,8 @@ bazel_build:
     - packager
     - make protoc # still needed unfortunately
     - bazel build //...
-    - bazel test @ch_cvra_parameter//:all
+    - bazel test //... --test_output=all
+    - bazel test @ch_cvra_parameter//:all --test_output=all
 
 tools_tests:
   stage: test
