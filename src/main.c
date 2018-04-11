@@ -13,6 +13,7 @@
 #include "telemetry/udp_topic_injector.h"
 #include "telemetry/rpc_server_thread.h"
 #include "exti.h"
+#include "state_estimation_thread.h"
 #include "log.h"
 
 parameter_namespace_t parameter_root;
@@ -69,6 +70,7 @@ int main(void)
     mpu9250_start();
     output_pwm_start();
     input_mapper_start();
+    state_estimation_start();
     sbus_start(NULL); /* TODO: Use real stream */
 
     NOTICE("Boot complete");

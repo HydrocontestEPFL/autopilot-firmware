@@ -14,6 +14,7 @@ depends:
   - nanopb
   - msgbus
   - parameter
+  - madgwick
 
 target.arm:
   - src/board/board.c

@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+import "Quaternion.proto";
+
+message BoatState
+{
+    option (nanopb_msgopt).msgid = 15;
+    required Quaternion orientation = 1;
+}
