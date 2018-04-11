@@ -12,6 +12,7 @@
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
 #include "telemetry/rpc_server_thread.h"
+#include "exti.h"
 #include "log.h"
 
 parameter_namespace_t parameter_root;
@@ -64,6 +65,7 @@ int main(void)
     usb_start();
     log_start();
     blinker_start();
+    exti_start();
     mpu9250_start();
     output_pwm_start();
     input_mapper_start();
