@@ -30,7 +30,7 @@
 
 # ChibiOS build files
 .dep
-build
+/build
 
 # Packager build files
 app_src.mk
