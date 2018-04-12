@@ -13,6 +13,7 @@
 #include "telemetry/udp_topic_injector.h"
 #include "telemetry/rpc_server_thread.h"
 #include "exti.h"
+#include "sdcard.h"
 #include "state_estimation_thread.h"
 #include "log.h"
 
@@ -63,6 +64,7 @@ int main(void)
     udp_topic_broadcast_start();
     udp_topic_injector_start();
     rpc_server_start();
+    sdcard_start();
     usb_start();
     log_start();
     blinker_start();

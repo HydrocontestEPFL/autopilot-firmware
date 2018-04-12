@@ -15,11 +15,14 @@ depends:
   - msgbus
   - parameter
   - madgwick
+  - fatfs
 
 target.arm:
   - src/board/board.c
   - src/cmd.c
   - src/exti.c
+  - src/fatfs_bindings/fatfs_diskio.c
+  - src/fatfs_bindings/fatfs_syscalls.c
   - src/input_mapper_thread.c
   - src/log.c
   - src/main.c
@@ -27,6 +30,7 @@ target.arm:
   - src/output_pwm_thread.c
   - src/parameter_port.c
   - src/sbus_thread.c
+  - src/sdcard.c
   - src/state_estimation_thread.c
   - src/telemetry/rpc_callbacks.c
   - src/telemetry/rpc_server_thread.c

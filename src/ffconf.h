@@ -1,6 +1,4 @@
-/* CHIBIOS FIX */
-#include "ch.h"
-
+#include <ch.h>
 /*---------------------------------------------------------------------------/
    /  FatFs - FAT file system module configuration file  R0.10b (C)ChaN, 2014
    /---------------------------------------------------------------------------*/
@@ -35,7 +33,7 @@
 #define _USE_STRFUNC 0 /* 0:Disable or 1-2:Enable */
 /* To enable string functions, set _USE_STRFUNC to 1 or 2. */
 
-#define _USE_MKFS 0 /* 0:Disable or 1:Enable */
+#define _USE_MKFS 1 /* 0:Disable or 1:Enable */
 /* To enable f_mkfs() function, set _USE_MKFS to 1 and set _FS_READONLY to 0 */
 
 #define _USE_FASTSEEK 0 /* 0:Disable or 1:Enable */
@@ -169,10 +167,10 @@
    /  The value defines how many files/sub-directories can be opened simultaneously
    /  with file lock control. This feature uses bss _FS_LOCK * 12 bytes. */
 
-#define _FS_REENTRANT 0         /* 0:Disable or 1:Enable */
+#define _FS_REENTRANT 1         /* 0:Disable or 1:Enable */
 #define _FS_TIMEOUT MS2ST(1000) /* Timeout period in unit of time tick */
-#define _SYNC_t                                                                                    \
-    semaphore_t * /* O/S dependent sync object type. e.g. HANDLE, OS_EVENT*, ID, SemaphoreHandle_t and etc.. */
+/* O/S dependent sync object type. e.g. HANDLE, OS_EVENT*, ID, SemaphoreHandle_t and etc.. */
+#define _SYNC_t semaphore_t*
 /* The _FS_REENTRANT option switches the re-entrancy (thread safe) of the FatFs module.
    /
    /   0: Disable re-entrancy. _FS_TIMEOUT and _SYNC_t have no effect.

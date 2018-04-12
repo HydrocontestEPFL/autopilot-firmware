@@ -1,3 +1,4 @@
+// clang-format: off
 /*----------------------------------------------------------------------------/
    /  FatFs - FAT file system module  R0.10b                (C)ChaN, 2014
    /-----------------------------------------------------------------------------/
@@ -5207,3 +5208,4 @@ int f_printf(FIL *fp,          /* Pointer to the file object */
 
 #endif /* !_FS_READONLY */
 #endif /* _USE_STRFUNC */
+// clang-format: on

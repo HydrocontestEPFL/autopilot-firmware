@@ -7,6 +7,8 @@
 #include <shell.h>
 #include "mpu9250.h"
 #include "main.h"
+#include <fatfs/ff.h>
+#include "sdcard.h"
 
 static void cmd_topics(BaseSequentialStream *chp, int argc, char *argv[])
 {
@@ -75,8 +77,35 @@ static void cmd_reboot(BaseSequentialStream *chp, int argc, char **argv)
     NVIC_SystemReset();
 }
 
+static void cmd_mount(BaseSequentialStream *chp, int argc, char **argv)
+{
+    (void)chp;
+    (void)argc;
+    (void)argv;
+    sdcard_mount();
+}
+
+static void cmd_touch(BaseSequentialStream *chp, int argc, char **argv)
+{
+    if (argc != 1) {
+        chprintf(chp, "Usage: touch file\r\n");
+        return;
+    }
+
+    FIL file;
+    if (f_open(&file, argv[0], FA_WRITE) != FR_OK) {
+        chprintf(chp, "Could not open %s\r\n", argv[0]);
+    }
+
+    f_close(&file);
+}
+
 static ShellConfig shell_cfg;
-const ShellCommand shell_commands[] = {{"reboot", cmd_reboot}, {"topics", cmd_topics}, {NULL, NULL}};
+const ShellCommand shell_commands[] = {{"reboot", cmd_reboot},
+                                       {"topics", cmd_topics},
+                                       {"mount", cmd_mount},
+                                       {"touch", cmd_touch},
+                                       {NULL, NULL}};
 
 #define SHELL_WA_SIZE 2048
 
