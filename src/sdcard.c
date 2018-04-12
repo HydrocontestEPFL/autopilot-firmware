@@ -25,7 +25,8 @@ void sdcard_mount(void)
         return;
     }
 
-    err = f_mount(&SDC_FS, "", 0);
+    const bool mount_immediately = true;
+    err = f_mount(&SDC_FS, "", mount_immediately);
     if (err != FR_OK) {
         WARNING("Could not mount filesystem");
         sdcDisconnect(&SDCD1);
