@@ -1,2 +1,6 @@
-target.arm:
+source:
   - ff.c
+
+tests:
+  - fatfs_simulated_diskio.cpp
+  - fatfs_test.cpp

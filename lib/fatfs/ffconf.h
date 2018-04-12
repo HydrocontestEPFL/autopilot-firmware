@@ -1,4 +1,3 @@
-#include <ch.h>
 /*---------------------------------------------------------------------------/
    /  FatFs - FAT file system module configuration file  R0.10b (C)ChaN, 2014
    /---------------------------------------------------------------------------*/
@@ -123,7 +122,7 @@
 /* Number of volumes (logical drives) to be used. */
 
 #define _STR_VOLUME_ID 0 /* 0:Use only 0-9 for drive ID, 1:Use strings for drive ID */
-#define _VOLUME_STRS "RAM", "NAND", "CF", "SD1", "SD2", "USB1", "USB2", "USB3"
+#define _VOLUME_STRS "RAM", "SD"
 /* When _STR_VOLUME_ID is set to 1, also pre-defined strings can be used as drive
    /  number in the path name. _VOLUME_STRS defines the drive ID strings for each logical
    /  drives. Number of items must be equal to _VOLUMES. Valid characters for the drive ID
@@ -168,9 +167,8 @@
    /  with file lock control. This feature uses bss _FS_LOCK * 12 bytes. */
 
 #define _FS_REENTRANT 1         /* 0:Disable or 1:Enable */
-#define _FS_TIMEOUT MS2ST(1000) /* Timeout period in unit of time tick */
 /* O/S dependent sync object type. e.g. HANDLE, OS_EVENT*, ID, SemaphoreHandle_t and etc.. */
-#define _SYNC_t semaphore_t*
+#define _SYNC_t void*
 /* The _FS_REENTRANT option switches the re-entrancy (thread safe) of the FatFs module.
    /
    /   0: Disable re-entrancy. _FS_TIMEOUT and _SYNC_t have no effect.
