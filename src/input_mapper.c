@@ -13,10 +13,7 @@ void input_mapper_init(input_mapper_t *mapper, parameter_namespace_t *ns)
                                            "max",
                                            default_max);
     parameter_namespace_declare(&mapper->params.roll.ns, ns, "roll");
-    parameter_integer_declare_with_default(&mapper->params.roll.min,
-                                           &mapper->params.roll.ns,
-                                           "min",
-                                           default_max);
+    parameter_integer_declare_with_default(&mapper->params.roll.min, &mapper->params.roll.ns, "min", 0);
     parameter_integer_declare_with_default(&mapper->params.roll.max,
                                            &mapper->params.roll.ns,
                                            "max",
