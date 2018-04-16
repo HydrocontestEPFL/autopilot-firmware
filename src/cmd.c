@@ -82,8 +82,17 @@ static void cmd_mount(BaseSequentialStream *chp, int argc, char **argv)
     (void)chp;
     (void)argc;
     (void)argv;
-    sdcard_mount();
+    sdcard_automount();
 }
+
+static void cmd_umount(BaseSequentialStream *chp, int argc, char **argv)
+{
+    (void)chp;
+    (void)argc;
+    (void)argv;
+    sdcard_unmount();
+}
+
 
 static void cmd_touch(BaseSequentialStream *chp, int argc, char **argv)
 {
@@ -92,11 +101,20 @@ static void cmd_touch(BaseSequentialStream *chp, int argc, char **argv)
         return;
     }
 
-    FIL file;
-    if (f_open(&file, argv[0], FA_WRITE) != FR_OK) {
+    static FIL file;
+    if (f_open(&file, argv[0], FA_WRITE | FA_CREATE_NEW) != FR_OK) {
         chprintf(chp, "Could not open %s\r\n", argv[0]);
+        return;
     }
 
+    BYTE written;
+    FRESULT res;
+    res = f_write(&file, "foobar", 6, &written);
+
+    if (res != FR_OK || written != 6) {
+        chprintf(chp, "Could not write, res = %d\n", (int)res);
+    }
+    f_sync(&file);
     f_close(&file);
 }
 
@@ -104,6 +122,7 @@ static ShellConfig shell_cfg;
 const ShellCommand shell_commands[] = {{"reboot", cmd_reboot},
                                        {"topics", cmd_topics},
                                        {"mount", cmd_mount},
+                                       {"umount", cmd_umount},
                                        {"touch", cmd_touch},
                                        {NULL, NULL}};
 

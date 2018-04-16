@@ -49,7 +49,9 @@ void sdcard_automount(void)
             sdcard_mount();
         }
     } else {
+        WARNING("No SD card present");
         if (sdcard_mounted) {
+            WARNING("Unmounting");
             sdcard_unmount();
         }
     }
