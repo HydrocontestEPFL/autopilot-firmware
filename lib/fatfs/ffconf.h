@@ -166,9 +166,9 @@
    /  The value defines how many files/sub-directories can be opened simultaneously
    /  with file lock control. This feature uses bss _FS_LOCK * 12 bytes. */
 
-#define _FS_REENTRANT 1         /* 0:Disable or 1:Enable */
+#define _FS_REENTRANT 1 /* 0:Disable or 1:Enable */
 /* O/S dependent sync object type. e.g. HANDLE, OS_EVENT*, ID, SemaphoreHandle_t and etc.. */
-#define _SYNC_t void*
+#define _SYNC_t void *
 /* The _FS_REENTRANT option switches the re-entrancy (thread safe) of the FatFs module.
    /
    /   0: Disable re-entrancy. _FS_TIMEOUT and _SYNC_t have no effect.

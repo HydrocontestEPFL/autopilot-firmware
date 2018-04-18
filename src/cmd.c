@@ -93,7 +93,6 @@ static void cmd_umount(BaseSequentialStream *chp, int argc, char **argv)
     sdcard_unmount();
 }
 
-
 static void cmd_touch(BaseSequentialStream *chp, int argc, char **argv)
 {
     if (argc != 1) {

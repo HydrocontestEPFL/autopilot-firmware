@@ -24,9 +24,11 @@ BreakStringLiterals: 'true'
 Cpp11BracedListStyle: 'true'
 ColumnLimit: 100
 DerivePointerAlignment: 'false'
+FixNamespaceComments: 'true'
 IndentCaseLabels: 'true'
 NamespaceIndentation: None
 PointerAlignment: Right
+ReflowComments: 'true'
 SortIncludes: 'false'
 SpaceBeforeAssignmentOperators: 'true'
 SpaceBeforeParens: ControlStatements

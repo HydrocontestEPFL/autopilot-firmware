@@ -11,7 +11,7 @@ static uint8_t disk[SECTOR_COUNT * SECTOR_SIZE];
 int ff_cre_syncobj(BYTE vol, _SYNC_t *sobj)
 {
     (void)sobj;
-    (void) vol;
+    (void)vol;
     return true;
 }
 
@@ -34,7 +34,7 @@ void ff_rel_grant(_SYNC_t sobj)
 
 BYTE disk_initialize(BYTE drive_number)
 {
-    (void) drive_number;
+    (void)drive_number;
     return 0;
 }
 
