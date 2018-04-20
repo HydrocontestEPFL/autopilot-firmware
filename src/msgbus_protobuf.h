@@ -40,8 +40,8 @@ typedef struct {
         {                                                                                          \
             type##_fields,                                                                         \
             type##_msgid,                                                                          \
-            {0, 0},                                                                                   \
-            {0, 0},                                                                                   \
+            {0, 0},                                                                                \
+            {0, 0},                                                                                \
         },                                                                                         \
     }
 
