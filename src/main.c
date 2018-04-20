@@ -11,6 +11,7 @@
 #include "output_mixer/output_pwm_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
+#include "datalogging/sdcard_logger.h"
 #include "telemetry/rpc_server_thread.h"
 #include "exti.h"
 #include "sdcard.h"
@@ -65,6 +66,8 @@ int main(void)
     udp_topic_injector_start();
     rpc_server_start();
     sdcard_start();
+    sdcard_mount();
+    sdcard_logger_start();
     usb_start();
     log_start();
     blinker_start();

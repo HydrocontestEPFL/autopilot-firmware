@@ -20,6 +20,7 @@ depends:
 target.arm:
   - src/board/board.c
   - src/cmd.c
+  - src/datalogging/sdcard_logger.c
   - src/exti.c
   - src/fatfs_bindings/fatfs_diskio.c
   - src/fatfs_bindings/fatfs_syscalls.c
