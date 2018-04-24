@@ -6,6 +6,7 @@ cc_library(
         "build/messages/*.pb.h",
     ]),
     hdrs = glob(["build/messages/*.pb.h"]),
+    visibility = ["//visibility:public"],
     strip_include_prefix = "build",
     deps = [
         "@com_github_nanopb_nanopb//:nanopb",

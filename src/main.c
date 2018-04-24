@@ -5,7 +5,7 @@
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
-#include "sbus_thread.h"
+#include "sbus/sbus_thread.h"
 #include "mpu9250_thread.h"
 #include "input_mapper_thread.h"
 #include "output_pwm_thread.h"
