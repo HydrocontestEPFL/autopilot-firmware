@@ -55,6 +55,6 @@ tests:
   - tests/mpu9250.cpp
   - tests/msgbus_protobuf.cpp
   - tests/output_mixer.cpp
-  - tests/rpc.cpp
   - tests/rpc_parameter.cpp
+  - src/telemetry/tests/rpc.cpp
   - src/sbus/sbus_decode_test.cpp

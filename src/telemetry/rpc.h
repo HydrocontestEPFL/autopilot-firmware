@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-#include <pb_encode.h>
-#include <pb_decode.h>
+#include "pb_encode.h"
+#include "pb_decode.h"
 
 typedef struct {
     const char *name;

@@ -2,13 +2,13 @@
 #include <CppUTest/TestHarness.h>
 #include <CppUTestExt/MockSupport.h>
 
-#include <pb_encode.h>
-#include <pb_decode.h>
+#include "pb_encode.h"
+#include "pb_decode.h"
 
 #include "messages/RemoteProcedureCall.pb.h"
 #include "messages/MessageSize.pb.h"
 #include "messages/Timestamp.pb.h"
-#include "telemetry/rpc.h"
+#include "../rpc.h"
 
 TEST_GROUP (RemoteProcedureCallTestGroup) {
     uint8_t input_buffer[128];
