@@ -23,7 +23,7 @@ target.arm:
   - src/exti.c
   - src/fatfs_bindings/fatfs_diskio.c
   - src/fatfs_bindings/fatfs_syscalls.c
-  - src/input_mapper_thread.c
+  - src/input_mapper/input_mapper_thread.c
   - src/log.c
   - src/main.c
   - src/mpu9250_thread.c
@@ -40,7 +40,7 @@ target.arm:
 
 source:
   - src/commander/commander.c
-  - src/input_mapper.c
+  - src/input_mapper/input_mapper.c
   - src/mpu9250.c
   - src/msgbus_protobuf.c
   - src/output_mixer.c
@@ -51,7 +51,7 @@ source:
 tests:
   - src/commander/test_commander.cpp
   - tests/hal_mocks.cpp
-  - tests/input_remapper.cpp
+  - src/input_mapper/test_input_mapper.cpp
   - tests/mpu9250.cpp
   - tests/msgbus_protobuf.cpp
   - tests/output_mixer.cpp

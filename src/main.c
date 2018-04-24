@@ -7,7 +7,7 @@
 #include "main.h"
 #include "sbus/sbus_thread.h"
 #include "mpu9250_thread.h"
-#include "input_mapper_thread.h"
+#include "input_mapper/input_mapper_thread.h"
 #include "output_pwm_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
