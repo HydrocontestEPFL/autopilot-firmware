@@ -12,23 +12,3 @@ cc_library(
         "@com_github_nanopb_nanopb//:nanopb",
     ],
 )
-
-cc_library(
-    name = "sbus",
-    srcs = ["src/sbus.c"],
-    hdrs = ["src/sbus.h"],
-    deps = [
-        ":messages",
-    ],
-    strip_include_prefix = "src",
-)
-
-cc_test(
-    name = "sbus-test",
-    srcs = ["tests/sbus_parser.cpp"],
-    deps = [
-        ":sbus",
-        "@ch_cvra_test_runner//:main",
-    ],
-    size = "small",
-)
