@@ -23,7 +23,7 @@ target.arm:
   - src/exti.c
   - src/fatfs_bindings/fatfs_diskio.c
   - src/fatfs_bindings/fatfs_syscalls.c
-  - src/input_mapper/input_mapper_thread.c
+  - src/input_mapper/input_mapper_thread.cpp
   - src/log.c
   - src/main.c
   - src/mpu9250_thread.c
