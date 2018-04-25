@@ -11,7 +11,7 @@ static MUTEX_DECL(watchgroup_lock);
 static CONDVAR_DECL(watchgroup_condvar);
 
 #define MSG_MAX_LENGTH 128
-#define MSG_BUF_SIZE 16
+#define MSG_BUF_SIZE 64
 
 struct encoded_message {
     uint16_t len;
@@ -74,10 +74,14 @@ static void sdcard_topic_write_thd(void *p)
 
     FIL *f = (FIL *)p;
 
+    unsigned total_bytes = 0;
+
     while (true) {
         struct encoded_message *msg;
 
         msg_t res = chMBFetch(&msg_mailbox, (msg_t *)&msg, TIME_INFINITE);
+
+        DEBUG("Writing encoded message");
 
         if (res != MSG_OK) {
             continue;
@@ -85,13 +89,20 @@ static void sdcard_topic_write_thd(void *p)
 
         UINT byte_written;
 
-        f_write(f, msg->buf, msg->len, &byte_written);
+        res = f_write(f, msg->buf, msg->len, &byte_written);
 
         if (byte_written != msg->len) {
-            WARNING("Could not write message to disk");
+            WARNING("Could not write message to disk, wanted %d got %d (res = %d)", msg->len, byte_written, res);
         }
 
         chPoolFree(&msg_pool, msg);
+
+        /* Flush the SD card every now and then */
+        total_bytes += byte_written;
+        if (total_bytes > 1024) {
+            f_sync(f);
+            total_bytes = 0;
+        }
     }
 }
 
@@ -103,8 +114,8 @@ void sdcard_logger_start(void)
     messagebus_watchgroup_init(&watchgroup, &watchgroup_lock, &watchgroup_condvar);
     messagebus_new_topic_callback_register(&bus, &cb, new_topic_cb, NULL);
 
-    /* Search for a usable logfile */
-    FIL log_file;
+    /* Search for a usable logfile by trying 0001.bin, 0002.bin, etc. */
+    static FIL log_file;
     bool openened = false;
     for (int i = 0; i <= 9999; i++) {
         char name[10];
@@ -112,16 +123,20 @@ void sdcard_logger_start(void)
 
         /* Fails if the file exists */
         if (f_open(&log_file, name, FA_CREATE_NEW | FA_WRITE) == FR_OK) {
+            NOTICE("Opened log file at %s", name);
             openened = true;
             break;
         }
     }
 
     if (openened) {
+        DEBUG("Starting sdcard logging threads");
         static THD_WORKING_AREA(encode_wa, 2048);
         chThdCreateStatic(encode_wa, sizeof(encode_wa), HIGHPRIO, sdcard_topic_encode_thd, NULL);
 
         static THD_WORKING_AREA(write_wa, 2048);
-        chThdCreateStatic(write_wa, sizeof(write_wa), NORMALPRIO, sdcard_topic_write_thd, NULL);
+        chThdCreateStatic(write_wa, sizeof(write_wa), NORMALPRIO, sdcard_topic_write_thd, &log_file);
+    } else {
+        WARNING("Could not open a log file.");
     }
 }
