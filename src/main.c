@@ -65,11 +65,13 @@ int main(void)
     udp_topic_broadcast_start();
     udp_topic_injector_start();
     rpc_server_start();
+
+    usb_start();
+    log_start();
+
     sdcard_start();
     sdcard_mount();
     sdcard_logger_start();
-    usb_start();
-    log_start();
     blinker_start();
     exti_start();
     mpu9250_start();
