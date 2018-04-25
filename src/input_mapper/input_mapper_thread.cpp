@@ -20,7 +20,7 @@ static void input_mapper_thread(void *p)
     input_mapper_init(&mapper, &mapper_ns);
 
     messagebus::TopicWrapper<RemoteControlInput> rc_input_topic (&rcinput.topic);
-    auto sbus_topic = messagebus::find_topic<SBUSPacket>(bus, "sbus");
+    auto sbus_topic = messagebus::find_topic_blocking<SBUSPacket>(bus, "sbus");
 
     while (1) {
         RemoteControlInput result;
