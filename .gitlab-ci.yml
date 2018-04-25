@@ -37,4 +37,5 @@ tools_tests:
     - packager
     - make protoc
     - cd tools
+    - pip3 install -r requirements.txt
     - python3 -m unittest discover
