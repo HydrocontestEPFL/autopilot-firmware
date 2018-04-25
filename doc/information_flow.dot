@@ -5,7 +5,7 @@ digraph Flow {
     icm20689_driver [label="IMU driver\n(ICM20689)"]
     gps_driver [label="GPS driver"]
     parameter [label="Parameter storage", style=filled, color="green"];
-    data_logging [label="Data logging\n(SD card)"];
+    data_logging [label="Data logging\n(SD card)", style=filled, color="green"];
     rc_input [label="Remote control input\n(SBUS)", style="filled", color="orange"];
     ethernet [label="ODroid link\n(Ethernet)", style="filled", color="green"];
     input_mapping [label="Input mixing", style="filled", color="green"];

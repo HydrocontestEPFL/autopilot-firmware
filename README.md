@@ -3,8 +3,8 @@
 ## Tasks to be done
 
 ### Does not depend on hw
-* Output mixer (handles arming as well)
-* Input remapper
+* Commander thread.
+    Also need to handle mode (manual, roll, roll+altitude)
 * State estimation
 * Control loops
 
@@ -17,12 +17,12 @@
 
 ### Does depend on hw
 * Output module (generates servo PWM)
+* RGB led driver
 * Drivers for IMUs, GPS, and altitude sensor
-* Filesystem on SD card (FatFS for first iteration, YafFS2 might be more resilient)
-* Logging of bus messages to sd card
-* Logging of error messages to sd card
+* Logging of lib/error messages to sd card
 
 ### Long term
-* Protobuf to csv converter to ease the life of experimenters
+* Protobuf to csv converter to ease the life of experimenters.
+    -> Still need to do the csv part, but can read protobuf log
 * Protobuf plotter
 * Telemetry GUI (write requirements with the rest of the team)
