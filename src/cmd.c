@@ -106,7 +106,7 @@ static void cmd_touch(BaseSequentialStream *chp, int argc, char **argv)
         return;
     }
 
-    BYTE written;
+    UINT written;
     FRESULT res;
     res = f_write(&file, "foobar", 6, &written);
 
