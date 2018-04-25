@@ -1,10 +1,10 @@
 #include <sstream>
 #include <utility>
 #include <vector>
-#include <CppUTest/TestHarness.h>
-#include <CppUTestExt/MockSupport.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 #include "output_mixer.h"
-#include <parameter/parameter.h>
+#include "parameter/parameter.h"
 
 TEST_GROUP (OutputMixing) {
     output_mixer_t mixer;

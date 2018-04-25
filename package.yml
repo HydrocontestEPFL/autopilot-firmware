@@ -27,7 +27,7 @@ target.arm:
   - src/log.c
   - src/main.c
   - src/mpu9250_thread.c
-  - src/output_pwm_thread.c
+  - src/output_mixer/output_pwm_thread.c
   - src/parameter_port.c
   - src/sbus/sbus_thread.c
   - src/sdcard.c
@@ -43,18 +43,18 @@ source:
   - src/input_mapper/input_mapper.c
   - src/mpu9250.c
   - src/msgbus_protobuf.c
-  - src/output_mixer.c
+  - src/output_mixer/output_mixer.c
   - src/sbus/sbus.c
   - src/telemetry/rpc.c
   - src/telemetry/rpc_parameter_server.c
 
 tests:
   - src/commander/test_commander.cpp
-  - tests/hal_mocks.cpp
   - src/input_mapper/test_input_mapper.cpp
+  - src/output_mixer/test_output_mixer.cpp
+  - src/sbus/sbus_decode_test.cpp
+  - src/telemetry/tests/rpc.cpp
+  - src/telemetry/tests/rpc_parameter.cpp
+  - tests/hal_mocks.cpp
   - tests/mpu9250.cpp
   - tests/msgbus_protobuf.cpp
-  - tests/output_mixer.cpp
-  - tests/rpc_parameter.cpp
-  - src/telemetry/tests/rpc.cpp
-  - src/sbus/sbus_decode_test.cpp
