@@ -131,10 +131,10 @@ void sdcard_logger_start(void)
 
     if (openened) {
         DEBUG("Starting sdcard logging threads");
-        static THD_WORKING_AREA(encode_wa, 2048);
+        static THD_WORKING_AREA(encode_wa, 4096);
         chThdCreateStatic(encode_wa, sizeof(encode_wa), HIGHPRIO, sdcard_topic_encode_thd, NULL);
 
-        static THD_WORKING_AREA(write_wa, 2048);
+        static THD_WORKING_AREA(write_wa, 4096);
         chThdCreateStatic(write_wa, sizeof(write_wa), NORMALPRIO, sdcard_topic_write_thd, &log_file);
     } else {
         WARNING("Could not open a log file.");
