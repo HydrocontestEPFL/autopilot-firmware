@@ -7,6 +7,7 @@
 #include "msgbus_protobuf.h"
 #include "messages/IMUReading.pb.h"
 #include "messages/BoatState.pb.h"
+#include "commander/commander_thread.h"
 
 // TODO: Check the frequency
 #define FREQUENCY 250

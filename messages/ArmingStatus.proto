@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+import "nanopb.proto";
+
+message ArmingStatus
+{
+    option (nanopb_msgopt).msgid = 16;
+    required bool is_armed = 1;
+    required bool roll_is_stabilized = 2;
+    required bool altitude_is_stabilized = 3;
+}

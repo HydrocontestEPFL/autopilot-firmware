@@ -8,6 +8,7 @@
 #include "sbus/sbus_thread.h"
 #include "mpu9250_thread.h"
 #include "input_mapper/input_mapper_thread.h"
+#include "commander/commander_thread.h"
 #include "output_mixer/output_pwm_thread.h"
 #include "telemetry/udp_topic_broadcaster.h"
 #include "telemetry/udp_topic_injector.h"
@@ -78,6 +79,7 @@ int main(void)
     output_pwm_start();
     input_mapper_start();
     state_estimation_start();
+    commander_start();
     sbus_start(NULL); /* TODO: Use real stream */
 
     NOTICE("Boot complete");
