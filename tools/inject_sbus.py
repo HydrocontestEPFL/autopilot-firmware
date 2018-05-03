@@ -13,7 +13,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal, QThread, QTimer, Qt
 from functools import partial
 
 TOPIC_NAME = "sbus"
-CHANNELS = [("Throttle", 1), ("Roll", 2), ("Lift", 3), ("Rudder", 4),
+CHANNELS = [("Throttle", 3), ("Roll", 0), ("Lift", 2), ("Rudder", 1),
             ("Arming", 5)]
 
 
@@ -27,6 +27,8 @@ class SBusApp(QMainWindow):
         for channel, index in CHANNELS:
             box = QHBoxLayout()
             slider = QSlider(Qt.Horizontal)
+
+            channel = "{} (#{})".format(channel, index)
             label = QLabel(channel)
 
             slider.setTickInterval(20)
@@ -54,6 +56,7 @@ class SBusApp(QMainWindow):
 
     @pyqtSlot(int)
     def _slider_changed(self, v, i):
+        v = int(v * 1000 / 100) # map it to useful sbus value
         self.channelValues[i] = v
 
     @pyqtSlot()
