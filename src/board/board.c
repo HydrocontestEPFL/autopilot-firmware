@@ -133,7 +133,26 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp)
  * @brief   Board-specific initialization code.
  * @todo    Add your board-specific code, if any.
  */
-void boardInit(void) {}
+void boardInit(void)
+{
+    static const PWMConfig led_pwm_cfg_tim9 = {
+        4200000,
+        1000,           // 42kHz
+        NULL,
+        // activate channel 1 and 2
+        {
+            {PWM_OUTPUT_ACTIVE_LOW, NULL},
+            {PWM_OUTPUT_ACTIVE_LOW, NULL},
+            {PWM_OUTPUT_DISABLED, NULL},
+            {PWM_OUTPUT_DISABLED, NULL}
+        },
+        0,                  // TIMx_CR2 value
+        0                   // TIMx_DIER value
+    };
+
+    pwmStart(&PWMD9, &led_pwm_cfg_tim9);
+    board_rgb_led_set(0, 0, 0);
+}
 
 void board_user_led_green_set(bool on)
 {
@@ -148,4 +167,28 @@ void board_user_led_blue_set(bool on)
 void board_user_led_red_set(bool on)
 {
     palWritePad(GPIOB, GPIOB_LED3, on);
+}
+
+int clamp(int val, int min, int max)
+{
+    if (val < min) {
+        return min;
+    }
+
+    if (val > max) {
+        return max;
+    }
+    return val;
+}
+
+void board_rgb_led_set(int red, int green, int blue)
+{
+    red = clamp(red * 10, 0, 1000);
+    green = clamp(green * 10, 0, 1000);
+    blue = clamp(blue * 10, 0, 1000);
+
+    pwmEnableChannel(&PWMD9, 0, red);
+    pwmEnableChannel(&PWMD9, 1, green);
+
+    /* TODO: Implement blue channel (requires modifying chibios for tim10 */
 }

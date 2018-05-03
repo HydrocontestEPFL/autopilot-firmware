@@ -177,10 +177,8 @@
 #define GPIOE_SAI1_SD_B    3U
 #define GPIOE_ZIO_D57      4U
 #define GPIOE_SAI1_FS_A    4U
-#define GPIOE_ZIO_D58      5U
-#define GPIOE_SAI1_SCK_A   5U
-#define GPIOE_ZIO_D59      6U
-#define GPIOE_SAI1_SD_A    6U
+#define GPIOE_LED_RED      5U
+#define GPIOE_LED_GREEN    6U
 #define GPIOE_ZIO_D41      7U
 #define GPIOE_TIM1_ETR     7U
 #define GPIOE_ZIO_D42      8U
@@ -210,7 +208,7 @@
 #define GPIOF_MPU_INT      4U
 #define GPIOF_ARD_A4       5U
 #define GPIOF_ADC3_IN15    5U
-#define GPIOF_PIN6         6U
+#define GPIOF_LED_BLUE     6U
 #define GPIOF_ZIO_D62      7U
 #define GPIOF_SAI1_MCLK_B  7U
 #define GPIOF_ZIO_D61      8U
@@ -436,8 +434,6 @@
 #define LINE_SAI1_SD_B     PAL_LINE(GPIOE, 3U)
 #define LINE_ZIO_D57       PAL_LINE(GPIOE, 4U)
 #define LINE_SAI1_FS_A     PAL_LINE(GPIOE, 4U)
-#define LINE_ZIO_D58       PAL_LINE(GPIOE, 5U)
-#define LINE_SAI1_SCK_A    PAL_LINE(GPIOE, 5U)
 #define LINE_ZIO_D59       PAL_LINE(GPIOE, 6U)
 #define LINE_SAI1_SD_A     PAL_LINE(GPIOE, 6U)
 #define LINE_ZIO_D41       PAL_LINE(GPIOE, 7U)
@@ -1000,8 +996,8 @@
  * PE2  - ZIO_D31 ZIO_D56 SAI1_MCLK_A(input pullup).
  * PE3  - ZIO_D60 SAI1_SD_B         (input pullup).
  * PE4  - ZIO_D57 SAI1_FS_A         (input pullup).
- * PE5  - ZIO_D58 SAI1_SCK_A        (input pullup).
- * PE6  - ZIO_D59 SAI1_SD_A         (input pullup).
+ * PE5  - RGB LED RED (TIM9 CH1)    (alternate 3).
+ * PE6  - RGB LED GREENTIM9 CH2)    (alternate 3).
  * PE7  - ZIO_D41 TIM1_ETR          (input pullup).
  * PE8  - ZIO_D42 TIM1_CH1N         (input pullup).
  * PE9  - ARD_D6 TIM1_CH1           (input pullup).
@@ -1017,8 +1013,8 @@
                            PIN_MODE_INPUT(GPIOE_ZIO_D31) |        \
                            PIN_MODE_INPUT(GPIOE_ZIO_D60) |        \
                            PIN_MODE_INPUT(GPIOE_ZIO_D57) |        \
-                           PIN_MODE_INPUT(GPIOE_ZIO_D58) |        \
-                           PIN_MODE_INPUT(GPIOE_ZIO_D59) |        \
+                           PIN_MODE_ALTERNATE(GPIOE_LED_RED) |        \
+                           PIN_MODE_ALTERNATE(GPIOE_LED_GREEN) |        \
                            PIN_MODE_INPUT(GPIOE_ZIO_D41) |        \
                            PIN_MODE_INPUT(GPIOE_ZIO_D42) |        \
                            PIN_MODE_INPUT(GPIOE_ARD_D6) |         \
@@ -1033,8 +1029,8 @@
                            PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D31) |    \
                            PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D60) |    \
                            PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D57) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D58) |    \
-                           PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D59) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOE_LED_RED) |    \
+                           PIN_OTYPE_PUSHPULL(GPIOE_LED_GREEN) |    \
                            PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D41) |    \
                            PIN_OTYPE_PUSHPULL(GPIOE_ZIO_D42) |    \
                            PIN_OTYPE_PUSHPULL(GPIOE_ARD_D6) |     \
@@ -1049,8 +1045,8 @@
                            PIN_OSPEED_HIGH(GPIOE_ZIO_D31) |       \
                            PIN_OSPEED_HIGH(GPIOE_ZIO_D60) |       \
                            PIN_OSPEED_HIGH(GPIOE_ZIO_D57) |       \
-                           PIN_OSPEED_HIGH(GPIOE_ZIO_D58) |       \
-                           PIN_OSPEED_HIGH(GPIOE_ZIO_D59) |       \
+                           PIN_OSPEED_HIGH(GPIOE_LED_RED) |       \
+                           PIN_OSPEED_HIGH(GPIOE_LED_GREEN) |       \
                            PIN_OSPEED_HIGH(GPIOE_ZIO_D41) |       \
                            PIN_OSPEED_HIGH(GPIOE_ZIO_D42) |       \
                            PIN_OSPEED_HIGH(GPIOE_ARD_D6) |        \
@@ -1065,8 +1061,8 @@
                            PIN_PUPDR_PULLUP(GPIOE_ZIO_D31) |      \
                            PIN_PUPDR_PULLUP(GPIOE_ZIO_D60) |      \
                            PIN_PUPDR_PULLUP(GPIOE_ZIO_D57) |      \
-                           PIN_PUPDR_PULLUP(GPIOE_ZIO_D58) |      \
-                           PIN_PUPDR_PULLUP(GPIOE_ZIO_D59) |      \
+                           PIN_PUPDR_PULLUP(GPIOE_LED_RED) |      \
+                           PIN_PUPDR_PULLUP(GPIOE_LED_GREEN) |      \
                            PIN_PUPDR_PULLUP(GPIOE_ZIO_D41) |      \
                            PIN_PUPDR_PULLUP(GPIOE_ZIO_D42) |      \
                            PIN_PUPDR_PULLUP(GPIOE_ARD_D6) |       \
@@ -1081,8 +1077,8 @@
                            PIN_ODR_HIGH(GPIOE_ZIO_D31) |          \
                            PIN_ODR_HIGH(GPIOE_ZIO_D60) |          \
                            PIN_ODR_HIGH(GPIOE_ZIO_D57) |          \
-                           PIN_ODR_HIGH(GPIOE_ZIO_D58) |          \
-                           PIN_ODR_HIGH(GPIOE_ZIO_D59) |          \
+                           PIN_ODR_HIGH(GPIOE_LED_RED) |          \
+                           PIN_ODR_HIGH(GPIOE_LED_GREEN) |          \
                            PIN_ODR_HIGH(GPIOE_ZIO_D41) |          \
                            PIN_ODR_HIGH(GPIOE_ZIO_D42) |          \
                            PIN_ODR_HIGH(GPIOE_ARD_D6) |           \
@@ -1097,8 +1093,8 @@
                            PIN_AFIO_AF(GPIOE_ZIO_D31, 0U) |       \
                            PIN_AFIO_AF(GPIOE_ZIO_D60, 0U) |       \
                            PIN_AFIO_AF(GPIOE_ZIO_D57, 0U) |       \
-                           PIN_AFIO_AF(GPIOE_ZIO_D58, 0U) |       \
-                           PIN_AFIO_AF(GPIOE_ZIO_D59, 0U) |       \
+                           PIN_AFIO_AF(GPIOE_LED_RED, 3U) |       \
+                           PIN_AFIO_AF(GPIOE_LED_GREEN, 3U) |     \
                            PIN_AFIO_AF(GPIOE_ZIO_D41, 0U))
 #define VAL_GPIOE_AFRH    (PIN_AFIO_AF(GPIOE_ZIO_D42, 0U) |       \
                            PIN_AFIO_AF(GPIOE_ARD_D6, 0U) |        \
@@ -1118,7 +1114,7 @@
  * PF3  - ARD_A3 ADC3_IN9           (input pullup).
  * PF4  - MPU9250 INT               (input pullup).
  * PF5  - ARD_A4 ADC3_IN15          (input pullup).
- * PF6  - PIN6                      (input pullup).
+ * PF6  - RGB LED BLUE PWM          (alternate 3).
  * PF7  - ZIO_D62 SAI1_MCLK_B       (input pullup).
  * PF8  - ZIO_D61 SAI1_SCK_B        (input pullup).
  * PF9  - ZIO_D63 SAI1_FS_B         (input pullup).
@@ -1135,7 +1131,7 @@
                            PIN_MODE_INPUT(GPIOF_ARD_A3) |         \
                            PIN_MODE_INPUT(GPIOF_MPU_INT) |         \
                            PIN_MODE_INPUT(GPIOF_ARD_A4) |         \
-                           PIN_MODE_INPUT(GPIOF_PIN6) |           \
+                           PIN_MODE_ALTERNATE(GPIOF_LED_BLUE) |           \
                            PIN_MODE_INPUT(GPIOF_ZIO_D62) |        \
                            PIN_MODE_INPUT(GPIOF_ZIO_D61) |        \
                            PIN_MODE_INPUT(GPIOF_ZIO_D63) |        \
@@ -1151,7 +1147,7 @@
                            PIN_OTYPE_PUSHPULL(GPIOF_ARD_A3) |     \
                            PIN_OTYPE_PUSHPULL(GPIOF_MPU_INT) |     \
                            PIN_OTYPE_PUSHPULL(GPIOF_ARD_A4) |     \
-                           PIN_OTYPE_PUSHPULL(GPIOF_PIN6) |       \
+                           PIN_OTYPE_PUSHPULL(GPIOF_LED_BLUE) |       \
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D62) |    \
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D61) |    \
                            PIN_OTYPE_PUSHPULL(GPIOF_ZIO_D63) |    \
@@ -1165,9 +1161,9 @@
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D69) |       \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D70) |       \
                            PIN_OSPEED_HIGH(GPIOF_ARD_A3) |        \
-                           PIN_OSPEED_HIGH(GPIOF_MPU_INT) |        \
+                           PIN_OSPEED_HIGH(GPIOF_MPU_INT) |       \
                            PIN_OSPEED_HIGH(GPIOF_ARD_A4) |        \
-                           PIN_OSPEED_VERYLOW(GPIOF_PIN6) |       \
+                           PIN_OSPEED_HIGH(GPIOF_LED_BLUE) |      \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D62) |       \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D61) |       \
                            PIN_OSPEED_HIGH(GPIOF_ZIO_D63) |       \
@@ -1181,9 +1177,9 @@
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D69) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D70) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ARD_A3) |       \
-                           PIN_PUPDR_PULLUP(GPIOF_MPU_INT) |       \
+                           PIN_PUPDR_PULLUP(GPIOF_MPU_INT) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ARD_A4) |       \
-                           PIN_PUPDR_PULLUP(GPIOF_PIN6) |         \
+                           PIN_PUPDR_PULLUP(GPIOF_LED_BLUE) |     \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D62) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D61) |      \
                            PIN_PUPDR_PULLUP(GPIOF_ZIO_D63) |      \
@@ -1197,9 +1193,9 @@
                            PIN_ODR_HIGH(GPIOF_ZIO_D69) |          \
                            PIN_ODR_HIGH(GPIOF_ZIO_D70) |          \
                            PIN_ODR_HIGH(GPIOF_ARD_A3) |           \
-                           PIN_ODR_HIGH(GPIOF_MPU_INT) |           \
+                           PIN_ODR_HIGH(GPIOF_MPU_INT) |          \
                            PIN_ODR_HIGH(GPIOF_ARD_A4) |           \
-                           PIN_ODR_HIGH(GPIOF_PIN6) |             \
+                           PIN_ODR_HIGH(GPIOF_LED_BLUE) |         \
                            PIN_ODR_HIGH(GPIOF_ZIO_D62) |          \
                            PIN_ODR_HIGH(GPIOF_ZIO_D61) |          \
                            PIN_ODR_HIGH(GPIOF_ZIO_D63) |          \
@@ -1213,9 +1209,9 @@
                            PIN_AFIO_AF(GPIOF_ZIO_D69, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ZIO_D70, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ARD_A3, 0U) |        \
-                           PIN_AFIO_AF(GPIOF_MPU_INT, 0U) |        \
+                           PIN_AFIO_AF(GPIOF_MPU_INT, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ARD_A4, 0U) |        \
-                           PIN_AFIO_AF(GPIOF_PIN6, 0U) |          \
+                           PIN_AFIO_AF(GPIOF_LED_BLUE, 3U) |      \
                            PIN_AFIO_AF(GPIOF_ZIO_D62, 0U))
 #define VAL_GPIOF_AFRH    (PIN_AFIO_AF(GPIOF_ZIO_D61, 0U) |       \
                            PIN_AFIO_AF(GPIOF_ZIO_D63, 0U) |       \
@@ -1820,6 +1816,12 @@ void boardInit(void);
 void board_user_led_green_set(bool on);
 void board_user_led_blue_set(bool on);
 void board_user_led_red_set(bool on);
+
+/** Set the onboard RGB led.
+ *
+ * @param [in] red,blue,green The LED value (0-100).
+ */
+void board_rgb_led_set(int red, int green, int blue);
 #ifdef __cplusplus
 }
 #endif
