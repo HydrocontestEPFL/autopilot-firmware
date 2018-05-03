@@ -33,6 +33,11 @@ void input_mapper_init(input_mapper_t *mapper, parameter_namespace_t *ns)
                                            &mapper->params.z.ns,
                                            "max",
                                            default_max);
+    parameter_namespace_declare(&mapper->params.arming.ns, ns, "arming");
+    parameter_integer_declare_with_default(&mapper->params.arming.threshold,
+                                           &mapper->params.arming.ns,
+                                           "threshold",
+                                           default_max / 2);
 }
 
 static float interpolate(int value, parameter_t *min_p, parameter_t *max_p)
@@ -63,4 +68,7 @@ void input_mapper_map(input_mapper_t *mapper, const SBUSPacket *input, RemoteCon
                                    &mapper->params.throttle.max);
     /* Map the throttle back from -1;1 to 0;1 */
     output->throttle = (output->throttle + 1) / 2;
+
+    output->arming_request = (input->channels[5]
+                              > parameter_integer_get(&mapper->params.arming.threshold));
 }

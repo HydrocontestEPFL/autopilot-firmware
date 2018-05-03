@@ -27,6 +27,10 @@ typedef struct {
             parameter_t max;
             parameter_namespace_t ns;
         } roll, rudder, z;
+        struct {
+            parameter_namespace_t ns;
+            parameter_t threshold;
+        } arming;
     } params;
 } input_mapper_t;
 

@@ -96,3 +96,17 @@ TEST (InputMapperTestGroup, CanMapThrottle) {
 
     check_interpolation(expectations, CHANNEL_THROTTLE, [](auto p) { return p.throttle; });
 }
+
+TEST(InputMapperTestGroup, CanMapArmingRequest)
+{
+    parameter_integer_set(&mapper.params.arming.threshold, 20);
+    SBUSPacket input;
+    RemoteControlInput output;
+
+    input.channels[5] = 10;
+    input_mapper_map(&mapper, &input, &output);
+    CHECK_FALSE(output.arming_request);
+    input.channels[5] = 30;
+    input_mapper_map(&mapper, &input, &output);
+    CHECK_TRUE(output.arming_request);
+}
