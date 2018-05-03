@@ -30,6 +30,12 @@ static void commander_thd(void *p)
         ArmingStatus status = ArmingStatus_init_default;
         status.is_armed = commander_is_armed(&commander);
         arming_topic.publish(status);
+
+        if (status.is_armed) {
+            board_rgb_led_set(0, 100, 0);
+        } else {
+            board_rgb_led_set(100, 0, 0);
+        }
     }
 }
 
