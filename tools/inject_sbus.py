@@ -14,7 +14,7 @@ from functools import partial
 
 TOPIC_NAME = "sbus"
 CHANNELS = [("Throttle", 3), ("Roll", 0), ("Lift", 2), ("Rudder", 1),
-            ("Arming", 5)]
+            ("Arming", 5), ("Mode selection", 4)]
 
 
 class SBusApp(QMainWindow):

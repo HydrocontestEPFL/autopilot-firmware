@@ -8,6 +8,12 @@ enum CommanderState {
     COMMANDER_STATE_ARMED,
 };
 
+enum ControlMode {
+    CONTROL_MODE_MANUAL,
+    CONTROL_MODE_STABILIZED,
+    CONTROL_MODE_ALTITUDE_HOLD,
+};
+
 void commander_init(commander_t *commander)
 {
     memset(commander, 0, sizeof(commander_t));
@@ -46,4 +52,23 @@ void commander_update(commander_t *commander, RemoteControlInput input)
             }
             break;
     }
+
+    if (input.control_mode_switch < -0.5) {
+        commander->control_mode = CONTROL_MODE_MANUAL;
+    } else if (input.control_mode_switch > 0.5) {
+        commander->control_mode = CONTROL_MODE_ALTITUDE_HOLD;
+    } else {
+        commander->control_mode = CONTROL_MODE_STABILIZED;
+    }
+}
+
+bool commander_roll_is_stabilized(commander_t *commander)
+{
+    return commander->control_mode == CONTROL_MODE_STABILIZED
+           || commander->control_mode == CONTROL_MODE_ALTITUDE_HOLD;
+}
+
+bool commander_altitude_is_stabilized(commander_t *commander)
+{
+    return commander->control_mode == CONTROL_MODE_ALTITUDE_HOLD;
 }

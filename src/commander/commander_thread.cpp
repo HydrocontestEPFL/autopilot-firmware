@@ -29,6 +29,8 @@ static void commander_thd(void *p)
 
         ArmingStatus status = ArmingStatus_init_default;
         status.is_armed = commander_is_armed(&commander);
+        status.roll_is_stabilized = commander_roll_is_stabilized(&commander);
+        status.altitude_is_stabilized = commander_altitude_is_stabilized(&commander);
         arming_topic.publish(status);
 
         if (status.is_armed) {

@@ -48,3 +48,37 @@ TEST (ArmingTestGroup, RefuseArmingIfThrottleIsHigh) {
     commander_update(&commander, input);
     CHECK_FALSE(commander_is_armed(&commander));
 }
+
+TEST_GROUP (ModeTestGroup) {
+    commander_t commander;
+    RemoteControlInput input;
+    void setup()
+    {
+        input = RemoteControlInput_init_default;
+        commander_init(&commander);
+    }
+};
+
+TEST(ModeTestGroup, FirstSwitchPositionIsManual)
+{
+    input.control_mode_switch = -0.99;
+    commander_update(&commander, input);
+    CHECK_FALSE(commander_roll_is_stabilized(&commander));
+    CHECK_FALSE(commander_altitude_is_stabilized(&commander));
+}
+
+TEST(ModeTestGroup, SecondSwitchPositionIsRollControlledButManualLift)
+{
+    input.control_mode_switch = 0.;
+    commander_update(&commander, input);
+    CHECK_TRUE(commander_roll_is_stabilized(&commander));
+    CHECK_FALSE(commander_altitude_is_stabilized(&commander));
+}
+
+TEST(ModeTestGroup, ThirdSwitchPositionIsFullyAutomatic)
+{
+    input.control_mode_switch = 0.99;
+    commander_update(&commander, input);
+    CHECK_TRUE(commander_roll_is_stabilized(&commander));
+    CHECK_TRUE(commander_altitude_is_stabilized(&commander));
+}

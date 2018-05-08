@@ -33,6 +33,16 @@ void input_mapper_init(input_mapper_t *mapper, parameter_namespace_t *ns)
                                            &mapper->params.z.ns,
                                            "max",
                                            default_max);
+    parameter_namespace_declare(&mapper->params.mode_selection.ns, ns, "mode_selection");
+    parameter_integer_declare_with_default(&mapper->params.mode_selection.min,
+                                           &mapper->params.mode_selection.ns,
+                                           "min",
+                                           0);
+    parameter_integer_declare_with_default(&mapper->params.mode_selection.max,
+                                           &mapper->params.mode_selection.ns,
+                                           "max",
+                                           default_max);
+
     parameter_namespace_declare(&mapper->params.arming.ns, ns, "arming");
     parameter_integer_declare_with_default(&mapper->params.arming.threshold,
                                            &mapper->params.arming.ns,
@@ -66,6 +76,10 @@ void input_mapper_map(input_mapper_t *mapper, const SBUSPacket *input, RemoteCon
     output->throttle = interpolate(input->channels[3],
                                    &mapper->params.throttle.min,
                                    &mapper->params.throttle.max);
+    output->control_mode_switch = interpolate(input->channels[4],
+                                              &mapper->params.mode_selection.min,
+                                              &mapper->params.mode_selection.max);
+
     /* Map the throttle back from -1;1 to 0;1 */
     output->throttle = (output->throttle + 1) / 2;
 

@@ -16,6 +16,7 @@ extern "C" {
 
 typedef struct {
     int state;
+    int control_mode;
 } commander_t;
 
 /** Initialize the commander module. */
@@ -27,6 +28,13 @@ bool commander_is_armed(const commander_t *commander);
 /** Feeds the remote control input to the commander, which will use it to
  * update the arming status. */
 void commander_update(commander_t *commander, RemoteControlInput input);
+
+/** Checks if the boat must be automatically stabilized in roll in this mode. */
+bool commander_roll_is_stabilized(commander_t *commander);
+
+/** Checks if the boat must be automatically stabilized in altitude in this
+ * mode. */
+bool commander_altitude_is_stabilized(commander_t *commander);
 
 #ifdef __cplusplus
 }

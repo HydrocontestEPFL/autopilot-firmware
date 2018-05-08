@@ -26,7 +26,7 @@ typedef struct {
             parameter_t min;
             parameter_t max;
             parameter_namespace_t ns;
-        } roll, rudder, z;
+        } roll, rudder, z, mode_selection;
         struct {
             parameter_namespace_t ns;
             parameter_t threshold;

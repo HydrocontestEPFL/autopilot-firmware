@@ -10,6 +10,7 @@
 #define CHANNEL_RUDDER 1
 #define CHANNEL_Z 2
 #define CHANNEL_THROTTLE 3
+#define CHANNEL_MODE 4
 
 TEST_GROUP (InputMapperTestGroup) {
     parameter_namespace_t root;
@@ -95,6 +96,15 @@ TEST (InputMapperTestGroup, CanMapThrottle) {
     std::vector<TestCase> expectations({{0, 0.}, {10, 0.}, {15, 0.5}, {20, 1.}, {30, 1.}});
 
     check_interpolation(expectations, CHANNEL_THROTTLE, [](auto p) { return p.throttle; });
+}
+
+TEST (InputMapperTestGroup, CanMapModeSelection) {
+    parameter_integer_set(&mapper.params.mode_selection.min, 10);
+    parameter_integer_set(&mapper.params.mode_selection.max, 20);
+
+    std::vector<TestCase> expectations({{0, -1}, {10, -1}, {15, 0.}, {20, 1.}, {30, 1.}});
+
+    check_interpolation(expectations, CHANNEL_MODE, [](auto p) { return p.control_mode_switch; });
 }
 
 TEST(InputMapperTestGroup, CanMapArmingRequest)
