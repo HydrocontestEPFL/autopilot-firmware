@@ -191,4 +191,10 @@ void board_rgb_led_set(int red, int green, int blue)
     pwmEnableChannel(&PWMD9, 1, green);
 
     /* TODO: Implement blue channel (requires modifying chibios for tim10 */
+    /* For now, only supprots binary output */
+    if (blue > 500) {
+        palClearPad(GPIOF, GPIOF_LED_BLUE);
+    } else {
+        palSetPad(GPIOF, GPIOF_LED_BLUE);
+    }
 }

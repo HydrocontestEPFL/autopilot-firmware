@@ -1131,7 +1131,7 @@
                            PIN_MODE_INPUT(GPIOF_ARD_A3) |         \
                            PIN_MODE_INPUT(GPIOF_MPU_INT) |         \
                            PIN_MODE_INPUT(GPIOF_ARD_A4) |         \
-                           PIN_MODE_ALTERNATE(GPIOF_LED_BLUE) |           \
+                           PIN_MODE_OUTPUT(GPIOF_LED_BLUE) |           \
                            PIN_MODE_INPUT(GPIOF_ZIO_D62) |        \
                            PIN_MODE_INPUT(GPIOF_ZIO_D61) |        \
                            PIN_MODE_INPUT(GPIOF_ZIO_D63) |        \
