@@ -137,17 +137,15 @@ void boardInit(void)
 {
     static const PWMConfig led_pwm_cfg_tim9 = {
         4200000,
-        1000,           // 42kHz
+        1000, // 42kHz
         NULL,
         // activate channel 1 and 2
-        {
-            {PWM_OUTPUT_ACTIVE_LOW, NULL},
-            {PWM_OUTPUT_ACTIVE_LOW, NULL},
-            {PWM_OUTPUT_DISABLED, NULL},
-            {PWM_OUTPUT_DISABLED, NULL}
-        },
-        0,                  // TIMx_CR2 value
-        0                   // TIMx_DIER value
+        {{PWM_OUTPUT_ACTIVE_LOW, NULL},
+         {PWM_OUTPUT_ACTIVE_LOW, NULL},
+         {PWM_OUTPUT_DISABLED, NULL},
+         {PWM_OUTPUT_DISABLED, NULL}},
+        0, // TIMx_CR2 value
+        0  // TIMx_DIER value
     };
 
     pwmStart(&PWMD9, &led_pwm_cfg_tim9);

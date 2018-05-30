@@ -257,10 +257,10 @@ mem_info: $(BUILDDIR)/$(PROJECT).elf
 all: mem_info
 
 format:
-	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.h$$" | cut -f 2`
-	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.c$$" | cut -f 2`
-	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.cpp$$" | cut -f 2`
-	clang-format -i `git ls-tree --full-tree -r HEAD | grep -e "\.proto$$" | cut -f 2`
+	clang-format -style=file -i `git ls-tree --full-tree -r HEAD | grep -e "\.h$$" | cut -f 2`
+	clang-format -style=file -i `git ls-tree --full-tree -r HEAD | grep -e "\.c$$" | cut -f 2`
+	clang-format -style=file -i `git ls-tree --full-tree -r HEAD | grep -e "\.cpp$$" | cut -f 2`
+	clang-format -style=file -i `git ls-tree --full-tree -r HEAD | grep -e "\.proto$$" | cut -f 2`
 
 flash: $(BUILDDIR)/$(PROJECT).elf
 	openocd -f "interface/stlink-v2-1.cfg" \

@@ -107,8 +107,7 @@ TEST (InputMapperTestGroup, CanMapModeSelection) {
     check_interpolation(expectations, CHANNEL_MODE, [](auto p) { return p.control_mode_switch; });
 }
 
-TEST(InputMapperTestGroup, CanMapArmingRequest)
-{
+TEST (InputMapperTestGroup, CanMapArmingRequest) {
     parameter_integer_set(&mapper.params.arming.threshold, 20);
     SBUSPacket input;
     RemoteControlInput output;

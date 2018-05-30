@@ -92,7 +92,10 @@ static void sdcard_topic_write_thd(void *p)
         res = f_write(f, msg->buf, msg->len, &byte_written);
 
         if (byte_written != msg->len) {
-            WARNING("Could not write message to disk, wanted %d got %d (res = %d)", msg->len, byte_written, res);
+            WARNING("Could not write message to disk, wanted %d got %d (res = %d)",
+                    msg->len,
+                    byte_written,
+                    res);
         }
 
         chPoolFree(&msg_pool, msg);

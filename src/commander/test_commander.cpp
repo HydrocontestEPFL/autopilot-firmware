@@ -59,24 +59,21 @@ TEST_GROUP (ModeTestGroup) {
     }
 };
 
-TEST(ModeTestGroup, FirstSwitchPositionIsManual)
-{
+TEST (ModeTestGroup, FirstSwitchPositionIsManual) {
     input.control_mode_switch = -0.99;
     commander_update(&commander, input);
     CHECK_FALSE(commander_roll_is_stabilized(&commander));
     CHECK_FALSE(commander_altitude_is_stabilized(&commander));
 }
 
-TEST(ModeTestGroup, SecondSwitchPositionIsRollControlledButManualLift)
-{
+TEST (ModeTestGroup, SecondSwitchPositionIsRollControlledButManualLift) {
     input.control_mode_switch = 0.;
     commander_update(&commander, input);
     CHECK_TRUE(commander_roll_is_stabilized(&commander));
     CHECK_FALSE(commander_altitude_is_stabilized(&commander));
 }
 
-TEST(ModeTestGroup, ThirdSwitchPositionIsFullyAutomatic)
-{
+TEST (ModeTestGroup, ThirdSwitchPositionIsFullyAutomatic) {
     input.control_mode_switch = 0.99;
     commander_update(&commander, input);
     CHECK_TRUE(commander_roll_is_stabilized(&commander));
