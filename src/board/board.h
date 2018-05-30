@@ -1822,6 +1822,11 @@ void board_user_led_red_set(bool on);
  * @param [in] red,blue,green The LED value (0-100).
  */
 void board_rgb_led_set(int red, int green, int blue);
+
+/* Symbols exported by the linker to show the start and end of config page. */
+extern int _config_start;
+extern int _config_end;
+
 #ifdef __cplusplus
 }
 #endif

@@ -16,6 +16,7 @@ depends:
   - parameter
   - madgwick
   - fatfs
+  - parameter_flash_storage
 
 target.arm:
   - src/board/board.c
@@ -39,6 +40,8 @@ target.arm:
   - src/telemetry/udp_topic_broadcaster.c
   - src/telemetry/udp_topic_injector.c
   - src/usbconf.c
+
+target.stm32f4: []
 
 source:
   - src/commander/commander.c

@@ -20,7 +20,8 @@
  */
 MEMORY
 {
-    flash0  : org = 0x08000000, len = 1M
+    flash0  : org = 0x08000000, len = 896k
+    config : org = 0x080e0000, len = 128k   /* Last sector hold configuration data */
     flash1  : org = 0x00000000, len = 0
     flash2  : org = 0x00000000, len = 0
     flash3  : org = 0x00000000, len = 0
@@ -81,6 +82,10 @@ REGION_ALIAS("BSS_RAM", ram0);
 
 /* RAM region to be used for the default heap.*/
 REGION_ALIAS("HEAP_RAM", ram0);
+
+/* Symbols used to find start and end of config */
+_config_start = ORIGIN(config);
+_config_end = ORIGIN(config) + LENGTH(config);
 
 /* Generic rules inclusion.*/
 INCLUDE rules.ld
