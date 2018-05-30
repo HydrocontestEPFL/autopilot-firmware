@@ -83,6 +83,12 @@ int main(void)
     sbus_start(NULL); /* TODO: Use real stream */
 
     NOTICE("Boot complete");
+
+    chThdSleepMilliseconds(100);
+
+    /* All services should be initialized by now, we can load the config. */
+    parameter_flash_storage_load(&parameter_root, &_config_start);
+
     while (true) {
         chThdSleepMilliseconds(500);
     }
