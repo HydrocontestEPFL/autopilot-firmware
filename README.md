@@ -8,7 +8,6 @@
 
 ### Can be done with Nucleo
 * IP over serial port (depends of HW but can be done on Nucleo)
-* Save parameter tree to flash memory
 * SBUS Input thread (can be simulated over USB)
 
 ### Does depend on hw

@@ -16,10 +16,13 @@ TEST_GROUP (RPCParameterEnumerationTestGroup) {
 
     parameter_namespace_t root;
 
+    struct parameter_server_data data;
+
     void setup()
     {
         memset(msg, 0, sizeof(msg));
         memset(reply, 0, sizeof(reply));
+        data = { &root, nullptr, 0 };
 
         msg_ostream = pb_ostream_from_buffer(msg, sizeof(msg));
         reply_ostream = pb_ostream_from_buffer(reply, sizeof(reply));
@@ -37,7 +40,7 @@ TEST_GROUP (RPCParameterEnumerationTestGroup) {
         pb_encode(&msg_ostream, ParameterEnumerationRequest_fields, &req);
 
         // Enumerate parameter 0
-        parameter_server_enumerate(&root, &msg_istream, &reply_ostream);
+        parameter_server_enumerate(&data, &msg_istream, &reply_ostream);
 
         // Read the reply
         pb_decode(&reply_istream, ParameterEnumerationReply_fields, reply);
@@ -117,6 +120,8 @@ TEST_GROUP (ParameterSetRPCTestGroup) {
     pb_ostream_t msg_ostream, reply_ostream;
     pb_istream_t msg_istream, reply_istream;
 
+    struct parameter_server_data server_data = {&ns, nullptr, 0};
+
     void setup()
     {
         parameter_namespace_declare(&ns, nullptr, "");
@@ -135,14 +140,14 @@ TEST (ParameterSetRPCTestGroup, SetInteger) {
     parameter_integer_declare_with_default(&param, &ns, "param", 12);
 
     /* Craft the request */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/param");
     request.parameter.which_value = Parameter_int_value_tag;
     request.parameter.value.int_value = 42;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     CHECK_EQUAL(42, parameter_integer_get(&param));
 }
@@ -151,14 +156,14 @@ TEST (ParameterSetRPCTestGroup, SetScalar) {
     parameter_scalar_declare_with_default(&param, &ns, "param", 12);
 
     /* Craft the request */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/param");
     request.parameter.which_value = Parameter_scalar_value_tag;
     request.parameter.value.scalar_value = 42;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     CHECK_EQUAL(42, parameter_scalar_get(&param));
 }
@@ -167,31 +172,62 @@ TEST (ParameterSetRPCTestGroup, SetBoolean) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/param");
     request.parameter.which_value = Parameter_bool_value_tag;
     request.parameter.value.bool_value = true;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     /* Check that the parameter changed */
     CHECK_TRUE(parameter_boolean_get(&param));
+}
+
+TEST(ParameterSetRPCTestGroup, CanSave)
+{
+    /* Setup flash for testing */
+    mock("flash").expectOneCall("unlock");
+    mock("flash").ignoreOtherCalls();
+
+    uint8_t flash[128] = {0};
+    server_data.config_start = flash;
+    server_data.config_end = &flash[127];
+
+    parameter_boolean_declare_with_default(&param, &ns, "param", false);
+
+    /* Craft the request */
+    ParameterSetRequest request = ParameterSetRequest_init_default;
+    strcpy(request.parameter.name, "/param");
+    request.parameter.which_value = Parameter_bool_value_tag;
+    request.parameter.value.bool_value = true;
+    request.save_to_flash = true;
+
+    pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
+
+    /* Execute it */
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
+
+    /* Check that the parameter changed */
+    CHECK_TRUE(parameter_boolean_get(&param));
+
+    /* Check that the flash was changed as well */
+    CHECK_TRUE(flash[0] != 0);
 }
 
 TEST (ParameterSetRPCTestGroup, NoError) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/param");
     request.parameter.which_value = Parameter_bool_value_tag;
     request.parameter.value.bool_value = true;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     /* Decode the answer */
     ParameterSetReply reply;
@@ -205,14 +241,14 @@ TEST (ParameterSetRPCTestGroup, UnknownParameter) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request for a non existent parameter */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/bad_param");
     request.parameter.which_value = Parameter_bool_value_tag;
     request.parameter.value.bool_value = true;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     /* Decode the answer */
     ParameterSetReply reply;
@@ -227,14 +263,14 @@ TEST (ParameterSetRPCTestGroup, WrongTypeForBoolean) {
     parameter_boolean_declare_with_default(&param, &ns, "param", false);
 
     /* Craft the request for a non existent parameter */
-    ParameterSetRequest request;
+    ParameterSetRequest request = ParameterSetRequest_init_default;
     strcpy(request.parameter.name, "/param");
     request.parameter.which_value = Parameter_int_value_tag;
     request.parameter.value.int_value = 42;
     pb_encode(&msg_ostream, ParameterSetRequest_fields, &request);
 
     /* Execute it */
-    parameter_server_set(&ns, &msg_istream, &reply_ostream);
+    parameter_server_set(&server_data, &msg_istream, &reply_ostream);
 
     /* Decode the answer */
     ParameterSetReply reply;

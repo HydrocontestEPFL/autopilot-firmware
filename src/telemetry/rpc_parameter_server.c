@@ -2,6 +2,7 @@
 #include <string.h>
 #include "rpc_parameter_server.h"
 #include "messages/RPCParameter.pb.h"
+#include <parameter_flash_storage/parameter_flash_storage.h>
 
 static bool parameter_type_match(uint8_t parameter_type, uint8_t request_type)
 {
@@ -58,6 +59,7 @@ static int parameter_tree_height(parameter_t *leaf)
 
 void parameter_server_enumerate(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
+    struct parameter_server_data *server_data = p;
     ParameterEnumerationRequest request;
     ParameterEnumerationReply reply = ParameterEnumerationReply_init_default;
     int current = 0;
@@ -66,8 +68,7 @@ void parameter_server_enumerate(void *p, pb_istream_t *input, pb_ostream_t *outp
     pb_decode(input, ParameterEnumerationRequest_fields, &request);
 
     /* Then find the indexed parameter */
-    parameter_namespace_t *ns = (parameter_namespace_t *)p;
-    parameter_t *param = _parameter_find_by_index(ns, request.index, &current);
+    parameter_t *param = _parameter_find_by_index(server_data->ns, request.index, &current);
 
     /* If a parameter was found, output its value and name. */
     if (param == NULL) {
@@ -120,13 +121,13 @@ void parameter_server_enumerate(void *p, pb_istream_t *input, pb_ostream_t *outp
 
 void parameter_server_set(void *p, pb_istream_t *input, pb_ostream_t *output)
 {
-    parameter_namespace_t *ns = (parameter_namespace_t *)p;
+    struct parameter_server_data *server_data = p;
     ParameterSetRequest request;
     ParameterSetReply reply = ParameterSetReply_init_default;
 
     pb_decode(input, ParameterSetRequest_fields, &request);
 
-    parameter_t *param = parameter_find(ns, request.parameter.name);
+    parameter_t *param = parameter_find(server_data->ns, request.parameter.name);
 
     if (param == NULL) {
         reply.has_error = true;
@@ -146,6 +147,12 @@ void parameter_server_set(void *p, pb_istream_t *input, pb_ostream_t *output)
                 parameter_scalar_set(param, request.parameter.value.scalar_value);
                 break;
         }
+    }
+
+    /* Save to flash if needed */
+    if (request.save_to_flash) {
+        size_t len = (size_t)(server_data->config_end - server_data->config_start);
+        parameter_flash_storage_save(server_data->config_start, len, server_data->ns);
     }
 
     /* Send the reply */

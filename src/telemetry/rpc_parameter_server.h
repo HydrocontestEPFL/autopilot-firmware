@@ -5,7 +5,16 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
+#include <parameter/parameter.h>
+
 #include "rpc.h"
+
+struct parameter_server_data {
+    parameter_namespace_t *ns;
+    void *config_start;
+    void *config_end;
+};
 
 /* RPC used to provide dynamic parameter discovery to a client.
  *

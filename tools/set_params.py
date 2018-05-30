@@ -22,6 +22,10 @@ def parse_args():
     parser.add_argument(
         "name",
         help="Name of the parameter with full path, e.g. /led/blink_rate")
+    parser.add_argument(
+        "--save",
+        action="store_true",
+        help="Store parameter tree to flash after setting it.")
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--integer", "-i", type=int, help="Integer value")
@@ -49,7 +53,8 @@ def main():
     else:
         param.bool_value = args.boolean
 
-    req = messages.ParameterSetRequest(parameter=param)
+    req = messages.ParameterSetRequest(
+        parameter=param, save_to_flash=args.save)
     conn.send(rpc.encode_request("parameter_server_set", req))
     reply = rpc.read_reply(conn, messages.ParameterSetReply)
     print(reply)
