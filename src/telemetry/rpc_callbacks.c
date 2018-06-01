@@ -28,12 +28,9 @@ static void led_set(void *p, pb_istream_t *input, pb_ostream_t *output)
     }
 }
 
-static struct parameter_server_data param_server_data =
-{
-    .ns = &parameter_root,
-    .config_start = &_config_start,
-    .config_end = &_config_end
-};
+static struct parameter_server_data param_server_data = {.ns = &parameter_root,
+                                                         .config_start = &_config_start,
+                                                         .config_end = &_config_end};
 
 rpc_callback_t rpc_callbacks[] = {
     {"led_set", led_set, NULL},

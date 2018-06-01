@@ -22,7 +22,7 @@ TEST_GROUP (RPCParameterEnumerationTestGroup) {
     {
         memset(msg, 0, sizeof(msg));
         memset(reply, 0, sizeof(reply));
-        data = { &root, nullptr, 0 };
+        data = {&root, nullptr, 0};
 
         msg_ostream = pb_ostream_from_buffer(msg, sizeof(msg));
         reply_ostream = pb_ostream_from_buffer(reply, sizeof(reply));
@@ -185,8 +185,7 @@ TEST (ParameterSetRPCTestGroup, SetBoolean) {
     CHECK_TRUE(parameter_boolean_get(&param));
 }
 
-TEST(ParameterSetRPCTestGroup, CanSave)
-{
+TEST (ParameterSetRPCTestGroup, CanSave) {
     /* Setup flash for testing */
     mock("flash").expectOneCall("unlock");
     mock("flash").ignoreOtherCalls();
