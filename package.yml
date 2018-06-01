@@ -52,6 +52,7 @@ source:
   - src/sbus/sbus.c
   - src/telemetry/rpc.c
   - src/telemetry/rpc_parameter_server.c
+  - src/ip_uart.c
 
 tests:
   - src/commander/test_commander.cpp

@@ -11,7 +11,7 @@
 #define TCPIP_THREAD_STACKSIZE 8192
 #define TCPIP_MBOX_SIZE MEMP_NUM_PBUF
 
-#define LWIP_DHCP 1
+#define LWIP_HAVE_SLIPIF 1
 
 #define LWIP_SOCKET 0
 
@@ -24,6 +24,10 @@
 #define LWIP_IPADDR(p) IP4_ADDR(p, 192, 168, 3, 20)
 #define LWIP_GATEWAY(p) IP4_ADDR(p, 192, 168, 3, 1)
 #define LWIP_NETMASK(p) IP4_ADDR(p, 255, 255, 255, 0)
+
+#define LWIP_UART_IPADDR(p) IP4_ADDR(p, 10, 0, 0, 2)
+#define LWIP_UART_GATEWAY(p) IP4_ADDR(p, 10, 0, 0, 1)
+#define LWIP_UART_NETMASK(p) IP4_ADDR(p, 255, 255, 255, 0)
 
 #define LWIP_IFNAME0 'e'
 #define LWIP_IFNAME1 'n'
