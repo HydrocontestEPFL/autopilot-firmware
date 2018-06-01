@@ -2,6 +2,8 @@
 #include <hal.h>
 #include <error/error.h>
 #include <lwip_bindings/lwipthread.h>
+#include <parameter_flash_storage/parameter_flash_storage.h>
+
 #include "usbconf.h"
 #include "cmd.h"
 #include "main.h"
