@@ -44,8 +44,6 @@ static void usb_start(void)
     chThdSleepMilliseconds(1500);
     usbStart(serusbcfg.usbp, &usbcfg);
     usbConnectBus(serusbcfg.usbp);
-
-    shell_start((BaseSequentialStream *)&SDU1);
 }
 
 static void parameter_start(void)
@@ -66,13 +64,17 @@ int main(void)
     parameter_start();
     messagebus_start();
     ip_start();
-    ip_over_uart_start();
     udp_topic_broadcast_start();
     udp_topic_injector_start();
     rpc_server_start();
 
     usb_start();
+#if 1
+    ip_over_uart_start();
+#else
     log_start();
+    shell_start((BaseSequentialStream *)&SDU1);
+#endif
 
     sdcard_start();
     sdcard_mount();
