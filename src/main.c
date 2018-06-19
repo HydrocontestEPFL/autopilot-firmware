@@ -69,7 +69,7 @@ int main(void)
     rpc_server_start();
 
     usb_start();
-#if 1
+#if 0
     ip_over_uart_start();
 #else
     log_start();

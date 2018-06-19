@@ -7,7 +7,6 @@
 * Control loops
 
 ### Can be done with Nucleo
-* IP over serial port (depends of HW but can be done on Nucleo)
 * SBUS Input thread (can be simulated over USB)
 
 ### Does depend on hw
