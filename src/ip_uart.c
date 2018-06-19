@@ -34,7 +34,19 @@ void sio_send(u8_t c, sio_fd_t fd)
 u32_t sio_read(sio_fd_t fd, u8_t *data, u32_t len)
 {
     BaseSequentialStream *stream = fd;
-    return streamRead(stream, data, len);
+    for (u32_t i = 0; i < len; i++) {
+        msg_t msg = streamGet(stream);
+
+        if (msg == MSG_RESET) {
+            /* Needed to avoid full CPU utilization in some cases, e.g. when
+             * USB is not connected. */
+            chThdSleepMilliseconds(1);
+            return 0;
+        }
+
+        data[i] = msg;
+    }
+    return len;
 }
 
 /**
