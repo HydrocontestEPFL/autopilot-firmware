@@ -36,6 +36,9 @@
 #define LWIP_IFNAME0 'e'
 #define LWIP_IFNAME1 'n'
 
+#define IP_REASSEMBLY 0
+#define IP_FRAG 0
+
 /** Use newlib malloc() instead of memory pools. */
 #include <stdlib.h>
 #define MEM_LIBC_MALLOC 1
