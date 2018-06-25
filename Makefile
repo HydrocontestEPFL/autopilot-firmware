@@ -156,8 +156,8 @@ INCDIR += $(CHIBIOS)/os/license \
           $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
           $(HALINC) $(PLATFORMINC) $(BOARDINC) $(SHELLINC)
 
-# PROTOSRC = $(wildcard messages/*.proto)
-# CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
+PROTOSRC = $(wildcard messages/*.proto)
+CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
 
 #
 # Project, sources and paths

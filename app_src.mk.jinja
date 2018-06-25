@@ -1,5 +1,5 @@
 {%- for dir in include_directories -%}
-INCDIR += -I {{ dir }}
+INCDIR += {{ dir }}
 {% endfor -%}
 
 {% for file in target.arm + source + target.stm32f4 -%}
