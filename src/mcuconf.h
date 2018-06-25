@@ -45,7 +45,7 @@
 #define STM32_CLOCK48_REQUIRED           TRUE
 #define STM32_SW                         STM32_SW_PLL
 #define STM32_PLLSRC                     STM32_PLLSRC_HSE
-#define STM32_PLLM_VALUE                 8
+#define STM32_PLLM_VALUE                 24
 #define STM32_PLLN_VALUE                 336
 #define STM32_PLLP_VALUE                 2
 #define STM32_PLLQ_VALUE                 7
@@ -249,12 +249,12 @@
  * SERIAL driver system settings.
  */
 #define STM32_SERIAL_USE_USART1          FALSE
-#define STM32_SERIAL_USE_USART2          FALSE
-#define STM32_SERIAL_USE_USART3          TRUE
+#define STM32_SERIAL_USE_USART2          TRUE
+#define STM32_SERIAL_USE_USART3          FALSE
 #define STM32_SERIAL_USE_UART4           FALSE
 #define STM32_SERIAL_USE_UART5           FALSE
 #define STM32_SERIAL_USE_USART6          FALSE
-#define STM32_SERIAL_USE_UART7           FALSE
+#define STM32_SERIAL_USE_UART7           TRUE
 #define STM32_SERIAL_USE_UART8           FALSE
 #define STM32_SERIAL_USART1_PRIORITY     12
 #define STM32_SERIAL_USART2_PRIORITY     12
@@ -270,7 +270,7 @@
  */
 #define STM32_SPI_USE_SPI1               TRUE
 #define STM32_SPI_USE_SPI2               FALSE
-#define STM32_SPI_USE_SPI3               TRUE
+#define STM32_SPI_USE_SPI3               FALSE
 #define STM32_SPI_USE_SPI4               FALSE
 #define STM32_SPI_USE_SPI5               FALSE
 #define STM32_SPI_USE_SPI6               FALSE

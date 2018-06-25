@@ -8,7 +8,7 @@
 #include "log.h"
 #include "usbconf.h"
 
-#define OUTPUT_STREAM ((BaseSequentialStream *)&SDU1)
+#define OUTPUT_STREAM ((BaseSequentialStream *)&SD7)
 
 MUTEX_DECL(log_lock);
 

@@ -104,7 +104,7 @@ include $(CHIBIOS)/os/hal/lib/streams/streams.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
 
 # Define linker script file here
-LDSCRIPT= src/board/STM32F429xI.ld
+LDSCRIPT= src/platform/pixracer/STM32F427xI.ld
 
 include app_src.mk
 
@@ -156,8 +156,8 @@ INCDIR += $(CHIBIOS)/os/license \
           $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
           $(HALINC) $(PLATFORMINC) $(BOARDINC) $(SHELLINC)
 
-PROTOSRC = $(wildcard messages/*.proto)
-CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
+# PROTOSRC = $(wildcard messages/*.proto)
+# CSRC += $(addprefix build/,$(PROTOSRC:.proto=.pb.c))
 
 #
 # Project, sources and paths
