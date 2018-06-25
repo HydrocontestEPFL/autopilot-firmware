@@ -6,7 +6,7 @@ templates:
 include_directories:
   - src/
   - src/platform/pixracer/
-  # - src/board/
+  # - src/platform/Nucleo144-F429ZI/
   - build/ # for generated protobuf messages
 
 depends:
@@ -22,7 +22,7 @@ depends:
 
 target.arm:
   - src/platform/pixracer/board.c
-#   - src/board/board.c
+#   - src/platform/Nucleo144-F429ZI/board.c
 #   - src/cmd.c
 #   - src/commander/commander_thread.cpp
 #   - src/datalogging/sdcard_logger.c
