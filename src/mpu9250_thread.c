@@ -14,18 +14,41 @@
 
 static void mpu9250_init_hardware(mpu9250_t *mpu)
 {
+    // power up sensors
+    palSetPadMode(GPIOE, GPIOE_VDD_3V3_SENSORS_EN, PAL_MODE_OUTPUT_PUSHPULL);
+    palClearPad(GPIOE, GPIOE_VDD_3V3_SENSORS_EN);
+    chThdSleepMilliseconds(500);
+    palSetPad(GPIOE, GPIOE_VDD_3V3_SENSORS_EN);
+
+    // init mosi miso sck cs, AF5
+    palSetPadMode(GPIOA, GPIOA_MPU9250_SCK, PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);
+    palSetPadMode(GPIOA, GPIOA_MPU9250_MISO, PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_PUPDR_PULLUP);
+    palSetPadMode(GPIOA, GPIOA_MPU9250_MOSI, PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);
+    palSetPadMode(GPIOC, GPIOC_MPU9250_CS, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);
+    palSetPadMode(GPIOD, GPIOD_MPU9250_DRDY, PAL_MODE_INPUT_PULLUP);
+    palSetPad(GPIOC, GPIOC_MPU9250_CS);
+
+    palSetPadMode(GPIOC, GPIOC_20608_CS, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);
+    palSetPad(GPIOC, GPIOC_20608_CS);
+    palSetPadMode(GPIOD, GPIOD_BARO_CS, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);
+    palSetPad(GPIOD, GPIOD_BARO_CS);
+    palSetPadMode(GPIOD, GPIOD_FRAM_CS, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);
+    palSetPad(GPIOD, GPIOD_FRAM_CS);
+
     /*
-     * SPI3 configuration structure for MPU9250.
-     * SPI3 is on APB2 @ 84MHz / 128 = 656.25kHz
+     * SPI1 configuration structure for MPU9250.
+     * SPI1 is on APB2 @ 84MHz / 128 = 656.25kHz
      * CPHA=1, CPOL=1, 8bits frames, MSb transmitted first.
      */
-    static SPIConfig spi_cfg = {.end_cb = NULL,
-                                .ssport = GPIOB,
-                                .sspad = GPIOB_MPU_CSN,
-                                .cr1 = SPI_CR1_BR_2 | SPI_CR1_BR_1 | SPI_CR1_CPOL | SPI_CR1_CPHA};
-    spiStart(&SPID3, &spi_cfg);
+    static SPIConfig spi_cfg = {
+        .end_cb = NULL,
+        .ssport = GPIOC,
+        .sspad = GPIOC_MPU9250_CS,
+        .cr1 = SPI_CR1_BR_2 | SPI_CR1_BR_1 | SPI_CR1_CPOL | SPI_CR1_CPHA
+    };
+    spiStart(&SPID1, &spi_cfg);
 
-    mpu9250_init(mpu, &SPID3);
+    mpu9250_init(mpu, &SPID1);
 
     mpu9250_reset(mpu);
 
@@ -41,6 +64,8 @@ static void mpu9250_reader_thd(void *p)
 {
     (void)p;
     mpu9250_t mpu;
+
+    chRegSetThreadName("IMU");
 
     event_listener_t imu_int;
     chEvtRegisterMask(&exti_mpu9250_event, &imu_int, MPU_INTERRUPT_EVENT);
