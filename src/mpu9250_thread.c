@@ -10,6 +10,8 @@
 #include "exti.h"
 #include "messages/IMUReading.pb.h"
 
+#include <error/error.h>
+
 #define MPU_INTERRUPT_EVENT 0x01
 
 static void mpu9250_init_hardware(mpu9250_t *mpu)
@@ -52,12 +54,24 @@ static void mpu9250_init_hardware(mpu9250_t *mpu)
 
     mpu9250_reset(mpu);
 
-    do {
-        chThdSleepMilliseconds(100);
-    } while (!mpu9250_ping(mpu));
+    chThdSleepMilliseconds(100);
+    if (!mpu9250_ping(mpu)) {
+        ERROR("IMU ping");
+    }
 
     mpu9250_configure(mpu);
     mpu9250_enable_magnetometer(mpu);
+
+    /* speed up SPI for sensor register reads (max 20MHz)
+     * APB2 @ 84MHz / 8 = 10.5MHz
+     */
+    spi_cfg.cr1 = SPI_CR1_BR_1 | SPI_CR1_CPOL | SPI_CR1_CPHA;
+    spiStart(&SPID1, &spi_cfg);
+
+    // check that the sensor still pings
+    if (!mpu9250_ping(mpu)) {
+        ERROR("IMU ping");
+    }
 }
 
 static void mpu9250_reader_thd(void *p)
@@ -72,10 +86,15 @@ static void mpu9250_reader_thd(void *p)
 
     mpu9250_init_hardware(&mpu);
 
+    DEBUG("IMU OK");
+
     /* Creates the mpu9250 topic */
     static TOPIC_DECL(mpu9250_topic, IMUReading);
 
     messagebus_advertise_topic(&bus, &mpu9250_topic.topic, "imu0");
+
+    // Needed for some reason, otherwise MPU interrupt is not detected.
+    mpu9250_interrupt_read_and_clear(&mpu);
 
     while (1) {
         IMUReading msg;
