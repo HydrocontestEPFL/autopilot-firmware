@@ -1,6 +1,3 @@
-depends:
-  - lwip_bindings
-
 include_directories:
   - lwip/src/include
 

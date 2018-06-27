@@ -5,10 +5,12 @@ templates:
 
 include_directories:
   - src/
-  - src/board/
+  - src/platform/pixracer/
+  # - src/platform/Nucleo144-F429ZI/
   - build/ # for generated protobuf messages
 
 depends:
+  - error
   - lwip
   - lwip_bindings
   - nanopb
@@ -19,7 +21,8 @@ depends:
   - parameter_flash_storage
 
 target.arm:
-  - src/board/board.c
+  - src/platform/pixracer/board.c
+#   - src/platform/Nucleo144-F429ZI/board.c
   - src/cmd.c
   - src/commander/commander_thread.cpp
   - src/datalogging/sdcard_logger.c
@@ -27,6 +30,7 @@ target.arm:
   - src/fatfs_bindings/fatfs_diskio.c
   - src/fatfs_bindings/fatfs_syscalls.c
   - src/input_mapper/input_mapper_thread.cpp
+  - src/ip_uart.c
   - src/log.c
   - src/main.c
   - src/mpu9250_thread.c
@@ -35,10 +39,10 @@ target.arm:
   - src/sbus/sbus_thread.c
   - src/sdcard.c
   - src/state_estimation_thread.c
-  - src/telemetry/rpc_callbacks.c
-  - src/telemetry/rpc_server_thread.c
-  - src/telemetry/udp_topic_broadcaster.c
-  - src/telemetry/udp_topic_injector.c
+  # - src/telemetry/rpc_callbacks.c
+  # - src/telemetry/rpc_server_thread.c
+  # - src/telemetry/udp_topic_broadcaster.c
+  # - src/telemetry/udp_topic_injector.c
   - src/usbconf.c
 
 target.stm32f4: []
@@ -52,7 +56,6 @@ source:
   - src/sbus/sbus.c
   - src/telemetry/rpc.c
   - src/telemetry/rpc_parameter_server.c
-  - src/ip_uart.c
 
 tests:
   - src/commander/test_commander.cpp

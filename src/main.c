@@ -1,7 +1,7 @@
 #include <ch.h>
 #include <hal.h>
 #include <error/error.h>
-#include <lwip_bindings/lwipthread.h>
+// #include <lwip_bindings/lwipthread.h>
 #include <parameter_flash_storage/parameter_flash_storage.h>
 
 #include "usbconf.h"
@@ -61,20 +61,22 @@ int main(void)
     halInit();
     chSysInit();
 
+    platform_init();
+    log_start();
+
+    NOTICE("boot");
+
     parameter_start();
     messagebus_start();
-    ip_start();
-    udp_topic_broadcast_start();
-    udp_topic_injector_start();
-    rpc_server_start();
+    // ip_start();
+    // udp_topic_broadcast_start();
+    // udp_topic_injector_start();
+    // rpc_server_start();
 
     usb_start();
-#if 0
-    ip_over_uart_start();
-#else
-    log_start();
+
+    // ip_over_uart_start();
     shell_start((BaseSequentialStream *)&SDU1);
-#endif
 
     sdcard_start();
     sdcard_mount();
