@@ -6,6 +6,8 @@
 #include <lwip/sio.h>
 #include "usbconf.h"
 
+static BaseSequentialStream *io_dev = NULL;
+
 /**
  * Sends a single character to the serial device.
  *
@@ -58,17 +60,24 @@ u32_t sio_read(sio_fd_t fd, u8_t *data, u32_t len)
 sio_fd_t sio_open(u8_t devnum)
 {
     (void)devnum;
-    return (sio_fd_t)&SDU1;
+    if (io_dev == NULL) {
+        ERROR("Serial device not set");
+    }
+    return (sio_fd_t)io_dev;
 }
 
 static struct netif slipf;
 static ip_addr_t ipaddr, netmask, gw;
 
-void ip_over_uart_start(void)
+void ip_over_uart_start(BaseSequentialStream *dev)
 {
+    io_dev = dev;
     IP4_ADDR(&gw, 10, 0, 0, 11);
     IP4_ADDR(&ipaddr, 10, 0, 0, 10);
     IP4_ADDR(&netmask, 255, 255, 255, 0);
+
+    tcpip_init(NULL, NULL);
+
     netif_add(&slipf, &ipaddr, &netmask, &gw, NULL, slipif_init, tcpip_input);
     netif_set_up(&slipf);
     netif_set_link_up(&slipf);

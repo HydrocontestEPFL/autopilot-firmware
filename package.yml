@@ -39,10 +39,10 @@ target.arm:
   - src/sbus/sbus_thread.c
   - src/sdcard.c
   - src/state_estimation_thread.c
-  # - src/telemetry/rpc_callbacks.c
-  # - src/telemetry/rpc_server_thread.c
-  # - src/telemetry/udp_topic_broadcaster.c
-  # - src/telemetry/udp_topic_injector.c
+  - src/telemetry/rpc_callbacks.c
+  - src/telemetry/rpc_server_thread.c
+  - src/telemetry/udp_topic_broadcaster.c
+  - src/telemetry/udp_topic_injector.c
   - src/usbconf.c
 
 target.stm32f4: []

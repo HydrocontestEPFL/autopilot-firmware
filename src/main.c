@@ -68,15 +68,17 @@ int main(void)
 
     parameter_start();
     messagebus_start();
-    // ip_start();
-    // udp_topic_broadcast_start();
-    // udp_topic_injector_start();
-    // rpc_server_start();
 
     usb_start();
 
-    // ip_over_uart_start();
+#if 1
+    ip_over_uart_start((BaseSequentialStream *)&SDU1);
+    udp_topic_broadcast_start();
+    udp_topic_injector_start();
+    rpc_server_start();
+#else
     shell_start((BaseSequentialStream *)&SDU1);
+#endif
 
     sdcard_start();
     sdcard_mount();

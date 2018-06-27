@@ -14,10 +14,23 @@
 #define TCPIP_THREAD_PRIO NORMALPRIO
 #define TCPIP_MBOX_SIZE MEMP_NUM_PBUF
 
-#define LWIP_HAVE_SLIPIF 1
+#define LWIP_HAVE_SLIPIF                1
+#define SLIP_USE_RX_THREAD              1
 
-#define LWIP_SOCKET 0
+#define NO_SYS                          0
+#define LWIP_ETHERNET                   0
+#define LWIP_ARP                        0
+#define PPPOE_SUPPORT                   0
 
+#define LWIP_IPV4                       1
+#define LWIP_IPV6                       0
+
+#define LWIP_UDP                        1
+#define LWIP_TCP                        1
+#define LWIP_SOCKET                     0
+#define LWIP_NETCONN                    1
+#define LWIP_ICMP                       1
+#define LWIP_DHCP                       0
 
 #define DEFAULT_THREAD_STACK_SIZE 4096
 #define DEFAULT_RAW_RECVMBOX_SIZE 4
