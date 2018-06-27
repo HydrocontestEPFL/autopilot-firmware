@@ -181,4 +181,8 @@ void platform_init(void)
     palSetPadMode(GPIOC, GPIOC_SDIO_D3, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
     palSetPadMode(GPIOC, GPIOC_SDIO_CK, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_PUPDR_PULLUP);
     palSetPadMode(GPIOD, GPIOD_SDIO_CMD, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
+
+    board_user_led_green_set(0);
+    board_user_led_blue_set(0);
+    board_user_led_red_set(0);
 }
