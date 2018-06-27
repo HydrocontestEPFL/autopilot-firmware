@@ -140,15 +140,37 @@ void boardInit(void)
 
 void board_user_led_green_set(bool on)
 {
-    palWritePad(GPIOB, GPIOB_FMU_LED_GREEN, (uint16_t)on);
+    palWritePad(GPIOB, GPIOB_FMU_LED_GREEN, (uint16_t)(on ? 0 : 1));
 }
 
 void board_user_led_blue_set(bool on)
 {
-    palWritePad(GPIOB, GPIOB_FMU_LED_BLUE, (uint16_t)on);
+    palWritePad(GPIOB, GPIOB_FMU_LED_BLUE, (uint16_t)(on ? 0 : 1));
 }
 
 void board_user_led_red_set(bool on)
 {
-    palWritePad(GPIOB, GPIOB_FMU_LED_RED, (uint16_t)on);
+    palWritePad(GPIOB, GPIOB_FMU_LED_RED, (uint16_t)(on ? 0 : 1));
+}
+
+void board_rgb_led_set(int red, int green, int blue)
+{
+    board_user_led_red_set(red != 0);
+    board_user_led_green_set(green != 0);
+    board_user_led_blue_set(blue != 0);
+}
+
+void platform_init(void)
+{
+    static SerialConfig uart_config = {
+        SERIAL_DEFAULT_BITRATE, 0,
+        USART_CR2_STOP1_BITS, 0
+    };
+
+    uart_config.speed = 57600;
+    sdStart(&SD7, &uart_config);
+
+    // Telemetry 1 serial port
+    uart_config.speed = 57600;
+    sdStart(&SD2, &uart_config);
 }

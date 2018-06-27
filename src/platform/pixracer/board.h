@@ -734,6 +734,19 @@ void boardInit(void);
 void board_user_led_green_set(bool on);
 void board_user_led_blue_set(bool on);
 void board_user_led_red_set(bool on);
+
+// TODO: only dummy for compatibility
+void board_rgb_led_set(int red, int green, int blue);
+
+
+/* Platform specific hardware & drivers initialization.
+ * Should be called after chSysInit() */
+void platform_init(void);
+
+/* Symbols exported by the linker to show the start and end of config page. */
+extern int _config_start;
+extern int _config_end;
+
 #ifdef __cplusplus
 }
 #endif
