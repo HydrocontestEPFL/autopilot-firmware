@@ -6,6 +6,5 @@ include_directories:
 
 
 target.arm:
-  - lwipthread.c
   - arch/sys_arch.c
 

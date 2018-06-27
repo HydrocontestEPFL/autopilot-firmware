@@ -11,38 +11,38 @@ include_directories:
 
 depends:
   - error
-#   - lwip
-#   - lwip_bindings
+  - lwip
+  - lwip_bindings
   - nanopb
   - msgbus
   - parameter
-#   - madgwick
-#   - fatfs
+  - madgwick
+  - fatfs
   - parameter_flash_storage
 
 target.arm:
   - src/platform/pixracer/board.c
 #   - src/platform/Nucleo144-F429ZI/board.c
-#   - src/cmd.c
-#   - src/commander/commander_thread.cpp
-#   - src/datalogging/sdcard_logger.c
-#   - src/exti.c
-#   - src/fatfs_bindings/fatfs_diskio.c
-#   - src/fatfs_bindings/fatfs_syscalls.c
-#   - src/input_mapper/input_mapper_thread.cpp
-#   - src/ip_uart.c
+  - src/cmd.c
+  - src/commander/commander_thread.cpp
+  - src/datalogging/sdcard_logger.c
+  - src/exti.c
+  - src/fatfs_bindings/fatfs_diskio.c
+  - src/fatfs_bindings/fatfs_syscalls.c
+  - src/input_mapper/input_mapper_thread.cpp
+  - src/ip_uart.c
   - src/log.c
   - src/main.c
-#   - src/mpu9250_thread.c
-#   - src/output_mixer/output_pwm_thread.c
-#   - src/parameter_port.c
-#   - src/sbus/sbus_thread.c
-#   - src/sdcard.c
-#   - src/state_estimation_thread.c
-#   - src/telemetry/rpc_callbacks.c
-#   - src/telemetry/rpc_server_thread.c
-#   - src/telemetry/udp_topic_broadcaster.c
-#   - src/telemetry/udp_topic_injector.c
+  - src/mpu9250_thread.c
+  - src/output_mixer/output_pwm_thread.c
+  - src/parameter_port.c
+  - src/sbus/sbus_thread.c
+  - src/sdcard.c
+  - src/state_estimation_thread.c
+  # - src/telemetry/rpc_callbacks.c
+  # - src/telemetry/rpc_server_thread.c
+  # - src/telemetry/udp_topic_broadcaster.c
+  # - src/telemetry/udp_topic_injector.c
   - src/usbconf.c
 
 target.stm32f4: []
