@@ -173,4 +173,12 @@ void platform_init(void)
     // Telemetry 1 serial port
     uart_config.speed = 57600;
     sdStart(&SD2, &uart_config);
+
+    // SDIO init
+    palSetPadMode(GPIOC, GPIOC_SDIO_D0, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
+    palSetPadMode(GPIOC, GPIOC_SDIO_D1, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
+    palSetPadMode(GPIOC, GPIOC_SDIO_D2, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
+    palSetPadMode(GPIOC, GPIOC_SDIO_D3, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
+    palSetPadMode(GPIOC, GPIOC_SDIO_CK, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_PUPDR_PULLUP);
+    palSetPadMode(GPIOD, GPIOD_SDIO_CMD, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); // has external pullup
 }
